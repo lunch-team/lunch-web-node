@@ -1,2 +1,2 @@
-console.log('js load!')
+console.log('js load!') //
 location.replace('pages/lunch_main.html')
