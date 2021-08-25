@@ -81,7 +81,7 @@
             var name = $(this).data('food_name')
             var type = $(this).data('food_menutype')
             
-            alert(name+ ',' + type + ',' + location)
+           // alert(name+ ',' + type + ',' + location)
 
             var addParam = {};
             addParam = {"location" : location, "menuType" : type, "name" : name};
@@ -92,12 +92,23 @@
                 url: connectUrl + 'addMenu' , 
                 dataType : 'json' ,
                 contentType : 'application/json',
-                data : addParam,
+                data : JSON.stringify(addParam),
                 success: function(data) { 
                               console.log(data);
                               //var obj = miaps.parse(data);
                               //console.log(obj.data);  
-                } });
+                },
+                error: function(e) {
+                  //status == 409면 중복입니다
+                    console.error(e);
+                    console.error(e.responseJSON.errorMessage);
+                    console.error(e.status);
+
+                    if(e.status == 409) {
+                      alert('중복입니다.');
+                    }
+                }
+              });
             });
 
           //좌측 상단 뒤로가기 버튼

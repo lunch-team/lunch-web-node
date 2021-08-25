@@ -14,13 +14,14 @@
 </head>
 <body>
     <header>
-        <button class="back_btn"></button><span class="title">메뉴목록</span>
+        <button class="back_btn"></button><span class="title">메뉴 추천</span>
     </header>
   
     <div class="contents_wrap" id="contents_list">
         <br />
-        <div class="btn-wrap">
-          <button class="main_btn mb-10" id="btnRandomMenu">메뉴 추천</button>
+        <button class="main_btn mb-10" id="btnRandomMenu">메뉴 추천</button>
+        <div class="btn-wrap" id="contents">
+         
         </div>
         <br />
     </div>
@@ -28,6 +29,26 @@
       <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
       <script type="text/javascript" src="/resources/js/miaps_hybrid.js"></script>
       <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
+      <script id="menuList" type="text/x-handlebars-template">
+        <!-- 컨텐츠영역 -->
+      
+            {{#menuList}}
+            <div class="round_box" name="food_box" data-food_name="{{name}}" data-food_location="{{location}}"
+                 data-food_menutype="{{menuType}}">
+              <p class="req_title" >
+               {{name}}
+              </p>
+              <div class="req_dt_wrap">
+                <span class="req_dt" >
+                 {{location}}
+                </span>
+                <span class="status col5" >
+                 {{menuType}}
+                </span>
+              </div>
+            </div>
+            {{/menuList}}
+      </script>
 
     <script type="text/javascript">
       console.log('run!')
@@ -47,11 +68,20 @@
                 url: connectUrl + 'getRandomMenu' , 
                 dataType : 'json' ,
                 contentType : 'application/json',
-                data : randomParam,
+                data : JSON.stringify(randomParam),
                 success: function(data) { 
-                              console.log(data);
-                              //var obj = miaps.parse(data);
-                              //console.log(obj.data);  
+                            var obj = miaps.parse(data);
+                            console.log(obj.data); 
+                            var source = $("#menuList").html();
+                            var template = Handlebars.compile(source);
+                            var res = {
+                                menuList : obj.data
+                            };
+          
+                            var html = template(res);
+                            console.log(html)
+                            $("#contents").empty();
+                            $("#contents").append(html);
                 } });
           });
 
