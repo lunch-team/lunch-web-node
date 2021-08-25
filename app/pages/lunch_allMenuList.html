@@ -28,7 +28,8 @@
         <!-- 컨텐츠영역 -->
       
             {{#menuList}}
-            <div class="round_box" name="food_box" data-food_name="{{name}}" data-food_location="{{location}}" data-food_menutype="{{menuType}}">
+            <div class="round_box" name="food_box" data-food_name="{{name}}" data-food_location="{{location}}"
+                 data-food_menutype="{{menuType}}">
               <p class="req_title" >
                {{name}}
               </p>
@@ -57,18 +58,18 @@
 					contentType : 'application/json',
 					data : '',
 					success: function(data) { 
-                        //alert(data);
-                        var obj = miaps.parse(data);
-                        console.log(obj.data); 
-                        var source = $("#menuList").html();
-                        var template = Handlebars.compile(source);
-                        var res = {
-                            menuList : obj.data
-                        };
+                      //alert(data);
+                      var obj = miaps.parse(data);
+                      console.log(obj.data); 
+                      var source = $("#menuList").html();
+                      var template = Handlebars.compile(source);
+                      var res = {
+                          menuList : obj.data
+                      };
     
-				        var html = template(res);
-                        console.log(html)
-                        $("#contents_list").append(html);
+				              var html = template(res);
+                      console.log(html)
+                      $("#contents_list").append(html);
 				} });
         // 58.181.28.53:11199/menu/getAllMenu(GET) // addMenu(POST)
     
@@ -76,27 +77,33 @@
             e.preventDefault();
 		        e.stopPropagation();
 
+            var location = $(this).data('food_location')
             var name = $(this).data('food_name')
             var type = $(this).data('food_menutype')
-            var location = $(this).data('food_location')
+            
             alert(name+ ',' + type + ',' + location)
 
-            var data = {};
-            data = {"location" : location, "menuType" : type, "name" : name};
+            var addParam = {};
+            addParam = {"location" : location, "menuType" : type, "name" : name};
+            console.log('addParam : ' + JSON.stringify(addParam))
 
             $.ajax({ 	
                 type : 'POST',
                 url: connectUrl + 'addMenu' , 
                 dataType : 'json' ,
                 contentType : 'application/json',
-                data : data,
+                data : addParam,
                 success: function(data) { 
-                              //alert(data);
-                              var obj = miaps.parse(data);
-                              console.log(obj.data); 
-                              
-              } });
+                              console.log(data);
+                              //var obj = miaps.parse(data);
+                              //console.log(obj.data);  
+                } });
             });
+
+          //좌측 상단 뒤로가기 버튼
+          $('.back_btn').on('click', function(){
+            window.history.back();
+          });
     </script>
 
     

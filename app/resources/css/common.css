@@ -1,0 +1,70 @@
+@charset"utf-8";
+/*CSSreset*/
+html {
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+  overflow-x:auto;overflow-y:scroll;
+  -webkit-overflow-scrolling: touch;
+  width:100%;height:100%;
+}
+body,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,audio,video{margin:0; padding:0; -webkit-text-size-adjust:none;}
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block;}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6{border:0;outline:0;}
+input, select, textarea {vertical-align:bottom;border:none;}
+label,input[type='button']{cursor:pointer;}
+ol, ul, li {list-style:none;}
+table{width:100%;border-collapse:collapse;word-wrap:break-word;border-spacing:0;table-layout:fixed;box-sizing:border-box;}
+caption{visibility:hidden;width:1px;height:1px;line-height:1px;font-size:1px;}
+img{border:0;max-width:100%;height:100%;display:inline-block;vertical-align: middle; }
+em,address{font-style:normal;}
+hr, legend{display: none}
+fieldset{border:0;}
+button{border:0;padding:0;margin:0;cursor:pointer;text-align: center;overflow: visible;overflow: hidden; background: none;}
+textarea{height:100px;overflow-y:scroll;box-sizing:border-box;padding:10px;resize:none;}
+a{color:inherit;text-decoration:none;}
+
+
+/* ******************************
+   BASE
+  ****************************** */
+body{-webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -webkit-text-size-adjust:none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
+  width:100%;height:100%;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+@font-face {
+    font-family: 'Noto Sans KR', sans-serif;
+    src: url(../font/NotoSansKR-Regular.woff) format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Noto Sans KR', sans-serif;
+    src: url(../font/NotoSansKR-Medium.woff) format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Noto Sans KR', sans-serif;
+    src: url(../font/NotoSansKR-Bold.woff) format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+
+
+/* **************************
+    DEFAULT  / COMMON
+  ************************** */
+body,div,p,span,textarea,button{box-sizing:border-box;margin:0;padding:0;color:#24252E; line-height:1em; -webkit-text-size-adjust: none;
+  background-repeat: no-repeat; font-size:18px; font-family: 'Noto Sans KR',sans-serif; font-weight: 400;}
+html{scrollbar-width: none; -ms-overflow-style: none;}
+html::-webkit-scrollbar { display: none; }
+
+

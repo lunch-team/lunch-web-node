@@ -1,0 +1,803 @@
+/*!
+ * MiAPS Hybrid CSS with Bootstrap v3.3.7
+ * Copyright 2017 ThinkM, Inc.
+ */
+ 
+/* graphicon spin --start */
+.glyphicon.spinning {
+  animation: spin 1s infinite linear;
+  -webkit-animation: spin2 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spin2 {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+/* graphicon spin --end */
+
+/* waiting cursor block */
+.icon-block {
+  width: 80px;
+  height: 80px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-image: url(../img/loading-indicator.svg);
+  /*margin: 0 auto;*/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -40px 0px 0px -40px;
+  z-index: 9000;
+}
+
+#_miaps_mask {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 8999;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+hr {
+  height: 1px;
+  background-color: #c1bfbf;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 95%;
+}
+
+/* --------------------------------------------- */
+/* miaps-modal Dialog */
+.layer {
+}
+.layer.depth2 {
+  overflow: initial;
+}
+
+.layer.depth2::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+}
+.layer.alert {
+  position: fixed;
+  top: 20%;
+  left: 20px;
+  right: 20px;
+  padding-top: 0;
+  bottom: auto;
+}
+.layer.alert .layer-contents {
+  padding: 30px 15px;
+  background-color: #fff;
+}
+.layer-header {
+}
+.layer-content {
+}
+.has_bottom_btn {
+}
+.btn-class {
+}
+.bottom-btn-set {
+}
+.ico-close {
+}
+.sr-only {
+}
+
+button:focus {
+  outline: 0;
+}
+
+/* --------------------------------------------- */
+/* Simple miaps-modal Dialog */
+.miaps-modal-wrap {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10000000;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.miaps-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  width: calc(100% - 100px);
+  padding: 25px 20px 25px;
+  border-radius: 5px;
+  background-color: #fff;
+  text-align: center;
+  max-height: 80%;
+}
+
+.miaps-modal .miaps-modal-msg {
+  font-size: 18px;
+  color: #000;
+  max-height: 300px;
+  word-break: break-word;
+  overflow: auto;
+}
+
+.miaps-modal .miaps-modal-btn {
+  margin-top: 20px;
+}
+
+.miaps-modal .miaps-modal-btn button {
+  display: inline-block;
+  min-width: 100px;
+  height: 30px;
+  line-height: 0;
+  border-radius: 5px;
+  border: 0;
+  outline: 0;
+}
+
+.miaps-modal .miaps-modal-btn button:first-child {
+  margin-right: 10px;
+}
+
+/* miaps-modal button color style */
+.miaps-modal .btn-ok {
+  background-color: #464646;
+  color: #fff;
+}
+
+.miaps-modal .btn-cancel {
+  background-color: #e60000;
+  color: rgb(255, 255, 255);
+}
+
+.miaps-modal .btn-confirm {
+  background-color: #464646;
+  color: #fff;
+}
+
+/* --------------------------------------------- */
+/* miaps-calendar CSS */
+
+.calendar-wrap {
+  text-align: center;
+}
+.calendar-year-month {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  padding: 0 5px;
+}
+.calendar-year,
+.calendar-month {
+  display: table-cell;
+  position: relative;
+  padding: 0 20px;
+  height: 56px;
+  text-align: center;
+  vertical-align: middle;
+}
+.calendar-body {
+  position: relative;
+  padding: 0 11px;
+}
+.calendar-body:before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: #f7f7f7;
+  z-index: -1;
+}
+.calendar-wrap .txt-current {
+  font-weight: 700;
+  font-size: 17px;
+}
+.calendar-wrap .btn-prev,
+.calendar-wrap .btn-next {
+  display: block;
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 30px;
+  margin-top: -16px;
+}
+.calendar-wrap .btn-prev:after,
+.calendar-wrap .btn-next:after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 12px;
+  margin-top: -6px;
+  background-size: 300px auto;
+}
+.calendar-wrap .btn-prev {
+  left: 4px;
+}
+.calendar-wrap .btn-prev:after {
+  margin-top: -7px;
+  margin-left: 1px;
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.calendar-wrap .btn-next {
+  right: 4px;
+}
+.calendar-wrap .btn-next:after {
+  margin-left: -7px;
+}
+.calendar-wrap abbr {
+  text-decoration: none;
+}
+.calendar-wrap .calendar-body table {
+  width: 100%;
+}
+.calendar-wrap th {
+  height: 46px;
+  padding-top: 10px;
+  font-weight: 300;
+  font-size: 12px;
+}
+.calendar-wrap td {
+  position: relative;
+  padding: 5px 0;
+  font-size: 16px;
+}
+.calendar-wrap td button {
+  width: 30px;
+  padding: 7px 0;
+}
+.calendar-wrap td:first-child button {
+  color: #de4d50;
+}
+.calendar-wrap td:last-child button {
+  color: #678ac5;
+}
+.calendar-wrap td button:disabled {
+  color: #aaa;
+}
+.calendar-wrap td button[aria-selected="true"] {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1px solid #186bd7;
+  border-radius: 50%;
+  font-weight: 700;
+  color: #000;
+  box-shadow: 0 5px 9px rgba(0, 0, 0, 0.25);
+}
+
+/* --------------------------------------------- */
+/* miaps-commentList CSS */
+.commentList-wrap{
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+.commentList-wrap hr{
+  display: block;
+  border: 0;
+  height: 0.8px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #d9d9d9;
+}
+
+.commentList-wrap input[type="radio"]{
+  display: none;
+}
+
+.commentList-wrap input[type="radio"] + label  {
+  font-weight: normal;
+}
+
+.commentList-wrap input[type="radio"]:checked + label {
+  font-weight: bold;
+}
+
+.commentList-wrap p.title{
+  font-weight: bold;
+}
+
+.commentList-wrap p.text{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.commentList-wrap p.time{
+  font-size: 80%;
+  color: #858585;
+}
+
+.commentList-wrap label{
+  margin-right: 10px;
+}
+
+.commentList-wrap .comment{
+  width: 100%;
+  display: inline-block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #d9d9d9;
+}
+
+.commentList-wrap div.comment hr{
+  margin-top: 0px;
+  margin-bottom: 0px; 
+}
+
+.commentList-wrap div.comment .btn{
+  width: 80px;
+  height: 40px;
+  text-align: center;
+  float: right;
+  font-size: 110%;
+  font-weight: bold;
+  color: white;
+  background-color: #4c81af;
+}
+.commentList-wrap div.comment .btn:focus{
+  outline: 0;
+}
+
+/* --------------------------------------------- */
+/* miaps-checkList CSS */
+.checkList-wrap{
+  margin-left: 3%;
+  margin-right: 3%;
+  padding-top : 3%;
+  padding-bottom : 3%;
+}
+
+.checkList-wrap hr{
+  display: block;
+  border: 0;
+  height: 0.8px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #d9d9d9;
+}
+
+.checkList-wrap .item-wrap{
+  display: grid;
+  grid-template-columns: 30px auto;
+  grid-gap: 20px;
+}
+
+.checkList-wrap input[type="checkbox"] {
+  overflow: visible;
+  width: 100%;
+  height: 100%;
+  z-index: auto;
+  -webkit-appearance: checkbox;
+  appearance: checkbox;
+}
+
+.checkList-wrap .head{
+  font-weight: bold;
+  font-size: 110%;
+  margin-bottom: 5px;
+}
+
+.checkList-wrap .item{
+  color: #858585;
+  font-size: 80%;
+  width: 90%;
+}
+
+/* --------------------------------------------- */
+/* miaps-bankList CSS */
+.bankList-wrap{
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-top : 5%;
+  padding-bottom : 5%;
+}
+
+.bankList-wrap input[type="radio"]{
+  display: none;
+}
+
+.bankList-wrap input[type="radio"] + label  {
+  font-weight: bold;
+  color: #858585;
+}
+
+.bankList-wrap input[type="radio"]:checked + label {
+  /* font-weight: bold; */
+  color: black;
+}
+
+.bankList-wrap .highlight_line{
+  position:absolute;
+  width:70px;
+  height:3px;
+  margin-top: 5px;
+  background-color:#000;
+  color:#fff;
+}
+
+.bankList-wrap hr{
+  display: block;
+  border: 0;
+  height: 0.8px;
+  margin-top: 7px;
+  margin-bottom: 20px;
+  background-color: #d9d9d9;
+}
+
+.bankList-wrap .tabLabel{
+  font-size: 120%;
+  text-align: center;
+}
+
+.bankList-wrap .bankGrid{
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-row-gap : 10px;
+}
+
+.bankList-wrap .bankItemGrid{
+  display: grid;
+  grid-template-columns: 24px auto;
+  grid-gap: 5px;
+}
+
+.bankList-wrap .imageBox{
+    border-radius: 70%;
+    overflow: hidden;
+}
+
+.bankList-wrap .bankImage{
+	width: 20px;
+    height: 20px;
+    object-fit: cover;
+}
+
+.bankList-wrap .title{
+  height: 40px;
+  width: 90%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* --------------------------------------------- */
+/* miaps-translations CSS */
+.translations-wrap{
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-top : 3%;
+  padding-bottom : 5%;
+}
+
+.translations-wrap .nation_btn_wrap{
+	display: grid;
+	grid-template-columns: auto auto;
+	grid-row-gap : 10px;
+	grid-column-gap: 10px;
+}
+
+.translations-wrap .nation_btn_wrap button{
+  width: 100%;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 40px auto;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: left;
+  align-items: center;
+  
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.translations-wrap .nation_btn_wrap img {
+  width: 30px;
+  height: 30px;
+}
+
+.translations-wrap .nation_btn_wrap button{
+	display: inline-block;
+}
+
+.translations-wrap .nation_btn_wrap button .btn_name {
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+}
+
+.translations-wrap .nation_btn_wrap button:active {
+  background-color: #eeeeee;
+}
+
+.translations-wrap hr{
+  display: block;
+  border: 0;
+  height: 0.8px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #d9d9d9;
+}
+
+.translations-wrap h2{
+  font-size: 120%;
+  font-weight: 600;
+}
+
+.translations-wrap ul {
+  list-style-type: disc;
+  margin: 5%;
+}
+
+.translations-wrap li {
+  list-style-type: disc;
+  margin: 2%;
+}
+
+.translations-wrap .btn{
+  padding: 0.5rem 1rem;
+  width: auto;
+  height: auto;
+  
+  border: none;
+  border-radius: 4px;
+  
+  font-weight: bold;
+  color: white;
+  background: #0d6efd;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.translations-wrap .textBox{
+  width: 100%;
+  height: auto;
+  line-height : normal;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #999;
+  border-radius: 0;
+  outline-style: none;
+  -webkit-appearance: none;
+  -moz-appearance: none; appearance: none;
+}
+
+/* --------------------------------------------- */
+/* miaps-time CSS */
+.time-wrap{
+  background: #fff;
+  font-family: Lato, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #252525;
+  
+  position: relative;
+  width: 300px;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 30px;
+}
+
+.time-wrap .swiper-container {
+  width: 80px;
+  height: 210px;
+  float: left;
+}
+
+.time-wrap .swiper-slide {
+  text-align: center;
+  font-size: 2rem;
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  opacity: 0.25;
+  transition: opacity 0.3s ease;
+  cursor: default;
+  font-weight: bold;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.time-wrap .swiper-slide-prev,
+.time-wrap .swiper-slide-next {
+  cursor: pointer;
+}
+
+.time-wrap .swiper-slide-active {
+  opacity: 1;
+}
+
+.time-wrap .vizor {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  height: 70px;
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  right: 1rem;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  line-height: 62px;
+}
+
+.time-wrap .vizor:before{
+  content: ':';
+  display: inline-block;
+  line-height: inherit;
+  height: 100%;
+  position:absolute;
+  top: 0;
+  transform: translateX(-50%);
+  
+  left: 175px;
+}
+
+.time-wrap .input-wrap{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 33.33333%;
+  background: white;
+}
+
+.time-wrap .input-wrap.up{
+  top: 0;
+}
+
+.time-wrap .input-wrap.mid{
+  top: 33.33333%;
+  z-index: 10;
+	
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.time-wrap .input-wrap.down{
+  top: 66.66666%;
+}
+
+.swiper-container.minutes .input-wrap.mid{
+  margin-left: 20%;
+  margin-right: 20%;
+  width: 60%;
+}
+
+/* --------------------------------------------- */
+/* Android-Toast START (c) 2013-2014 Jad Joubran */
+#android_toast_container {
+  width: 100%;
+  position: fixed;
+  bottom: 12%;
+  left: 0;
+  pointer-events: none;
+}
+
+#android_toast {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(48, 52, 55);
+  color: rgb(245, 245, 245);
+  font-size: 13px;
+  padding: 5px;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  opacity: 0.95;
+  -webkit-box-shadow: 1px 2px 2px 1px rgba(34, 34, 34, 1);
+  box-shadow: 1px 2px 2px 1px rgba(34, 34, 34, 1);
+  text-align: center;
+  font-family: Roboto, sans-serif;
+}
+
+#android_toast em {
+  color: rgb(81, 180, 210);
+  font-weight: bold;
+  font-style: normal;
+}
+
+.android_toast_top {
+  top: 12%;
+  bottom: auto !important;
+}
+
+.android_toast_fadein {
+  animation: android_toast_fadein 1s ease;
+  -webkit-animation: android_toast_fadein 1s ease;
+}
+
+.android_toast_fadeout {
+  animation: android_toast_fadeout 1s ease;
+  -webkit-animation: android_toast_fadeout 1s ease;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+}
+
+@keyframes android_toast_fadein {
+  from {
+    opacity: 0;
+    -webkit-opacity: 0;
+  }
+  to {
+    opacity: 0.95;
+    -webkit-opacity: 0.95;
+  }
+}
+
+@-webkit-keyframes android_toast_fadein {
+  from {
+    opacity: 0;
+    -webkit-opacity: 0;
+  }
+  to {
+    opacity: 0.95;
+    -webkit-opacity: 0.95;
+  }
+}
+
+@keyframes android_toast_fadeout {
+  from {
+    opacity: 0.95;
+    -webkit-opacity: 0.95;
+  }
+  to {
+    opacity: 0;
+    -webkit-opacity: 0;
+  }
+}
+
+@-webkit-keyframes android_toast_fadeout {
+  from {
+    opacity: 0.95;
+    -webkit-opacity: 0.95;
+  }
+  to {
+    opacity: 0;
+    -webkit-opacity: 0;
+  }
+}
+/* Android-Toast END (c) 2013-2014 Jad Joubran */
