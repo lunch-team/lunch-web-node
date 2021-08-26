@@ -60,25 +60,20 @@
         
     </ul>
 </div>
-      <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
-      <script type="text/javascript" src="/resources/js/miaps_hybrid.js"></script>
-      <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
-      <script type="text/javascript" src="/resources/js/miaps_page.js"></script>
-      
+    <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
+
     <script type="text/javascript">
       console.log('run!')
 
       $('#btn-allFood').on('click', function(){
          // alert('test')
-         
-         //location.href = 'lunch_allMenuList.html';
-         miapsPage.go('lunch_allMenuList.html')
+        location.href = 'lunch_allMenuList.html';
       })
 
       $('#btn-random').on('click', function(){
          // alert('test')
-         miapsPage.go('lunch_randomMenu.html')
-        // location.href = 'lunch_randomMenu.html';
+        location.href = 'lunch_randomMenu.html';
       })
 
     </script>

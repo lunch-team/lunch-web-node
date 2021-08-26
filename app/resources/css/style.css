@@ -224,7 +224,7 @@ header .title {
   background-color: #d9dbdc;
 }
 .home_wrap ul {
-  height: calc(100% - 40px);
+  height: calc(100% - 140px);
   padding: 20px;
   display: grid;
   margin-left: 30px;

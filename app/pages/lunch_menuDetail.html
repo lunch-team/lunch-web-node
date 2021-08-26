@@ -40,29 +40,33 @@
     </div>
 
     <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="/resources/js/miaps_hybrid.js"></script>
-    <script type="text/javascript" src="/resources/js/miaps_wp.js"></script>
     <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
-    <script type="text/javascript" src="/resources/js/miaps_page.js"></script>
-    <script type="text/javascript" src="/resources/js/common.js"></script>
-      
+    
     <script type="text/javascript">
-      var loadMode = miapsPage.getType();
-      param = miapsPage.getData(loadMode) || {};
-	  	miapsPage.removeSstgItem(loadMode);	
       var connectUrl = "http://58.181.28.53:11199/menu/";
 
+      var getParameters = function (paramName) { // 리턴값을 위한 변수 선언 
+      var returnValue; // 현재 URL 가져오기 
+      var url = location.href; // get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔 
+      var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&'); // 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 
+        for (var i = 0; i < parameters.length; i++) { 
+          var varName = parameters[i].split('=')[0]; 
+          if (varName.toUpperCase() == paramName.toUpperCase()) { 
+            returnValue = parameters[i].split('=')[1]; 
+            return decodeURIComponent(returnValue); } } 
+        };
+        
       $(function(){
-        $('#restaurant').val(param.name);
-        $('#address').val(param.location);
-        $('#type').val(param.type);
+        $('#restaurant').val(getParameters('name'))
+        $('#address').val(getParameters('location'))
+        $('#type').val(getParameters('type'))
       });
       
       $('#btn_save').on('click', function(){
          var p_address = $('#address').val();
          var p_name = $('#restaurant').val();
          var p_type = $('#type').val();
-         var p_id = param.id;
+         var p_id = getParameters('id');
         
          var modifyData = {};
          modifyData = {"id" : p_id, "location" : p_address, "menuType" : p_type, "name" : p_name};
@@ -78,13 +82,7 @@
           },
           complete: function(xhr, textStatus) {
             console.log(xhr.status);
-            var param = {
-                        id: 'modify_success',
-                        title: '알림',
-                        content: '변경되었습니다.',
-                        type: 1
-                    }
-                    modal.show(param)
+            alert('변경되었습니다.');
           },      
           error : function(e) {
                 console.error(e);

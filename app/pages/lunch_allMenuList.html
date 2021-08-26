@@ -21,9 +21,7 @@
         <br />
     </div>
       <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
-      <script type="text/javascript" src="/resources/js/miaps_hybrid.js"></script>
       <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
-      <script type="text/javascript" src="/resources/js/miaps_page.js"></script>
       
       <script id="menuList" type="text/x-handlebars-template">
         <!-- 컨텐츠영역 -->
@@ -59,9 +57,8 @@
 					contentType : 'application/json',
 					data : '',
 					success: function(data) { //통신 성공
-                      var obj = miaps.parse(data);
-                      console.log(obj.data); 
-
+                      var obj = data;
+                      console.log(obj); 
                       //템플릿 사용하여 리스트 만들기
                       var source = $("#menuList").html();
                       var template = Handlebars.compile(source);
@@ -78,23 +75,15 @@
         $(document).on('click', 'div[name="food_box"]', function(e){
             e.preventDefault();
 		        e.stopPropagation();
-            var param = {};
+            
             var location = $(this).data('food_location');
             var name = $(this).data('food_name')
             var type = $(this).data('food_menutype')
             var id = $(this).data('food_id');
-
-            param.location = location;
-            param.name = name;
-            param.type = type;
-            param.id = id;
-           
-            miapsPage.go('lunch_menuDetail.html', param);
-            //location.href = 'lunch_menuDetail.html';
-          //   var location = $(this).data('food_location')
-          //  
-          //  // alert(name+ ',' + type + ',' + location)
-
+    
+            //location.href = 'check_ok.php?hz1=' + hz1 + '&hz2=' + hz2 + '&hz3=' + hz3;
+            //window.location.href = 'lunch_menuDetail.html';
+            window.location.href = 'lunch_menuDetail.html?name='+name+'&location='+location+'&id='+id+'&type='+type;
           //   var addParam = {};
           //   addParam = {"location" : location, "menuType" : type, "name" : name};
           //   console.log('addParam : ' + JSON.stringify(addParam))
