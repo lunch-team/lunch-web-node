@@ -57,10 +57,12 @@
 					dataType : 'json' ,
 					contentType : 'application/json',
 					data : '',
-					success: function(data) { 
+					success: function(data) { //통신 성공
                       //alert(data);
                       var obj = miaps.parse(data);
                       console.log(obj.data); 
+
+                      //템플릿 사용하여 리스트 만들기
                       var source = $("#menuList").html();
                       var template = Handlebars.compile(source);
                       var res = {
