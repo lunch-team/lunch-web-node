@@ -35,8 +35,8 @@
             </li>
             
         </ul>
-        <button type="button" class="main_btn" id="btn_save">저장</button>
-        
+        <button type="button" class="main_btn" id="btn_save" style="float: left; ">저장</button>
+        <button type="button" class="main_btn" id="btn_delete" style="float: right;">삭제</button>
     </div>
 
     <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
@@ -55,7 +55,7 @@
             returnValue = parameters[i].split('=')[1]; 
             return decodeURIComponent(returnValue); } } 
         };
-        
+
       $(function(){
         $('#restaurant').val(getParameters('name'))
         $('#address').val(getParameters('location'))
@@ -90,12 +90,43 @@
         });
       });
 			
+      $('#btn_delete').on('click', function(){
+            var deleteData = {};
+            deleteData = {"id" : getParameters('id')};
+            
+            var msg = "삭제하시겠습니까?";
+            if (confirm(msg)!=0) {
+                 // Yes click
+                  $.ajax({ 	
+                      type : 'POST',
+                      url: connectUrl + 'deleteMenu', 
+                      dataType : 'json' ,
+                      contentType : 'application/json',
+                      data : JSON.stringify(deleteData),
+                      success: function(data, textStatus, xhr) { //통신 성공
+                        console.log(xhr.status);
+                      },
+                      complete: function(xhr, textStatus) {
+                        console.log(xhr.status);
+                        alert('삭제되었습니다.');
+                        location.href = 'lunch_allMenuList.html';
+                      },      
+                      error : function(e) {
+                            console.error(e);
+                      } });
+            } else {
+                // no click
+            }
+        } // myconfirm
+ 
+      );
+
         // 58.181.28.53:11199/menu/getAllMenu(GET) // addMenu(POST)
     
-          //좌측 상단 뒤로가기 버튼
-          $('.back_btn').on('click', function(){
-            window.history.back();
-          });
+      //좌측 상단 뒤로가기 버튼
+      $('.back_btn').on('click', function(){
+        window.history.back();
+      });
     </script>
 
     
