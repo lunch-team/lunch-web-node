@@ -68,28 +68,6 @@
             alert(callback.errMsg);
         }
        
-      //var connectUrl = "http://58.181.28.53:11199/menu/";
-			// $.ajax({ 	
-			// 		type : 'GET',
-			// 		url: connectUrl + 'getAllMenu', 
-			// 		dataType : 'json' ,
-			// 		contentType : 'application/json',
-			// 		data : '',
-			// 		success: function(data) { //통신 성공
-      //                 var obj = data;
-      //                 console.log(obj); 
-      //                 //템플릿 사용하여 리스트 만들기
-      //                 var source = $("#menuList").html();
-      //                 var template = Handlebars.compile(source);
-      //                 var res = {
-      //                     menuList : obj.data
-      //                 };
-    
-			// 	              var html = template(res);
-      //                 console.log(html)
-      //                 $("#contents_list").append(html);
-			// 	} });
-       
         $(document).on('click', 'div[name="food_box"]', function(e){
             e.preventDefault();
 		        e.stopPropagation();
@@ -100,33 +78,7 @@
             var id = $(this).data('food_id');
     
             window.location.href = 'lunch_menuDetail.html?name='+name+'&location='+location+'&id='+id+'&type='+type;
-          //   var addParam = {};
-          //   addParam = {"location" : location, "menuType" : type, "name" : name};
-          //   console.log('addParam : ' + JSON.stringify(addParam))
-
-          //   $.ajax({ 	
-          //       type : 'POST',
-          //       url: connectUrl + 'addMenu' , 
-          //       dataType : 'json' ,
-          //       contentType : 'application/json',
-          //       data : JSON.stringify(addParam),
-          //       success: function(data) { 
-          //                     console.log(data);
-          //                     //var obj = miaps.parse(data);
-          //                     //console.log(obj.data);  
-          //       },
-          //       error: function(e) {
-          //         //status == 409면 중복입니다
-          //           console.error(e);
-          //           console.error(e.responseJSON.errorMessage);
-          //           console.error(e.status);
-
-          //           if(e.status == 409) {
-          //             alert('중복입니다.');
-          //           }
-          //       }
-          //     });
-            });
+          });
 
           //좌측 상단 뒤로가기 버튼
           $('.back_btn').on('click', function(){
