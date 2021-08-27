@@ -10,12 +10,6 @@
     <link href="/resources/css/style.css"  rel="stylesheet" type="text/css"  />
     <link href="/resources/css/miaps.css"  rel="stylesheet" type="text/css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <style>
-      .adress_li > input{ 
-                  height: 70px;
-
-                  }
-    </style>
 </head>
 <body>
     <header>
@@ -32,7 +26,8 @@
                 <textarea id="address" name="addr" ></textarea>
             </li>
             <li><span>종류</span>
-                <input type="text" id="type" name="nm"/>
+                <!-- <input type="text" id="type" name="nm"/> -->
+                <select id="typeName"></select>
             </li>
             
         </ul>
@@ -43,9 +38,15 @@
 
     <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
-    
+    <script type="text/javascript" src="/resources/js/common.js"></script>
+
+    <script id="selectMenuType" type="text/x-handlebars-template">
+      {{#menuType}}
+      <option value="{{menuType}}">{{menuName}}</option>
+      {{/menuType}}
+    </script>
+
     <script type="text/javascript">
-      var connectUrl = "http://58.181.28.53:11199/menu/";
 
       var getParameters = function (paramName) { // 리턴값을 위한 변수 선언 
           var returnValue; // 현재 URL 가져오기 
@@ -59,94 +60,89 @@
       };
 
       $(function(){
-        $('#restaurant').val(getParameters('name'))
-        $('#address').val(getParameters('location'))
-        $('#type').val(getParameters('type'))
+        var callback = ajaxConnect('GET', 'getMenuType', '');
+        //alert(JSON.stringify(callback));
+        if(callback.data != undefined) {
+          var obj = callback.data;
+          var source = $("#selectMenuType").html();
+          var template = Handlebars.compile(source);
+          var res = {
+              menuType : obj.data
+          };
+    
+          var html = template(res);
+          console.log(html)
+          $("#typeName").append(html);
+        }
+        
+        $('#restaurant').val(getParameters('name'));
+        $('#address').val(getParameters('location'));
+        $('#typeName').val(getParameters('type'));
       });
       
       $('#btn_save').on('click', function(){
-         var p_address = $('#address').val();
-         var p_name = $('#restaurant').val();
-         var p_type = $('#type').val();
-         var p_id = getParameters('id');
-        
-         if(p_address == '' || p_name == '' || p_type == '') {
-            alert('내용을 입력해주세요.');
-            return;
-         }
-
-         var modifyData = {};
-         modifyData = {"id" : p_id, "location" : p_address, "menuType" : p_type, "name" : p_name};
-
-         $.ajax({ 	
-            type : 'POST',
-            url: connectUrl + 'modifyMenu', 
-            dataType : 'json' ,
-            contentType : 'application/json',
-            data : JSON.stringify(modifyData),
-            success: function(data, textStatus, xhr) { //통신 성공
-              console.log(xhr.status);
-            },
-            complete: function(xhr, textStatus) {
-              console.log(xhr.status);
-              alert('변경되었습니다.');
-            },      
-            error : function(e) {
-                  console.error(e);
+         var msg = "수정하시겠습니까?";
+         if (confirm(msg)!=0) {
+            var p_address = $('#address').val();
+            var p_name = $('#restaurant').val();
+            var p_type = $('#typeName').val();
+            var p_id = getParameters('id');
+            
+            if(p_address == '' || p_name == '' || p_type == '') {
+                alert('내용을 입력해주세요.');
+                return;
             }
-        });
+
+            var modifyData = {};
+            modifyData = {"id" : p_id, "location" : p_address, "menuType" : p_type, "name" : p_name};
+            var callback = ajaxConnect('POST', 'modifyMenu', modifyData);
+            console.log(JSON.stringify(callback))
+
+            if(callback.xhr == '204') {
+              alert('수정되었습니다.');
+            } else if(callback.error != undefined) {
+              alert(callback.errMsg);
+            }
+         }
       });
 			
       $('#btn_delete').on('click', function(){
-            var deleteData = {};
-            deleteData = {"id" : getParameters('id')};
-            
             var msg = "삭제하시겠습니까?";
-            if (confirm(msg)!=0) {
-                 // Yes click
-                  $.ajax({ 	
-                      type : 'POST',
-                      url: connectUrl + 'deleteMenu', 
-                      dataType : 'json' ,
-                      contentType : 'application/json',
-                      data : JSON.stringify(deleteData),
-                      success: function(data, textStatus, xhr) { //통신 성공
-                        console.log(xhr.status);
-                      },
-                      complete: function(xhr, textStatus) {
-                        console.log(xhr.status);
-                        alert('삭제되었습니다.');
-                        location.href = 'lunch_allMenuList.html';
-                      },      
-                      error : function(e) {
-                            console.error(e);
-                      } });
+
+            if (confirm(msg)!=0) { // Yes click
+              var deleteData = {};
+              deleteData = {"id" : getParameters('id')};
+              var callback = ajaxConnect('POST', 'deleteMenu', deleteData);
+              console.log(JSON.stringify(callback))
+
+              if(callback.xhr == '204') {
+                alert('삭제되었습니다.');
+                location.href = 'lunch_allMenuList.html';
+              } else if(callback.error != undefined) {
+                alert(callback.errMsg);
+              }
+                 
             } else {
                 // no click
             }
         });
 
         $('#btn_add').on('click', function(){
-          var addData = {};
-          addData = {"id" : getParameters('id')};
-
+         
           var msg = "추가하시겠습니까?";
             if (confirm(msg)!=0) {
                  // Yes click
-                  $.ajax({ 	
-                      type : 'POST',
-                      url: connectUrl + 'visitMenu', 
-                      dataType : 'json' ,
-                      contentType : 'application/json',
-                      data : JSON.stringify(addData),
-                      success: function(data) { //통신 성공
-                        console.log(data);
-                        alert('추가되었습니다.');
-                      },    
-                      error : function(e) {
-                        console.error(e);
-                        alert('실패하였습니다.');
-                      } });
+                  var addData = {};
+                  addData = {"id" : getParameters('id')};
+                  var callback = ajaxConnect('POST', 'visitMenu', addData);
+                  console.log(JSON.stringify(callback));
+                  
+                  //성공
+                  if(callback.data != undefined) {
+                    alert('추가되었습니다.');
+                  } else if(callback.error != undefined) { //실패
+                    alert(callback.errMsg);
+                  }
             } else {
                 // no click
             }

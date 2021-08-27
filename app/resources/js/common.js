@@ -18,6 +18,36 @@ $(function () {
     });
 })
 
+//parameter : type, url, data
+function ajaxConnect(type, url, param) {
+    var connectUrl = "http://58.181.28.53:11199/menu/";
+    var returnData = {};
+    $.ajax({ 	
+        type : type,
+        url: connectUrl + url, 
+        dataType : 'json' ,
+        async: false,
+        contentType : 'application/json',
+        data : JSON.stringify(param),
+        success: function(data, textStatus, xhr) { //통신 성공
+          //console.log(data);
+          if(data!==undefined){
+            returnData = {"data" : data};
+          } else if(xhr!==undefined) {
+            returnData = {"xhr" : xhr.status};
+          } else if(textStatus) {
+            returnData = {"textStatus" : textStatus};
+          }
+          
+        },      
+        error : function(e) { //실패
+          console.error(e);
+          returnData = {"error" : e.status, "errMsg" : '오류가 발생하였습니다.'};
+        }
+    });
+    return returnData;
+}
+
 // text to base64  p.s) 브라우저가 제공하는 btoa는 jsonstring을 base64로 변환하지 못해서 따로 사용함.
 function toBase64(str) {
     var Base64 = {
@@ -274,19 +304,19 @@ var _callback = {
 window.modal = modal
 window._cb = _callback
 
-Promise.all([
-    miapsWp.callNative('deviceid', '', _cb.multicall),
-    miapsWp.callNative('platform', '', _cb.multicall),
-    miapsWp.callNative('devicemodel', '', _cb.multicall),
-    miapsWp.callNative('platformversion', '', _cb.multicall),
-    miapsWp.callNative('version', '', _cb.multicall)
-]).then(function () {  // 비동기 함수가 모두 완료되면 호출 됩니다.
-    var types =
-        ['deviceid', 'platform', 'devicemodel', 'platformversion', 'version'];
-    console.log('---result---');
-    for (var i = 0; i < types.length; i++) {
-        console.log(window.sessionStorage.getItem(types[i]));
-    }
-}).catch(function (error) {
-    alert(error);
-});
+// Promise.all([
+//     miapsWp.callNative('deviceid', '', _cb.multicall),
+//     miapsWp.callNative('platform', '', _cb.multicall),
+//     miapsWp.callNative('devicemodel', '', _cb.multicall),
+//     miapsWp.callNative('platformversion', '', _cb.multicall),
+//     miapsWp.callNative('version', '', _cb.multicall)
+// ]).then(function () {  // 비동기 함수가 모두 완료되면 호출 됩니다.
+//     var types =
+//         ['deviceid', 'platform', 'devicemodel', 'platformversion', 'version'];
+//     console.log('---result---');
+//     for (var i = 0; i < types.length; i++) {
+//         console.log(window.sessionStorage.getItem(types[i]));
+//     }
+// }).catch(function (error) {
+//     alert(error);
+// });
