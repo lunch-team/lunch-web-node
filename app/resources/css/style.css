@@ -147,7 +147,7 @@ header .title {
   box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1);
   border-radius: 30px;
   color: #fff;
-  width: 50%;
+  width: 48%;
   height: 50px;
   line-height: 50px;
   font-size: 20px;
@@ -278,7 +278,7 @@ header .title {
 }
 .field_wrap li {
   display: grid;
-  grid-template-columns: 110px auto;
+  grid-template-columns: 90px auto;
   height: 70px;
   align-items: center;
   margin-bottom: 10px;
@@ -298,6 +298,7 @@ header .title {
   font-weight: 600;
   width: 100%;
   box-sizing: border-box;
+  display: inline;
 }
 
 .field_wrap li > textarea[name="addr"] {
@@ -308,7 +309,7 @@ header .title {
   padding: 20px 20px;
   font-size: 16px;
   font-weight: 600;
-  width: 100%;
+  width: 85%;
   box-sizing: border-box;
   text-align: left;
 }
@@ -326,7 +327,7 @@ header .title {
   color: #08213f;
   font-size: 16px;
   font-weight: 600;
-  width: 100%;
+  width: 85%;
   text-overflow: ellipsis;
 }
 .type_wrap {
@@ -335,6 +336,20 @@ header .title {
   padding: 10px;
   box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1);
 }
+
+.search {
+  display: inline-block;
+  background: #ffffff;
+  box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+  height: 50px;
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: 600;
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
 .type_title {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -419,6 +434,7 @@ header .title {
   line-height: 40px;
 }
 
+
 .mb-5 {
   margin-bottom: 5px;
 }
@@ -496,6 +512,15 @@ label {
   font-size: 20px;
   font-weight: 600;
   display: flex;
+  justify-content: space-between;
+  word-break: keep-all;
+  line-height: 1;
+}
+.req_title2 {
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  text-align: right;
   justify-content: space-between;
   word-break: keep-all;
   line-height: 1;
