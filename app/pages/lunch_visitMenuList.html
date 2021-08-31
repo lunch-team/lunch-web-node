@@ -53,7 +53,7 @@
     <script type="text/javascript">
         console.log('run!')
         $(function(){
-          $('#loading_container').hide();
+          $('#loading_container').hide(); //로딩바 숨기기
           var visitParam = {};
           visitParam = {"order" : "DESC"};
           var callback = ajaxConnect('POST', 'getVisitMenuList', visitParam);
