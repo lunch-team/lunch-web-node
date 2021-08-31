@@ -11,12 +11,18 @@
     <link href="/resources/css/miaps.css"  rel="stylesheet" type="text/css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     
+
 </head>
 <body>
     <header>
         <button class="back_btn"></button><span class="title">메뉴목록</span>
       </header>
+      
       <div class="contents_wrap" id="contents_list">
+        <div class="loading-container" id="loading_container">
+          <div class="loading"></div>
+          <div id="loading-text">loading</div>
+        </div>
         <br />
         <br />
     </div>
@@ -49,25 +55,33 @@
 
     <script type="text/javascript">
         console.log('run!')
-        var callback = ajaxConnect('GET', 'getAllMenu', '');
+        $(function(){
+          $('#loading_container').hide();
 
-        console.log(callback);
-        if(callback.data !== undefined) {
-          var obj = callback.data;
-          var source = $("#menuList").html();
-          var template = Handlebars.compile(source);
-          var res = {
-              menuList : obj.data
-          };
-    
-          var html = template(res);
-          console.log(html)
-          $("#contents_list").append(html);
-        } else if(callback.error !== undefined) {
-            console.log(callback.error);
-            alert(callback.errMsg);
-        }
-       
+          var callback = ajaxConnect('GET', 'getAllMenu', '');
+          console.log('start');
+          $('#loading_container').show();
+          //console.log(callback);
+          console.log('end');
+          if(callback.data !== undefined) {
+            $('#loading_container').hide();
+            var obj = callback.data;
+            var source = $("#menuList").html();
+            var template = Handlebars.compile(source);
+            var res = {
+                menuList : obj.data
+            }; 
+
+            var html = template(res);
+            console.log(html)
+            $("#contents_list").append(html);
+          } else if(callback.error !== undefined) {
+              console.log(callback.error);
+              alert(callback.errMsg);
+          }
+        });
+
+        
         $(document).on('click', 'div[name="food_box"]', function(e){
             e.preventDefault();
 		        e.stopPropagation();
