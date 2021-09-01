@@ -20,6 +20,7 @@ $(function () {
 
 //parameter : type, url, data
 function ajaxConnect(type, url, param) {
+   
     var connectUrl = "http://58.181.28.53:11199/menu/";
     var returnData = {};
     $.ajax({ 	
@@ -31,6 +32,7 @@ function ajaxConnect(type, url, param) {
         data : JSON.stringify(param),
         success: function(data, textStatus, xhr) { //통신 성공
           //console.log(data);
+        //  $('#loading_container').hide();
           if(data!==undefined){
             returnData = {"data" : data};
           } else if(xhr!==undefined) {
@@ -38,9 +40,10 @@ function ajaxConnect(type, url, param) {
           } else if(textStatus) {
             returnData = {"textStatus" : textStatus};
           }
-          
+         
         },      
         error : function(e) { //실패
+          
           console.error(e);
           returnData = {"error" : e.status, "errMsg" : '오류가 발생하였습니다.'};
         }

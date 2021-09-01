@@ -8,7 +8,6 @@
 
     <link href="/resources/css/common.css" rel="stylesheet" type="text/css" />
     <link href="/resources/css/style.css"  rel="stylesheet" type="text/css"  />
-    <link href="/resources/css/miaps.css"  rel="stylesheet" type="text/css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     
 </head>
@@ -20,6 +19,10 @@
     <div class="contents_wrap" id="contents_list">
         <br />
         <button class="bottom_btn mb-10" id="btnRandomMenu">메뉴 추천</button>
+        <div class="loading-container" id="loading_container">
+          <div class="loading"></div>
+          <div id="loading-text">loading</div>
+        </div>
         <div class="btn-wrap" id="contents">
          
         </div>
@@ -54,36 +57,43 @@
     <script type="text/javascript">
       console.log('run!')
 
-          $('#btnRandomMenu').on('click', function(e){
-            e.preventDefault();
-		        e.stopPropagation();
-            var randomParam = {};
-            randomParam = {"randomNumber" : 5};
-            var callback = ajaxConnect('POST', 'getRandomMenu', randomParam);
-            if(callback.data != undefined) {
-                  var obj = callback.data;
-                  var source = $("#menuList").html();
-                  var template = Handlebars.compile(source);
-                  var res = {
-                      menuList : obj.data
-                  };
+      $(function(){
+        $('#loading_container').hide();
+      });
 
-                  var html = template(res);
-                  console.log(html)
-                  $("#contents").empty();
-                  $("#contents").append(html);
+      $('#btnRandomMenu').on('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        var randomParam = {};
+        randomParam = {"randomNumber" : 5};
+        var callback = ajaxConnect('POST', 'getRandomMenu', randomParam);
+        $('#loading_container').show();
 
-              } else if(callback.error != undefined) {
-                  alert(callback.errMsg);
-              }
-          });
+        if(callback.data != undefined) {
+             
+              var obj = callback.data;
+               
+              var source = $("#menuList").html();
+              var template = Handlebars.compile(source);
+              var res = {
+                  menuList : obj.data
+              };
 
-          //좌측 상단 뒤로가기 버튼
-          $('.back_btn').on('click', function(){
-            window.history.back();
-          });
+              var html = template(res);
+              console.log(html)
+              $("#contents").empty();
+              $("#contents").append(html);
+              $('#loading_container').hide();
+          } else if(callback.error != undefined) {
+              alert(callback.errMsg);
+          }
+      });
+
+      //좌측 상단 뒤로가기 버튼
+      $('.back_btn').on('click', function(){
+        window.history.back();
+      });
+
     </script>
-
-    
 </body>
 </html>

@@ -638,7 +638,7 @@ label {
         }
 
 
-        .loading-container { margin: 40px auto }
+        .loading-container { margin: 350px auto; display: flex; }
 
         .loading {
             border: 2px solid transparent;
