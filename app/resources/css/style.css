@@ -188,10 +188,6 @@ header .title {
   padding: 0 20px;
   box-sizing: border-box;
 }
-.logo_wrap {
-  height: 30vh;
-  background: url(../images/dlenc1.png) no-repeat center / contain;
-}
 .save_wrap {
   padding: 20px 0;
   display: grid;
@@ -267,7 +263,6 @@ header .title {
   line-height: 30px;
 }
 
-/* ------------------------- 현장 장비 정보 시스템 ---------------------------*/
 .contents_wrap {
   background-color: #d9dbdc;
   padding: 50px 20px 20px 20px;

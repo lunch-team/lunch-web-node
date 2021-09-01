@@ -1,21 +1,5 @@
 $(function () {
 
-    /* 팝업 열기/닫기 */
-    //   $(".popup_op").click(function(){
-    //     var op_target = $(this).data("op");
-    //     $("#" + op_target).show();
-    //     $(".dimmed").show();
-    // });
-    $(".popup_cls").on('click', function () {
-        var cls_target = $(this).data("cls");
-        $("#" + cls_target).hide();
-        $(".dimmed").hide();
-    });
-
-    /* 뒤로가기 버튼 */
-    $(".back_btn").on("click", function () {
-        miapsPage.back()
-    });
 })
 
 //parameter : type, url, data
@@ -148,92 +132,6 @@ function toBase64(str) {
     return Base64.encode(str);
 }
 
-var modal = {
-    /**
-     * Set Modal
-     * @param options
-     * - id
-     * - title
-     * - content
-     * - type 1: alert, 2: confirm
-     * - html: html string
-     * - callback
-     */
-    show: function (options) {
-        var $body = $('body')
-
-        // dimmed 추가
-        if (!$body.children('.dimmed').length) {
-            $body.append('<div class="dimmed"/>')
-        }
-
-        // popup 추가
-        if (!$body.children('#' + options.id).length) {
-            $body.append('<div class="popup" id="' + options.id + '"/>')
-
-            var $popup = $('.popup')
-            // title 세팅
-            $popup.append('<div class="title">' + options.title + '</div>')
-
-            // content 세팅
-            $popup.append('<div class="content">')
-            if (options.html) {
-                $popup.append(
-                    options.html
-                )
-            } else {
-                $popup.append(
-                    '<p class="popup_txt">' + options.content + '</p>'
-                )
-            }
-            $popup.append('</div>')
-
-            $popup.append('<div class="popup_btn_wrap"></div>')
-
-            var $popupBtnWrap = $('.popup_btn_wrap')
-            $popupBtnWrap.append(
-                '<button '
-                + 'type="button" '
-                + 'class="y_btn" '
-                + 'id="btn-done-y" '
-                + '>확인</button>'
-            )
-
-            // 확인 버튼 콜백함수 세팅
-            if (typeof options.callback === 'function') {
-                $('#btn-done-y').on('click', options.callback)
-            }
-
-            // confirm option
-            if (options.type === 2 || options.type === '2') {
-                $popupBtnWrap.addClass('btn2')
-                $popupBtnWrap.prepend(
-                    '<button '
-                    + 'type="button" '
-                    + 'class="popup_cls" '
-                    + 'data-cls="common_popup"'
-                    + '>'
-                    + '취소'
-                    + '</button>'
-                )
-
-                // 취소 버튼 이벤트 추가
-                $('.popup_cls').on('click', this.hide)
-            } else {
-                $('.y_btn').on('click', this.hide)
-            }
-        }
-
-        $('#' + options.id).show()
-        $('.dimmed').show()
-    },
-    hide: function () {
-        $('div').remove('.popup')
-        $('.popup').hide();
-        $('.dimmed').hide();
-    }
-}
-
 Date.prototype.format = function (f) {
     if (!this.valueOf()) {
         return " ";
@@ -296,30 +194,3 @@ String.prototype.zf = function (len) {
 Number.prototype.zf = function (len) {
     return this.toString().zf(len);
 };
-
-var _callback = {
-    multicall: function (data) {
-        var obj = miaps.parse(data);
-        window.sessionStorage.setItem(obj.type, obj.res);
-    }
-}
-
-window.modal = modal
-window._cb = _callback
-
-// Promise.all([
-//     miapsWp.callNative('deviceid', '', _cb.multicall),
-//     miapsWp.callNative('platform', '', _cb.multicall),
-//     miapsWp.callNative('devicemodel', '', _cb.multicall),
-//     miapsWp.callNative('platformversion', '', _cb.multicall),
-//     miapsWp.callNative('version', '', _cb.multicall)
-// ]).then(function () {  // 비동기 함수가 모두 완료되면 호출 됩니다.
-//     var types =
-//         ['deviceid', 'platform', 'devicemodel', 'platformversion', 'version'];
-//     console.log('---result---');
-//     for (var i = 0; i < types.length; i++) {
-//         console.log(window.sessionStorage.getItem(types[i]));
-//     }
-// }).catch(function (error) {
-//     alert(error);
-// });
