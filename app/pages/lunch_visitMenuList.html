@@ -35,13 +35,16 @@
                  data-food_menutype="{{menuType}}" data-food_id="{{id}}">
               <p class="req_title">
                {{name}} 
-                <div id="delete" data-food_id="{{id}}" style="float: right">
-                  <img src="/resources/images/delete.svg" width="25" height="20">
-                </div>
+                <span id="delete" data-food_id="{{id}}" style="float: right">
+                  <img src="/resources/images/delete.svg" width="20" height="20">
+                </span>
               </p> 
               <div class="req_dt_wrap">
                 <span class="req_dt" >
                  {{location}}
+                </span>
+                <span class="req_dt">
+                  {{dateFormat insertDateTime}}
                 </span>
               </div>
             </div>
@@ -60,25 +63,31 @@
           $('#loading_container').show();
 
           if(callback.data !== undefined) {
-            $('#loading_container').hide();
-            var obj = callback.data;
-            var source = $("#menuList").html();
-            var template = Handlebars.compile(source);
-            var res = {
-                menuList : obj.data
-            };
-      
-            var html = template(res);
-            console.log(html)
-            $("#contents_list").append(html);
+              $('#loading_container').hide();
+              var obj = callback.data;
+              console.log(JSON.stringify(obj));
+              var source = $("#menuList").html();
+              var template = Handlebars.compile(source);
+              var res = {
+                  menuList : obj.data
+              };
+              
+              //날짜 포맷 yy-mm-dd
+              Handlebars.registerHelper('dateFormat', function(insertDateTime){
+                return insertDateTime.substring(0,10);
+              });
+
+              var html = template(res);
+              console.log(html)
+              $("#contents_list").append(html);
           } 
           else if(callback.error !== undefined) {
-            console.log(callback.error);
-            alert(callback.errMsg);
+              console.log(callback.error);
+              alert(callback.errMsg);
           }
         });
         
-        $(document).on('click', 'div[id="delete"]', function(e){
+        $(document).on('click', 'span[id="delete"]', function(e){
           e.preventDefault();
 		      e.stopPropagation();
           //alert($(this).data('food_id'));
@@ -104,22 +113,10 @@
           }
         });
 
-        // $(document).on('click', 'div[name="food_box"]', function(e){
-        //     e.preventDefault();
-		    //     e.stopPropagation();
-            
-        //     var location = $(this).data('food_location');
-        //     var name = $(this).data('food_name')
-        //     var type = $(this).data('food_menutype')
-        //     var id = $(this).data('food_id');
-    
-        //     window.location.href = 'lunch_menuDetail.html?name='+name+'&location='+location+'&id='+id+'&type='+type;
-        // });
-
           //좌측 상단 뒤로가기 버튼
-          $('.back_btn').on('click', function(){
+        $('.back_btn').on('click', function(){
             location.href = 'lunch_main.html';
-          });
+        });
     </script>
 
     

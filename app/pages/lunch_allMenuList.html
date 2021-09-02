@@ -37,17 +37,17 @@
                  data-food_menutype="{{menuType}}" data-food_id="{{id}}">
               <p class="req_title" >
                {{name}}
-               <div id="delete" data-food_id="{{id}}" style="float: right">
-                <img src="/resources/images/delete.svg" width="25" height="20">
-              </div>
+               <span id="delete" data-food_id="{{id}}" style="float: right">
+                <img src="/resources/images/delete.svg" width="20" height="20">
+               </span>
               </p>
               <div class="req_dt_wrap">
                 <span class="req_dt" >
                  {{location}}
                 </span>
-                <!-- <span class="status col5" >
-                 {{menuType}}
-                </span> -->
+                <span class="req_dt" >
+                 {{menuName}}
+                </span> 
               </div>
             </div>
             {{/menuList}}
@@ -92,7 +92,7 @@
             window.location.href = 'lunch_menuDetail.html?name='+name+'&location='+location+'&id='+id+'&type='+type;
         });
 
-        $(document).on('click', 'div[id="delete"]', function(e){
+        $(document).on('click', 'span[id="delete"]', function(e){
           e.preventDefault();
 		      e.stopPropagation();
           //alert($(this).data('food_id'));

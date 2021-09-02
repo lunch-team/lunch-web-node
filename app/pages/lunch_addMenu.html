@@ -17,12 +17,12 @@
         <button class="back_btn"></button><span class="title">메뉴 추가</span>
       </header>
       <div class="contents_wrap">
-        <div class="loading-container" id="loading_container">
-          <div class="loading"></div>
-          <div id="loading-text">loading</div>
-        </div>
-        <div class="detail" >
-          <ul class="field_wrap">
+          <div class="loading-container" id="loading_container">
+            <div class="loading"></div>
+            <div id="loading-text">loading</div>
+          </div>
+        <div class="detail" id="content_detail">
+          <ul class="field_wrap" id="field_wrap">
           
               <li><span>음식점명</span>
                 <input type="text" id="restaurant" name="nm" />
@@ -57,13 +57,15 @@
     <script type="text/javascript">
        
       $(function(){
-        $('#loading_container').hide();
-        //$('.field_wrap').css('display', 'none');
+        //$('#loading_container').hide();
+        $('#content_detail').hide();
         var callback = ajaxConnect('GET', 'getMenuType', '');
       
         // $('.field_wrap').show();
         //alert(JSON.stringify(callback));
         if(callback.data != undefined) {
+          $('#loading_container').hide();
+          $('#content_detail').show();
           var obj = callback.data;
           var source = $("#selectMenuType").html();
           var template = Handlebars.compile(source);
@@ -108,13 +110,13 @@
             if (confirm(msg)!=0) {
                  // Yes click
                  var callback = ajaxConnect('POST', 'addMenu', addMenuData);
-                 $('#loading_container').show();
-                 alert($('#loading_container').is(':visible'));
+                // $('#loading_container').show();
+                 //alert($('#loading_container').is(':visible'));
                  
                  console.log(JSON.stringify(callback));
                  console.log(callback.xhr)
                  if(callback.xhr == '204') {
-                    $('#loading_container').hide();
+                    //$('#loading_container').hide();
                     alert('메뉴가 추가되었습니다.');
                  } else if(callback.error !== undefined) {
                   $('#loading_container').hide();

@@ -38,7 +38,7 @@
       
             {{#menuList}}
             <div class="round_box" name="food_box" data-food_name="{{name}}" data-food_location="{{location}}"
-                 data-food_menutype="{{menuType}}">
+                 data-food_menutype="{{menuType}}" data-food_id="{{id}}">
               <p class="req_title" >
                {{name}}
               </p>
@@ -46,8 +46,8 @@
                 <span class="req_dt" >
                  {{location}}
                 </span>
-                <span class="status col5" >
-                 {{menuType}}
+                <span class="req_dt" >
+                 {{menuName}}
                 </span>
               </div>
             </div>
@@ -72,7 +72,7 @@
         if(callback.data != undefined) {
              
               var obj = callback.data;
-               
+              console.log(JSON.stringify(obj))
               var source = $("#menuList").html();
               var template = Handlebars.compile(source);
               var res = {
@@ -88,6 +88,32 @@
               alert(callback.errMsg);
           }
       });
+
+      $(document).on('click', 'div[name="food_box"]', function(e){
+            e.preventDefault();
+		        e.stopPropagation();
+            var id = $(this).data('food_id');
+            var msg = "추가하시겠습니까?";
+            
+            if (confirm(msg)!=0) {
+                 // Yes click
+                  var addData = {};
+                  addData = {"id" : id};
+                  var callback = ajaxConnect('POST', 'visitMenu', addData);
+                  console.log(JSON.stringify(callback));
+                  
+                  //성공
+                  if(callback.data != undefined) {
+                    alert('추가되었습니다.');
+                    //location.href = 'lunch_allMenuList.html';
+                  } else if(callback.error != undefined) { //실패
+                    alert(callback.errMsg);
+                  }
+            } 
+            else {
+                // no click
+            }
+         });
 
       //좌측 상단 뒤로가기 버튼
       $('.back_btn').on('click', function(){
