@@ -44,7 +44,7 @@
                  {{location}}
                 </span>
                 <span class="req_dt">
-                  {{dateFormat insertDateTime}}
+                  {{dateFormat insertDateTime}} {{getDate insertDateTime}}
                 </span>
               </div>
             </div>
@@ -77,6 +77,12 @@
                 return insertDateTime.substring(0,10);
               });
 
+              Handlebars.registerHelper('getDate', function(insertDateTime){
+                var week = ['일', '월', '화', '수', '목', '금', '토']; 
+                var dayOfWeek = week[new Date(insertDateTime).getDay()]; 
+                return '('+dayOfWeek+')'; 
+              });
+
               var html = template(res);
               console.log(html)
               $("#contents_list").append(html);
@@ -99,7 +105,7 @@
 
           if(confirm(msg) != 0) {
             var callback = ajaxConnect('POST', 'deleteMenuLog', deleteParam);
-            console.log(deleteParam.id);
+            console.log(deleteParam.id);-
             console.log(JSON.stringify(callback));
             console.log(callback.xhr);
 

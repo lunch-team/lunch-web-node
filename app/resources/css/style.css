@@ -345,6 +345,12 @@ header .title {
   text-overflow: ellipsis;
 }
 
+.search > input {
+  font-size:16px;
+  width: 90%;
+  font-weight: 600;
+  line-height: 50px;
+}
 .type_title {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
