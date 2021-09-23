@@ -59,7 +59,7 @@
         $(function(){
           $('#loading_container').hide();
 
-          var callback = ajaxConnect('POST', 'getAllMenu', '');
+          var callback = ajaxConnect('POST', 'getAllMenu', {});
           $('#loading_container').show();
           if(callback.data !== undefined) {
             $('#loading_container').hide();
