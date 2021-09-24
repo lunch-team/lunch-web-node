@@ -70,6 +70,9 @@
       };
 
       $(function(){
+        if(!getParameters('id')) {
+          location.href = 'lunch_allMenuList.html';
+        }
         var callback = ajaxConnect('GET', 'getMenuType', '');
         //alert(JSON.stringify(callback));
        
