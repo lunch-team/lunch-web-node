@@ -6,120 +6,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>점심 뭐 먹지?</title>
 
-    <link href="/resources/css/common.css" rel="stylesheet" type="text/css" />
-    <link href="/resources/css/style.css"  rel="stylesheet" type="text/css"  />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    
+    <link href="/resources/css/common.css" rel="stylesheet" type="text/css"/>
+    <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+
 </head>
 <body>
-    <header>
-        <button class="back_btn"></button><span class="title">메뉴 추천</span>
-    </header>
-  
-    <div class="contents_wrap" id="contents_list">
-        <br />
-        <button class="bottom_btn mb-10" id="btnRandomMenu">메뉴 추천</button>
-        <div class="loading-container" id="loading_container">
-          <div class="loading"></div>
-          <div id="loading-text">loading</div>
-        </div>
-        <div class="btn-wrap" id="contents">
-         
-        </div>
-        <br />
+<header>
+    <button class="back_btn"></button>
+    <span class="title">메뉴 추천</span>
+</header>
+
+<div class="contents_wrap" id="contents_list">
+    <br/>
+    <button class="bottom_btn mb-10" id="btnRandomMenu">메뉴 추천</button>
+    <div class="loading-container" id="loading_container">
+        <div class="loading"></div>
+        <div id="loading-text">loading</div>
     </div>
-   
-      <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
-      <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
-      <script type="text/javascript" src="/resources/js/common.js"></script>
-      
-      <script id="menuList" type="text/x-handlebars-template">
-        <!-- 컨텐츠영역 -->
-      
-            {{#menuList}}
-            <div class="round_box" name="food_box" data-food_name="{{name}}" data-food_location="{{location}}"
-                 data-food_menutype="{{menuType}}" data-food_id="{{id}}">
-              <p class="req_title" >
-               {{name}}
-              </p>
-              <div class="req_dt_wrap">
-                <span class="req_dt" >
+    <div class="btn-wrap" id="contents">
+
+    </div>
+    <br/>
+</div>
+
+<script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
+<script type="text/javascript" src="/resources/js/common.js"></script>
+
+<script id="menuList" type="text/x-handlebars-template">
+    <!-- 컨텐츠영역 -->
+
+    {{#menuList}}
+    <div class="round_box" name="food_box" data-food_name="{{name}}"
+         data-food_location="{{location}}"
+         data-food_menutype="{{menuType}}" data-food_id="{{id}}">
+        <p class="req_title">
+            {{name}}
+        </p>
+        <div class="req_dt_wrap">
+                <span class="req_dt">
                  {{location}}
                 </span>
-                <span class="req_dt" >
+            <span class="req_dt">
                  {{menuName}}
                 </span>
-              </div>
-            </div>
-            {{/menuList}}
-      </script>
+        </div>
+    </div>
+    {{/menuList}}
+</script>
 
-    <script type="text/javascript">
-      console.log('run!')
+<script type="text/javascript">
+    console.log('run!')
 
-      $(function(){
+    $(function () {
         $('#loading_container').hide();
-      });
+    });
 
-      $('#btnRandomMenu').on('click', function(e){
+    $('#btnRandomMenu').on('click', function (e) {
         e.preventDefault();
         e.stopPropagation();
         var randomParam = {};
-        randomParam = {"randomNumber" : 5};
+        randomParam = {"randomNumber": 5};
         var callback = ajaxConnect('POST', 'getRandomMenu', randomParam);
         $('#loading_container').show();
 
-        if(callback.data != undefined) {
-             
-              var obj = callback.data;
-              console.log(JSON.stringify(obj))
-              var source = $("#menuList").html();
-              var template = Handlebars.compile(source);
-              var res = {
-                  menuList : obj.data
-              };
+        if (callback.data != undefined) {
 
-              var html = template(res);
-              console.log(html)
-              $("#contents").empty();
-              $("#contents").append(html);
-              $('#loading_container').hide();
-          } else if(callback.error != undefined) {
-              alert(callback.errMsg);
-          }
-      });
+            var obj = callback.data;
+            console.log(JSON.stringify(obj))
+            var source = $("#menuList").html();
+            var template = Handlebars.compile(source);
+            var res = {
+                menuList: obj.data
+            };
 
-      $(document).on('click', 'div[name="food_box"]', function(e){
-            e.preventDefault();
-		        e.stopPropagation();
-            var id = $(this).data('food_id');
-            var msg = "추가하시겠습니까?";
-            
-            if (confirm(msg)!=0) {
-                 // Yes click
-                  var addData = {};
-                  addData = {"id" : id};
-                  var callback = ajaxConnect('POST', 'visitMenu', addData);
-                  console.log(JSON.stringify(callback));
-                  
-                  //성공
-                  if(callback.data != undefined) {
-                    alert('추가되었습니다.');
-                    //location.href = 'lunch_allMenuList.html';
-                  } else if(callback.error != undefined) { //실패
-                    alert(callback.errMsg);
-                  }
-            } 
-            else {
-                // no click
+            var html = template(res);
+            console.log(html)
+            $("#contents").empty();
+            $("#contents").append(html);
+            $('#loading_container').hide();
+        } else if (callback.error != undefined) {
+            alert(callback.errMsg);
+        }
+    });
+
+    $(document).on('click', 'div[name="food_box"]', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var id = $(this).data('food_id');
+        var msg = "추가하시겠습니까?";
+
+        if (confirm(msg) != 0) {
+            // Yes click
+            var addData = {};
+            addData = {"id": id};
+            var callback = ajaxConnect('POST', 'visitMenu', addData);
+            console.log(JSON.stringify(callback));
+
+            //성공
+            if (callback.data != undefined) {
+                alert('추가되었습니다.');
+                //location.href = 'lunch_allMenuList.html';
+            } else if (callback.error != undefined) { //실패
+                alert(callback.errMsg);
             }
-         });
+        } else {
+            // no click
+        }
+    });
 
-      //좌측 상단 뒤로가기 버튼
-      $('.back_btn').on('click', function(){
+    //좌측 상단 뒤로가기 버튼
+    $('.back_btn').on('click', function () {
         window.history.back();
-      });
+    });
 
-    </script>
+</script>
 </body>
 </html>

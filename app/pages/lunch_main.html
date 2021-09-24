@@ -6,28 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>점심 뭐 먹지?</title>
 
-    <link href="/resources/css/common.css" rel="stylesheet" type="text/css" />
-    <link href="/resources/css/style.css"  rel="stylesheet" type="text/css"  />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-     
+    <link href="/resources/css/common.css" rel="stylesheet" type="text/css"/>
+    <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+
 </head>
 <body>
-  <div class="home_header">
-    <br><p><strong>점심 뭐 먹지?</strong></p>
+<div class="home_header">
+    <br>
+    <p><strong>점심 뭐 먹지?</strong></p>
     <img src="/resources/images/logout.svg" alt="" class="ico-logout"/>
-  </div>
-  
-  <div class="home_wrap">
+</div>
+
+<div class="home_wrap">
     <ul>
         <li id="btn-korea">
-           <img
+            <img
                 src="/resources/images/korean.png"
                 alt=""
             />
             <p>한식</p>
         </li>
         <li id="btn-japan">
-        	 <img
+            <img
                 src="/resources/images/japan.png"
                 alt=""
             />
@@ -70,33 +71,33 @@
         </li>
     </ul>
 </div>
-    <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
+<script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
 
-    <script type="text/javascript">
-      localStorage.clear();
+<script type="text/javascript">
+    localStorage.clear();
 
-      $('#btn-allFood').on('click', function(){
-         // alert('test')
+    $('#btn-allFood').on('click', function () {
+        // alert('test')
         location.href = 'lunch_allMenuList.html';
-      })
+    })
 
-      $('#btn-random').on('click', function(){
-         // alert('test')
+    $('#btn-random').on('click', function () {
+        // alert('test')
         location.href = 'lunch_randomMenu.html';
-      })
+    })
 
-      $('#btn-add').on('click', function(){
-         // alert('test')
+    $('#btn-add').on('click', function () {
+        // alert('test')
         location.href = 'lunch_addMenu.html';
-      })
+    })
 
-      $('#btn-visit').on('click', function(){
-         // alert('test')
+    $('#btn-visit').on('click', function () {
+        // alert('test')
         location.href = 'lunch_visitMenuList.html';
-      })
-    </script>
+    })
+</script>
 
-    
+
 </body>
 </html>
