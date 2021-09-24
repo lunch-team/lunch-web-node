@@ -34,30 +34,33 @@
     <!-- 컨텐츠영역 -->
 
     {{#menuList}}
-    <div class="round_box" name="food_box" data-food_name="{{name}}"
-         data-food_location="{{location}}"
-         data-food_menutype="{{menuType}}" data-food_id="{{id}}">
+    <div 
+        class="round_box" 
+        name="food_box" 
+        data-food_name="{{name}}"
+        data-food_location="{{location}}"
+        data-food_menutype="{{menuType}}" 
+        data-food_id="{{id}}"
+    >
         <p class="req_title">
             {{name}}
             <span style="float: right; font-size: 13px; color: #707070; font-weight: 400;">
                 {{visitCount}}회 방문
-               </span>
+            </span>
         </p>
         <div class="req_dt_wrap">
-                <span class="req_dt">
-                 {{location}}
-                </span>
+            <span class="req_dt">
+                {{location}}
+            </span>
             <span class="req_dt">
                  {{menuName}}
-                </span>
+            </span>
         </div>
     </div>
     {{/menuList}}
-
 </script>
 
 <script type="text/javascript">
-    // console.log('run!')
     $(function () {
         localStorage.clear();
         $('#loading_container').hide();
@@ -74,7 +77,6 @@
             };
 
             var html = template(res);
-            // console.log(html)
             $("#contents_list").append(html);
         } else if (callback.error !== undefined) {
             console.log(callback.error);
@@ -86,15 +88,11 @@
         e.preventDefault();
         e.stopPropagation();
 
-        var location = $(this).data('food_location');
-        var name = $(this).data('food_name')
-        var type = $(this).data('food_menutype')
-        var id = $(this).data('food_id');
+        localStorage.setItem('name', $(this).data('food_name'))
+        localStorage.setItem('location', $(this).data('food_location'))
+        localStorage.setItem('type', $(this).data('food_menutype'))
+        localStorage.setItem('id', $(this).data('food_id'))
 
-        localStorage.setItem('name', name)
-        localStorage.setItem('location', location)
-        localStorage.setItem('type', type)
-        localStorage.setItem('id', id)
         window.location.href = 'lunch_menuDetail.html';
     });
 

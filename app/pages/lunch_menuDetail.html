@@ -17,12 +17,13 @@
     <span class="title">메뉴 상세</span>
 </header>
 <div class="contents_wrap">
-
     <ul class="field_wrap">
-        <li><span>음식점명</span>
+        <li>
+            <span>음식점명</span>
             <input type="text" id="restaurant" name="nm"/>
         </li>
-        <li><span>주소</span>
+        <li>
+            <span>주소</span>
             <div class="search">
                 <input type="text" id="address" name="nm"/>
                 <button type="button" style="float: right; line-height: 50px;">
@@ -30,19 +31,36 @@
                 </button>
             </div>
         </li>
-        <li><span>종류</span>
-            <!-- <input type="text" id="type" name="nm"/> -->
+        <li>
+            <span>종류</span>
             <select id="typeName"></select>
         </li>
 
     </ul>
-    <button type="button" class="main_btn" id="btn_delete"
-            style="float: left; background-color: white; color: #08213f;">삭제
+    <button 
+        type="button" 
+        class="main_btn" 
+        id="btn_delete"
+        style="float: left; background-color: white; color: #08213f;"
+    >
+        삭제
     </button>
-    <button type="button" class="main_btn" id="btn_save" style="float: right;">수정</button>
+    <button 
+        type="button" 
+        class="main_btn" 
+        id="btn_save" 
+        style="float: right;"
+    >
+        수정
+    </button>
 
-    <button type="button" class="main_btn" id="btn_add" style="width: 100%; margin-top: 10px;">방문
-        추가
+    <button 
+        type="button" 
+        class="main_btn" 
+        id="btn_add" 
+        style="width: 100%; margin-top: 10px;"
+    >
+        방문 추가
     </button>
 
 </div>
@@ -59,18 +77,7 @@
 </script>
 
 <script type="text/javascript">
-
-    var getParameters = function (paramName) { // 리턴값을 위한 변수 선언
-        // var returnValue; // 현재 URL 가져오기 
-        // var url = location.href; // get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔 
-        // var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&'); // 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 
-        // for (var i = 0; i < parameters.length; i++) { 
-        //   var varName = parameters[i].split('=')[0]; 
-        //   if (varName.toUpperCase() == paramName.toUpperCase()) { 
-        //     returnValue = parameters[i].split('=')[1]; 
-        //     return decodeURIComponent(returnValue); 
-        //   } 
-        // } 
+    var getParameters = function (paramName) {
         return localStorage.getItem(paramName);
     };
 
@@ -79,11 +86,8 @@
             location.href = 'lunch_allMenuList.html';
         }
         var callback = ajaxConnect('GET', 'getMenuType', '');
-        //alert(JSON.stringify(callback));
 
         if (callback.data != undefined) {
-            //$('#detail').show();
-            //  $('.field_wrap').show();
             var obj = callback.data;
             var source = $("#selectMenuType").html();
             var template = Handlebars.compile(source);
@@ -92,7 +96,6 @@
             };
 
             var html = template(res);
-            // console.log(html)
             $("#typeName").append(html);
         }
 
