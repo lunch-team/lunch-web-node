@@ -35,9 +35,11 @@
             </li>
           
         </ul>
-        
-        <button type="button" class="main_btn" id="btn_save" style="float: left ; ">수정</button>
-        <button type="button" class="main_btn" id="btn_add" style="float: right;">추가</button>
+        <button type="button" class="main_btn" id="btn_delete" style="float: left; background-color: white; color: #08213f;">삭제</button>
+          <button type="button" class="main_btn" id="btn_save" style="float: right;">수정</button>
+
+          <button type="button" class="main_btn" id="btn_add" style="width: 100%; margin-top: 10px;">방문 추가</button>
+
     </div>
 
     <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
@@ -54,14 +56,17 @@
     <script type="text/javascript">
 
       var getParameters = function (paramName) { // 리턴값을 위한 변수 선언 
-          var returnValue; // 현재 URL 가져오기 
-          var url = location.href; // get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔 
-          var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&'); // 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 
-            for (var i = 0; i < parameters.length; i++) { 
-              var varName = parameters[i].split('=')[0]; 
-              if (varName.toUpperCase() == paramName.toUpperCase()) { 
-                returnValue = parameters[i].split('=')[1]; 
-                return decodeURIComponent(returnValue); } } 
+        // var returnValue; // 현재 URL 가져오기 
+        // var url = location.href; // get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔 
+        // var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&'); // 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 
+        // for (var i = 0; i < parameters.length; i++) { 
+        //   var varName = parameters[i].split('=')[0]; 
+        //   if (varName.toUpperCase() == paramName.toUpperCase()) { 
+        //     returnValue = parameters[i].split('=')[1]; 
+        //     return decodeURIComponent(returnValue); 
+        //   } 
+        // } 
+        return localStorage.getItem(paramName);
       };
 
       $(function(){
@@ -79,7 +84,7 @@
           };
     
           var html = template(res);
-          console.log(html)
+          // console.log(html)
           $("#typeName").append(html);
         }
         
@@ -124,6 +129,25 @@
 
             if(callback.xhr == '204') {
               alert('수정되었습니다.');
+              location.href = 'lunch_allMenuList.html';
+            } else if(callback.error != undefined) {
+              alert(callback.errMsg);
+            }
+         }
+      });
+
+      $('#btn_delete').on('click', function(){
+         var msg = "삭제하시겠습니까?";
+         if (confirm(msg)!=0) {
+            var p_id = getParameters('id');
+
+            var deleteParam = {};
+            deleteParam = {"id" : p_id};
+            var callback = ajaxConnect('POST', 'deleteMenu', deleteParam);
+            console.log(JSON.stringify(callback))
+
+            if(callback.xhr == '204') {
+              alert('삭제되었습니다.');
               location.href = 'lunch_allMenuList.html';
             } else if(callback.error != undefined) {
               alert(callback.errMsg);

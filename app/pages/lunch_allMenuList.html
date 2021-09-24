@@ -37,8 +37,8 @@
                  data-food_menutype="{{menuType}}" data-food_id="{{id}}">
               <p class="req_title" >
                {{name}}
-               <span id="delete" data-food_id="{{id}}" style="float: right">
-                <img src="/resources/images/delete.svg" width="20" height="20">
+               <span style="float: right; font-size: 13px; color: #707070; font-weight: 400;">
+                {{visitCount}}회 방문
                </span>
               </p>
               <div class="req_dt_wrap">
@@ -55,8 +55,9 @@
     </script>
 
     <script type="text/javascript">
-        console.log('run!')
+        // console.log('run!')
         $(function(){
+          localStorage.clear();
           $('#loading_container').hide();
 
           var callback = ajaxConnect('POST', 'getAllMenu', {});
@@ -71,7 +72,7 @@
             }; 
 
             var html = template(res);
-            console.log(html)
+            // console.log(html)
             $("#contents_list").append(html);
           } else if(callback.error !== undefined) {
               console.log(callback.error);
@@ -89,39 +90,18 @@
             var type = $(this).data('food_menutype')
             var id = $(this).data('food_id');
     
-            window.location.href = 'lunch_menuDetail.html?name='+name+'&location='+location+'&id='+id+'&type='+type;
+            localStorage.setItem('name', name)
+            localStorage.setItem('location', location)
+            localStorage.setItem('type', type)
+            localStorage.setItem('id', id)
+            window.location.href = 'lunch_menuDetail.html';
         });
 
-        $(document).on('click', 'span[id="delete"]', function(e){
-          e.preventDefault();
-		      e.stopPropagation();
-          //alert($(this).data('food_id'));
 
-          var id = $(this).data('food_id');
-          var msg = '삭제하시겠습니까?';
-          var deleteParam = {};
-          deleteParam = {"id" : id};
-
-          if(confirm(msg) != 0) {
-            var callback = ajaxConnect('POST', 'deleteMenu', deleteParam);
-            console.log(deleteParam.id);
-            console.log(JSON.stringify(callback));
-            console.log(callback.xhr);
-
-            if(callback.xhr == '204') {
-             // $('#loading_container').hide();
-              alert('삭제되었습니다.');
-              window.location.reload()
-            } else {
-              alert('오류가 발생하였습니다.');
-            }
-          }
+        //좌측 상단 뒤로가기 버튼
+        $('.back_btn').on('click', function(){
+          location.href = 'lunch_main.html';
         });
-
-          //좌측 상단 뒤로가기 버튼
-          $('.back_btn').on('click', function(){
-            location.href = 'lunch_main.html';
-          });
     </script>
 
     
