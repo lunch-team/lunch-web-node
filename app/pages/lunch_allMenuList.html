@@ -40,9 +40,21 @@
 </header>
 <div class="contents_wrap">
     <div class="btn-wrapper">
-        <button class="btn-order" data-order="abc">가나다</button>
-        <button class="btn-order" data-order="recent">최근방문</button>
-        <button class="btn-order" data-order="count">방문수</button>
+        <button 
+            class="btn-order" 
+            data-order="asc"
+            data-order-type="abc"
+        >가나다</button>
+        <button 
+            class="btn-order" 
+            data-order="asc"
+            data-order-type="recent"
+        >최근방문</button>
+        <button 
+            class="btn-order" 
+            data-order="asc"
+            data-order-type="count"
+        >방문수</button>
     </div>
     <div class="clear"></div>
     <div class="list-wrap" id="contents_list"></div>
@@ -76,7 +88,7 @@
                 {{location}}
             </span>
             <span class="req_dt">
-                 {{menuName}}
+                {{menuName}}
             </span>
         </div>
     </div>
@@ -84,10 +96,11 @@
 </script>
 
 <script type="text/javascript">
-    function getAllMenu(order) {
+    function getAllMenu(params) {
         $('.list-wrap').empty()
         $('#loading_container').show();
-        var callback = ajaxConnect('POST', 'getAllMenu', {'orderType': order.toUpperCase()});
+        
+        var callback = ajaxConnect('POST', 'getAllMenu', params);
         if (callback.data !== undefined) {
             $('#loading_container').hide();
             var obj = callback.data;
@@ -107,7 +120,7 @@
     $(function () {
         localStorage.clear();
         $('#loading_container').hide();
-        getAllMenu('ABC')
+        getAllMenu({'orderType': 'ABC', 'order': 'ASC'})
     });
 
     $(document).on('click', 'div[name="food_box"]', function (e) {
@@ -124,7 +137,18 @@
 
     // 정렬하여 다시 가져오기
     $('.btn-order').on('click', function () {
-        getAllMenu($(this).data('order'))
+        var params = {
+            'orderType': $(this).data('order-type').toUpperCase(),
+            'order': $(this).data('order').toUpperCase()
+        }
+        if (params.order == 'ASC') {
+            $(this).data('order', 'DESC')
+        } else {
+            $(this).data('order', 'ASC')
+        }
+        console.log(params)
+        console.log($(this).data('order'))
+        getAllMenu(params)
     })
 
     //좌측 상단 뒤로가기 버튼
