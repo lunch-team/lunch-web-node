@@ -9,7 +9,19 @@
     <link href="/resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
-
+    <style>
+        .right {
+            float: right;
+        }
+        .left {
+            float: left;
+        }
+        .visitCount {
+            font-size: 13px; 
+            color: #707070; 
+            font-weight: 400;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -36,19 +48,20 @@
     <!-- 컨텐츠영역 -->
 
     {{#menuList}}
-    <div class="round_box" name="food_box" data-food_name="{{name}}"
-         data-food_location="{{location}}"
-         data-food_menutype="{{menuType}}" data-food_id="{{id}}">
-        <p class="req_title">
-            {{name}}
+    <div
+        class="round_box" 
+        name="food_box" 
+        data-food_name="{{name}}"
+        data-food_location="{{location}}"
+        data-food_menutype="{{menuType}}" 
+        data-food_id="{{id}}"
+    >
+        <p class="req_title">{{name}}
+            <span class="right visitCount">{{visitCount}}회 방문</span>
         </p>
         <div class="req_dt_wrap">
-                <span class="req_dt">
-                 {{location}}
-                </span>
-            <span class="req_dt">
-                 {{menuName}}
-                </span>
+            <span class="req_dt">{{location}}</span>
+            <span class="req_dt">{{menuName}}</span>
         </div>
     </div>
     {{/menuList}}
@@ -57,14 +70,15 @@
 <script type="text/javascript">
     $(function () {
         $('#loading_container').hide();
+
+        drawMenu(getRandomMenu({"randomNumber": 5}))
     });
 
-    $('#btnRandomMenu').on('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var randomParam = {};
-        randomParam = {"randomNumber": 5};
-        var callback = ajaxConnect('POST', 'getRandomMenu', randomParam);
+    function getRandomMenu(params) {
+        return ajaxConnect('POST', 'getRandomMenu', params);
+    }
+
+    function drawMenu(callback) {
         $('#loading_container').show();
 
         if (callback.data != undefined) {
@@ -85,6 +99,13 @@
         } else if (callback.error != undefined) {
             alert(callback.errMsg);
         }
+    }
+
+    $('#btnRandomMenu').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        drawMenu(getRandomMenu({"randomNumber": 5}))
     });
 
     $(document).on('click', 'div[name="food_box"]', function (e) {
@@ -95,8 +116,7 @@
 
         if (confirm(msg) != 0) {
             // Yes click
-            var addData = {};
-            addData = {"id": id};
+            var addData = {"id": id};
             var callback = ajaxConnect('POST', 'visitMenu', addData);
             console.log(JSON.stringify(callback));
 
