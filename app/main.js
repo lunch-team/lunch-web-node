@@ -1,3 +1,3 @@
-console.log('js load!') // dddddd
+console.log('js load!')
 
 location.replace('pages/lunch_main.html')
