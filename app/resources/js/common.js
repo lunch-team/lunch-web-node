@@ -24,7 +24,11 @@ function ajaxConnect(type, url, param) {
             } else if (textStatus) {
                 returnData = {"textStatus": textStatus};
             }
-
+            console.log(param)
+            if(typeof param.callback === 'function') {
+                console.log('callback is running.')
+                param.callback()
+            }
         },
         error: function (e) { //실패
 
@@ -33,6 +37,82 @@ function ajaxConnect(type, url, param) {
         }
     });
     return returnData;
+}
+
+function popupHide() {
+    $('.popup').remove()
+    $('.popup-dimmed').remove()
+}
+
+function popup(options) {
+    console.log(options)
+    var $body = $('body')
+
+    if (!$body.children('.popup-dimmed').length) {
+        $body.append('<div class="popup-dimmed"/>')
+    }
+
+    if (!$body.children('#' + options.id).length) {
+        $body.append('<div class="popup" id="' + options.id + '"/>')
+
+        var $popup = $('.popup')
+
+        if (options.title) {
+            $popup.append(
+                '<div class="popup-title">' + options.title + '</div>')
+        }
+
+        $popup.append('<div class="popup-content">')
+        if (options.html) {
+            $popup.append(
+                options.html
+            )
+        } else {
+            $popup.append(
+                '<p class="popup-txt">' + options.content + '</p>'
+            )
+        }
+        $popup.append('</div>')
+
+        $popup.append('<div class="popup-btn-wrap"></div>')
+
+        var $popupBtnWrap = $('.popup-btn-wrap')
+        $popupBtnWrap.append(
+            '<button '
+            + 'type="button" '
+            + 'class="popup-y-btn popup-btn popup-btn-primary" '
+            + 'id="popupBtnDoneY" '
+            + '>OK</button>'
+        )
+
+        if (typeof options.callback === 'function') {
+            $('#popupBtnDoneY').on('click', function () {
+                options.callback()
+                popupHide()
+            })
+        } else {
+            $('#popupBtnDoneY').on('click', popupHide)
+        }
+
+        if (options.type === 2 || options.type === '2') {
+            $popupBtnWrap.addClass('popup-btn2')
+            $popupBtnWrap.prepend(
+                '<button '
+                + 'type="button" '
+                + 'class="popup-cls popup-btn" '
+                + 'data-cls="popup-common-popup"'
+                + '>Cancel</button>'
+            )
+
+            $('.popup-cls').on('click', popupHide)
+        } else {
+            var $btnY = $('.popup-y-btn')
+            $btnY.css('width', '100%')
+        }
+
+        $popup.show()
+        $('.popup-dimmed').show()
+    }
 }
 
 // text to base64  p.s) 브라우저가 제공하는 btoa는 jsonstring을 base64로 변환하지 못해서 따로 사용함.

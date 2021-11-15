@@ -10,6 +10,30 @@
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
 
+    <style>
+        .contents_wrap {
+            background-color: #d9dbdc;
+            padding: 60px 20px 20px 20px;
+            min-height: 100vh;
+        }
+
+        .input-wrap {
+            margin-top: 15px;
+        }
+
+        .input-label {
+            line-height: 30px;
+        }
+
+        .input-datetime {
+            float: right;
+            border-radius: 5px;
+            border: 1px solid #d2d2d2;
+            height: 30px;
+            padding-left: 5px;
+            margin-left: 30px;
+        }
+    </style>
 </head>
 <body>
 <header>
@@ -31,17 +55,17 @@
     <!-- 컨텐츠영역 -->
 
     {{#menuList}}
-    <div 
-        class="round_box" 
-        name="food_box" 
+    <div
+        class="round_box"
+        name="food_box"
         data-food_name="{{name}}"
         data-food_location="{{location}}"
-        data-food_menutype="{{menuType}}" 
+        data-food_menutype="{{menuType}}"
         data-food_id="{{id}}"
     >
         <p class="req_title">
             {{name}}
-            <span id="delete" data-food_id="{{id}}" style="float: right">
+            <span class="delete" data-food_id="{{id}}" style="float: right">
                 <img src="/resources/images/delete.svg" width="20" height="20">
             </span>
         </p>
@@ -49,7 +73,7 @@
             <span class="req_dt">
                 {{location}}
             </span>
-            <span class="req_dt">
+            <span class="req_dt update" data-food_id="{{id}}" data-insdttm="{{insertDateTime}}">
                 {{dateFormat insertDateTime}} {{getDate insertDateTime}}
             </span>
         </div>
@@ -58,17 +82,11 @@
 </script>
 
 <script type="text/javascript">
-    $(function () {
-        $('#loading_container').hide(); //로딩바 숨기기
-        var visitParam = {};
-        visitParam = {"order": "DESC"};
-        var callback = ajaxConnect('POST', 'getVisitMenuList', visitParam);
-        $('#loading_container').show();
-
+    function drawList(callback) {
         if (callback.data !== undefined) {
             $('#loading_container').hide();
             var obj = callback.data;
-            console.log(JSON.stringify(obj));
+            // console.log(JSON.stringify(obj));
             var source = $("#menuList").html();
             var template = Handlebars.compile(source);
             var res = {
@@ -87,15 +105,27 @@
             });
 
             var html = template(res);
-            console.log(html)
-            $("#contents_list").append(html);
+            // console.log(html)
+            $("#contents_list").html(html);
         } else if (callback.error !== undefined) {
             console.log(callback.error);
             alert(callback.errMsg);
         }
+    }
+
+    $(function () {
+        $('#loading_container').hide(); //로딩바 숨기기
+        var visitParam = {};
+        visitParam = {"order": "DESC"};
+        var callback = ajaxConnect('POST', 'getVisitMenuList', visitParam);
+        $('#loading_container').show();
+
+
+
+        drawList(callback);
     });
 
-    $(document).on('click', 'span[id="delete"]', function (e) {
+    $(document).on('click', 'span[class="delete"]', function (e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -120,6 +150,41 @@
             }
         }
     });
+
+    $(document).on('click', 'span[class="req_dt update"]', function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        var id = $(this).data('food_id')
+        var idt = $(this).data('insdttm').split('T')
+        console.log(idt)
+        var html =
+            '<div class="input-wrap">' +
+            '<span class="input-label">방문시간: </span>' +
+            '<input type="date" id="insertDateTime" class="input-datetime" value="' + idt[0] + '"/>'
+            +
+            '</div>'
+        var options = {
+            id: 'updatePopup',
+            html: html,
+            type: 2,
+            callback: function () {
+                console.log('id: ' + id + ', insdttm: ' + idt[0])
+                console.log(
+                    'id: ' + id + ', insert date time: ' + $('#insertDateTime').val() + idt[1])
+                var data = ajaxConnect('POST', 'updateMenuLog', {
+                    id: id,
+                    insertDateTime: $('#insertDateTime').val() + 'T' + idt[1],
+                    callback: function () {
+                        var callback = ajaxConnect('POST', 'getVisitMenuList', {"order": "DESC"})
+                        drawList(callback)
+                    }
+                })
+            }
+        }
+
+        popup(options)
+    })
 
     //좌측 상단 뒤로가기 버튼
     $('.back_btn').on('click', function () {
