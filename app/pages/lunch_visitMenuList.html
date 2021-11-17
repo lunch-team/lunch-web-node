@@ -57,7 +57,6 @@
     {{#menuList}}
     <div
         class="round_box"
-        name="food_box"
         data-food_name="{{name}}"
         data-food_location="{{location}}"
         data-food_menutype="{{menuType}}"
@@ -66,7 +65,7 @@
         <p class="req_title">
             {{name}}
             <span class="delete" data-food_id="{{id}}" style="float: right">
-                <img src="/resources/images/delete.svg" width="20" height="20">
+                <img src="/resources/images/delete.svg" width="20" height="20" alt="">
             </span>
         </p>
         <div class="req_dt_wrap">
@@ -115,13 +114,8 @@
 
     $(function () {
         $('#loading_container').hide(); //로딩바 숨기기
-        var visitParam = {};
-        visitParam = {"order": "DESC"};
-        var callback = ajaxConnect('POST', 'getVisitMenuList', visitParam);
+        var callback = ajaxConnect('POST', 'getVisitMenuList', {"order": "DESC"});
         $('#loading_container').show();
-
-
-
         drawList(callback);
     });
 
@@ -131,18 +125,16 @@
 
         var id = $(this).data('food_id');
         var msg = '삭제하시겠습니까?';
-        var deleteParam = {};
-        deleteParam = {"id": id};
+        var deleteParam = {"id": id};
 
-        if (confirm(msg) != 0) {
+        if (confirm(msg) !== 0) {
             var callback = ajaxConnect('POST', 'deleteMenuLog', deleteParam);
             console.log(deleteParam.id);
             -
                 console.log(JSON.stringify(callback));
             console.log(callback.xhr);
 
-            if (callback.xhr == '204') {
-                // $('#loading_container').hide();
+            if (callback.xhr === '204') {
                 alert('삭제되었습니다.');
                 window.location.reload()
             } else {
@@ -159,20 +151,21 @@
         var idt = $(this).data('insdttm').split('T')
         console.log(idt)
         var html =
-            '<div class="input-wrap">' +
-            '<span class="input-label">방문시간: </span>' +
-            '<input type="date" id="insertDateTime" class="input-datetime" value="' + idt[0] + '"/>'
-            +
-            '</div>'
+            '<div class="input-wrap">'
+            + '<span class="input-label">방문시간: </span>'
+            + '<input '
+            + 'type="date" '
+            + 'id="insertDateTime" '
+            + 'class="input-datetime" '
+            + 'value="' + idt[0]
+            + '"/>'
+            + '</div>'
         var options = {
             id: 'updatePopup',
             html: html,
             type: 2,
             callback: function () {
-                console.log('id: ' + id + ', insdttm: ' + idt[0])
-                console.log(
-                    'id: ' + id + ', insert date time: ' + $('#insertDateTime').val() + idt[1])
-                var data = ajaxConnect('POST', 'updateMenuLog', {
+                ajaxConnect('POST', 'updateMenuLog', {
                     id: id,
                     insertDateTime: $('#insertDateTime').val() + 'T' + idt[1],
                     callback: function () {
@@ -191,7 +184,5 @@
         location.href = 'lunch_main.html';
     });
 </script>
-
-
 </body>
 </html>
