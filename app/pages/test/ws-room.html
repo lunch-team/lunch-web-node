@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Sample</title>
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
+    <script src="../../resources/js/jquery-3.5.1.min.js"></script>
+    <script src="../../resources/js/sockjs.min.js"></script>
+    <script src="../../resources/js/stomp.min.js"></script>
+    <script src="../../resources/js/axios.min.js"></script>
+    <style>
+        body {
+            background-color: rgb(32, 33, 36);
+            color: rgb(191, 198, 206);
+        }
+
+        .mt-10 {
+            margin-top: 10px;
+        }
+
+        .chat-list {
+            width: 100%;
+            height: 85vh;
+            border: 1px solid #d2d2d2;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow-y: scroll;
+            background-color: rgb(41, 42, 45);
+            color: rgb(191, 198, 206);
+        }
+
+        .chat-list::-webkit-scrollbar {
+            background-color: rgb(32, 33, 36);
+        }
+
+        .chat-list::-webkit-scrollbar-thumb {
+            background-color: rgb(32, 33, 36);
+        }
+
+        .chat-list::-webkit-scrollbar-track {
+            background-color: rgb(41, 42, 45);
+        }
+
+        .list-group-item {
+            border: 0;
+            background-color: rgb(41, 42, 45);
+            color: rgb(191, 198, 206);
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-text {
+            margin-right: 10px;
+            display: inline-block;
+            border-radius: 5px !important;
+        }
+
+        .wt-10 {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-10">
+    <div class="header">
+        <h3 id="roomName">Room</h3>
+    </div>
+    <div class="content">
+        <ul class="list-group chat-list" id="chatList">
+
+        </ul>
+        <div class="input-group">
+            <label for="inputText"></label>
+            <input id="inputText" type="text" class="form-control input-text"/>
+            <button id="btnSend" class="btn btn-primary wt-10">Send</button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    axios.defaults.baseURL = 'http://192.168.0.15:9091'
+
+    const sock = new SockJS(axios.defaults.baseURL + "/ws-stomp")
+    const ws = Stomp.over(sock)
+
+    const v = {
+        roomId: localStorage.getItem('wschat.roomId'),
+        sender: localStorage.getItem('wschat.sender'),
+        room: {}
+    }
+
+    const common = {}
+
+    const fn = {
+        findRoom: function () {
+            axios.get('/chat/room/' + v.roomId).then(response => {
+                v.room = response.data
+                fn.setTitle()
+            })
+        },
+        setTitle: function () {
+            if (v.room) {
+                $('#roomName').text(v.room.name)
+            }
+        },
+        receiveMessage: function (message) {
+            console.log(message)
+            switch (message.type) {
+                case 'ENTER':
+                    console.log('ENTER: ' + message.message)
+                    message.sender = '[SYSTEM]'
+                    break
+                case 'TALK':
+                    console.log('TALK: ' + message.message)
+                    break
+            }
+            fn.appendList(message)
+            let $list = $('.chat-list')
+            $list.animate({scrollTop: $list.prop("scrollHeight")})
+        },
+        sendMessage: function () {
+            let $input = $('#inputText')
+            ws.send('/pub/chat/message', {}, JSON.stringify({
+                type: 'TALK',
+                roomId: v.roomId,
+                sender: v.sender,
+                message: $input.val()
+            }))
+            $input.val('')
+            let $list = $('.chat-list')
+            $list.animate({scrollTop: $list.prop("scrollHeight")})
+        },
+        appendList: function (data) {
+            $('#chatList').append(
+                '<li class="list-group-item">'
+                + '<a>' + data.sender + ': ' + data.message + '</a>'
+                + '</li>'
+            )
+        }
+    }
+
+    const init = {
+        event: function () {
+            $('#btnSend').on('click', fn.sendMessage)
+            $('#inputText').on('keypress', function (e) {
+                if (e.which === 13) {
+                    fn.sendMessage()
+                }
+            })
+        },
+        created: function () {
+            fn.findRoom()
+        }
+    }
+
+    // pub/sub event
+    ws.connect({}, function (frame) {
+        ws.subscribe("/sub/chat/room/" + v.roomId, function (message) {
+            var recv = JSON.parse(message.body)
+            fn.receiveMessage(recv)
+        })
+        ws.send("/pub/chat/message", {},
+            JSON.stringify({type: 'ENTER', roomId: v.roomId, sender: v.sender}));
+    }, function (error) {
+        console.error(error)
+    })
+
+    init.event()
+    init.created()
+</script>
+</html>
