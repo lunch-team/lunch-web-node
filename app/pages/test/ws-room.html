@@ -158,7 +158,7 @@
     }
 
     // pub/sub event
-    ws.connect({}, function (frame) {
+    ws.connect({}, function () {
         ws.subscribe("/sub/chat/room/" + v.roomId, function (message) {
             var recv = JSON.parse(message.body)
             fn.receiveMessage(recv)

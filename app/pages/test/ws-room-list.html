@@ -82,7 +82,7 @@
                 let params = new URLSearchParams()
                 params.append('name', roomName)
                 axios.post('/chat/room', params).then(response => {
-                    // alert(response.data.name + ' room is created.')
+                    console.log(response.data.name + ' room is created.')
                     $('#roomName').val('')
                     fn.getRoomList()
                 })
