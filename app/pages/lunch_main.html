@@ -48,26 +48,12 @@
             />
             <p>방문 기록</p>
         </li>
-        <li id="btn-korea">
+        <li id="btn-test">
             <img
                 src="/resources/images/korean.png"
                 alt=""
             />
-            <p>한식</p>
-        </li>
-        <li id="btn-japan">
-            <img
-                src="/resources/images/japan.png"
-                alt=""
-            />
-            <p>일식</p>
-        </li>
-        <li id="btn-china">
-            <img
-                src="/resources/images/china.png"
-                alt=""
-            />
-            <p>중식</p>
+            <p>테스트</p>
         </li>
     </ul>
 </div>
@@ -91,6 +77,10 @@
 
     $('#btn-visit').on('click', function () {
         location.href = 'lunch_visitMenuList.html';
+    })
+
+    $('#btn-test').on('click', function () {
+        location.href = 'test/ws-room-list.html';
     })
 </script>
 </body>

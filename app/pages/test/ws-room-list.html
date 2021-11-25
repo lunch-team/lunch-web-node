@@ -14,7 +14,7 @@
         }
 
         .header {
-            margin-bottom: 20px;
+            margin: 20px 0;
         }
 
         .btn-wrapper {
@@ -36,6 +36,7 @@
          padding: 0;
             height: 50px;
         }
+
         .room-wrapper {
             display: flex;
             align-items: center;
@@ -50,16 +51,26 @@
             height: 100%;
             display: inline-block;
         }
-        .btn {
+
+        .btn-remove-room {
             border-radius: 0;
             height: 100%;
+        }
+
+        .btn-back {
+            margin-right: 10px;
+            padding-left: 7px;
+            width: 30px;
+            height: 30px;
+            border: 1px solid #d2d2d2;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
 <div class="container mt-10">
     <div class="header">
-        <h3>Room List</h3>
+        <span class="float-left btn-back"><</span><h3>Room List</h3>
     </div>
     <div class="content">
         <div class="btn-wrapper">
@@ -74,7 +85,7 @@
 </div>
 </body>
 <script>
-    axios.defaults.baseURL = 'http://localhost:9091'
+    axios.defaults.baseURL = 'http://58.181.28.53:11199'
     localStorage.clear()
 
     let v = {
@@ -135,26 +146,31 @@
                     + '<div class="room" id="' + room[roomKey].roomId + '">'
                     + room[roomKey].name
                     + '</div>'
-                    + '<button class="btn btn-danger btnRemoveRoom">'
+                    + '<button class="btn btn-danger btn-remove-room">'
                     + '<span>Del</span>'
                     + '</button>'
                     + '</li>'
                 )
             }
             $('.room').on('click', fn.enterRoom)
-            $('.btnRemoveRoom').on('click', fn.removeRoom)
+            $('.btn-remove-room').on('click', fn.removeRoom)
         }
     }
     const init = {
-        btn: function () {
+        event: function () {
             $('#btnCreateRoom').on('click', function (e) {
                 e.preventDefault()
                 e.stopPropagation()
                 fn.createRoom()
             })
+            $('.btn-back').on('click', function (e) {
+                e.preventDefault()
+                e.stopPropagation()
+                window.history.back()
+            })
         }
     }
-    init.btn()
+    init.event()
     fn.getRoomList()
 </script>
 </html>
