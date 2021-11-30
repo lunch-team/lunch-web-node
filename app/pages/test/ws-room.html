@@ -172,6 +172,12 @@
             })
         },
         created: function () {
+            let sender = sessionStorage.getItem('_name')
+            if(!sender) {
+                // sender = prompt('대화명을 입력해 주세요.');
+                alert('로그인이 필요합니다.')
+                location.href = '../auth/sign-in.html'
+            }
             fn.findRoom()
         }
     }
