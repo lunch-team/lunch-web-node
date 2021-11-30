@@ -33,7 +33,7 @@
         }
 
         .list-group-item {
-         padding: 0;
+            padding: 0;
             height: 50px;
         }
 
@@ -70,7 +70,8 @@
 <body>
 <div class="container mt-10">
     <div class="header">
-        <span class="float-left btn-back"><</span><h3>Room List</h3>
+        <span class="float-left btn-back"><</span>
+        <h3>Room List</h3>
     </div>
     <div class="content">
         <div class="btn-wrapper">
@@ -94,7 +95,7 @@
         enterRoom: function () {
             console.log(this.id)
             let sender = sessionStorage.getItem('_name')
-            if(!sender) {
+            if (!sender) {
                 // sender = prompt('대화명을 입력해 주세요.');
                 alert('로그인이 필요합니다.')
                 location.href = '../auth/sign-in.html'
@@ -107,7 +108,7 @@
         },
         getRoomList: function () {
             let sender = sessionStorage.getItem('_name')
-            if(!sender) {
+            if (!sender) {
                 // sender = prompt('대화명을 입력해 주세요.');
                 alert('로그인이 필요합니다.')
                 location.href = '../auth/sign-in.html'
@@ -135,9 +136,12 @@
             }
         },
         removeRoom: function () {
+            if (sessionStorage.getItem('_loginId') !== 'admin') {
+                alert('관리자만 삭제 가능합니다.')
+            }
             const roomId = $(this).parent().find('.room').attr('id')
             console.log(roomId)
-            if(roomId) {
+            if (roomId) {
                 let params = new URLSearchParams()
                 params.append('roomId', roomId)
                 axios.post('/chat/room/remove', params).then(response => {
