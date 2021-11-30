@@ -151,10 +151,20 @@
                     }
                 }).catch(error => {
                     console.log(error.response)
-                    if(error.response.data.errorMessage) {
+                    if (error.response.data.errorMessage) {
                         alert(error.response.data.errorMessage)
                     } else if (error.response.data) {
-                        alert((error.response.data).stringify)
+                        if (error.response.data.loginId) {
+                            alert('로그인 아이디를 확인해주세요.')
+                        } else if (error.response.data.password) {
+                            alert('비밀번호를 확인해주세요.')
+                        } else if (error.response.data.email) {
+                            alert('이메일을 확인해주세요.')
+                        } else if (error.response.data.name) {
+                            alert('이름을 확인해주세요.')
+                        } else {
+                            alert(JSON.stringify(error.response.data))
+                        }
                     } else {
                         alert('에러가 발생했습니다.')
                     }
