@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sign Up</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
+    <script src="../../resources/js/jquery-3.5.1.min.js"></script>
+    <script src="../../resources/js/axios.min.js"></script>
+    <script src="../../resources/js/common.js"></script>
+</head>
+<style>
+    .header {
+        margin-top: 30px;
+    }
+
+    .btn-back {
+        margin-right: 10px;
+        padding-left: 7px;
+        width: 30px;
+        height: 30px;
+        border: 1px solid #d2d2d2;
+        border-radius: 5px;
+    }
+
+    .contents-wrapper {
+        margin-top: 30px;
+    }
+
+    .login-box {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+    }
+
+    .login-line {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .login-line label {
+        width: 130px;
+        margin-right: 10px;
+    }
+</style>
+<body>
+<div class="container">
+    <div class="header">
+        <span class="float-left btn-back"><</span>
+        <h3>회원가입</h3>
+    </div>
+    <hr/>
+    <div class="contents-wrapper">
+        <div class="login-wrapper">
+            <div class="login-box">
+                <div class="login-line">
+                    <label for="loginId">Login ID </label>
+                    <input id="loginId" type="text" class="form-control">
+                </div>
+                <div class="login-line">
+                    <label for="name">Name </label>
+                    <input id="name" type="text" class="form-control">
+                </div>
+                <div class="login-line">
+                    <label for="email">E-Mail </label>
+                    <input id="email" type="email" class="form-control">
+                </div>
+                <div class="login-line">
+                    <label for="pw">PW </label>
+                    <input id="pw" type="password" class="form-control">
+                </div>
+                <div class="login-line">
+                    <label for="pw2">PW Confirm</label>
+                    <input id="pw2" type="password" class="form-control">
+                </div>
+            </div>
+            <div class="login-btn-wrapper">
+                <button
+                    id="btnSignUp"
+                    class="btn btn-outline-primary btn-block">
+                    Sign Up
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+    const common = {
+        verify: function (data) {
+            console.log(data)
+            const email = data.email
+            const password = data.password
+            const password2 = data.password2
+            const name = data.name
+            const loginId = data.loginId
+            let result = ''
+
+            if (!email) {
+                result = '이메일을 입력해주세요.'
+            } else if (!password) {
+                result = '비밀번호를 입력해주세요.'
+            } else if (!password2) {
+                result = '비밀번호 확인란을 입력해주세요.'
+            } else if (!name) {
+                result = '이름을 입력해주세요.'
+            } else if (!loginId) {
+                result = '로그인아이디를 입력해주세요.'
+            } else if (password !== password2) {
+                result = '비밀번호가 다릅니다.'
+            } else if (!common.emailCheck(email)) {
+                result = '올바른 이메일을 입력해주세요.'
+            }
+
+            if (result) {
+                alert(result)
+                return false
+            } else {
+                return true
+            }
+        },
+        emailCheck: function (email) {
+            const regex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$/;
+            console.log('email check')
+            return (email !== '' && email !== 'undefined' && regex.test(email));
+        }
+    }
+    const fn = {
+        signUp: function () {
+            const params = {
+                loginId: $('#loginId').val(),
+                password: $('#pw').val(),
+                password2: $('#pw2').val(),
+                email: $('#email').val(),
+                name: $('#name').val()
+            }
+            if (common.verify(params)) {
+                delete params.password2
+                axios.post('/auth/signup', JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    console.log(response)
+                    if (response.status === 204) {
+                        localStorage.clear()
+                        sessionStorage.clear()
+                        alert('회원가입이 완료되었습니다.')
+                        location.href = './sign-in.html'
+                    }
+                }).catch(error => {
+                    console.log(error.response)
+                    if (error.response.data.errorMessage) {
+                        alert(error.response.data.errorMessage)
+                    } else {
+                        alert('에러가 발생했습니다.')
+                    }
+                })
+            }
+        }
+    }
+    const init = {
+        event: function () {
+            $('.btn-back').on('click', function () {
+                window.history.back()
+            })
+            $('#btnSignUp').on('click', fn.signUp)
+        }
+    }
+    init.event()
+</script>
+</html>

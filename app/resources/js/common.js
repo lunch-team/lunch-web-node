@@ -1,11 +1,48 @@
-$(function () {
+'use strict';
 
-})
+const _BASEURL = 'http://192.168.0.15:9090'
+
+try {
+    axios.defaults.baseURL = _BASEURL
+} catch (e) {
+    console.log('axios is not imported')
+}
+
+function callAxios(type, url, param) {
+    if (!url) {
+        alert('URL not exist.')
+        return false
+    }
+    if (!param.value) {
+        param.value = {}
+    }
+    if (!param.resolve || typeof param.resolve !== 'function') {
+        param.resolve = function (response) {
+            console.log(response)
+        }
+        return false
+    }
+    if(typeof param.reject !== 'function') {
+        param.reject = function (error) {
+            console.log(error.response)
+        }
+    }
+    if (type.toUpperCase() === 'GET') {
+        axios.get(url, JSON.stringify(param.value),
+            {headers: {'Content-Type': `application/json`}}
+        ).then(param.resolve).catch(param.reject)
+    } else if (type.toUpperCase() === 'POST') {
+
+    } else {
+        alert('HTTP Method is allow "GET, POST"')
+        return false
+    }
+}
 
 //parameter : type, url, data
 function ajaxConnect(type, url, param) {
 
-    var connectUrl = "http://58.181.28.53:11199/menu/";
+    var connectUrl = _BASEURL + "/menu/";
     var returnData = {};
     $.ajax({
         type: type,
@@ -25,7 +62,7 @@ function ajaxConnect(type, url, param) {
                 returnData = {"textStatus": textStatus};
             }
             console.log(param)
-            if(typeof param.callback === 'function') {
+            if (typeof param.callback === 'function') {
                 console.log('callback is running.')
                 param.callback()
             }
