@@ -151,8 +151,10 @@
                     }
                 }).catch(error => {
                     console.log(error.response)
-                    if (error.response.data.errorMessage) {
+                    if(error.response.data.errorMessage) {
                         alert(error.response.data.errorMessage)
+                    } else if (error.response.data) {
+                        alert((error.response.data).stringify)
                     } else {
                         alert('에러가 발생했습니다.')
                     }
