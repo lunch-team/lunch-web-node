@@ -138,6 +138,7 @@
         removeRoom: function () {
             if (sessionStorage.getItem('_loginId') !== 'admin') {
                 alert('관리자만 삭제 가능합니다.')
+                return false
             }
             const roomId = $(this).parent().find('.room').attr('id')
             console.log(roomId)
