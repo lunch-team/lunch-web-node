@@ -166,7 +166,8 @@
                     + '<div class="room" id="' + room[roomKey].roomId + '">'
                     + room[roomKey].name
                     + '</div>'
-                    + sessionStorage.getItem('_loginId') === 'admin' ? btnDel : '' + '</li>'
+                    + (sessionStorage.getItem('_loginId') === 'admin' ? btnDel : '')
+                    + '</li>'
                 )
             }
             $('.room').on('click', fn.enterRoom)
