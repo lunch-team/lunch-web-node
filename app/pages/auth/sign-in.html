@@ -114,10 +114,13 @@
                     {headers: {'Content-Type': `application/json`}}
                 ).then(response => {
                     console.log(response)
-                    sessionStorage.setItem('_accessToken', response.data.token.accessToken)
+                    const _accessToken = response.data.token.accessToken
+                    sessionStorage.setItem('_accessToken', _accessToken)
                     sessionStorage.setItem('_refreshToken', response.data.token.refreshToken)
                     sessionStorage.setItem('_loginId', response.data.memberInfo.loginId)
                     sessionStorage.setItem('_name', response.data.memberInfo.name)
+                    axios.defaults.headers.common['Authorization'] = `Bearer ${_accessToken}`
+
                     alert(sessionStorage.getItem('_name') + '님 안녕하세요.')
                     common.goMain()
                 }).catch(error => {

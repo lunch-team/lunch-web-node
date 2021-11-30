@@ -120,6 +120,13 @@
             },
             reject: function (error) {
                 console.log(error.response)
+            },
+            header: {
+                'Content-Type': `application/json`,
+                'withCredentials': true,
+                'crossDomain': true,
+                'credentials': 'include',
+                // Authorization: `Bearer ${sessionStorage.getItem('_accessToken')}`
             }
         }
         callAxios('post', '/api/postTest', params)
