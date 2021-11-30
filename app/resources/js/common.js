@@ -20,19 +20,23 @@ function callAxios(type, url, param) {
         param.resolve = function (response) {
             console.log(response)
         }
-        return false
     }
-    if(typeof param.reject !== 'function') {
+    if (typeof param.reject !== 'function') {
         param.reject = function (error) {
             console.log(error.response)
         }
     }
+    if (!param.header) {
+        param.header = {'Content-Type': `application/json`}
+    }
     if (type.toUpperCase() === 'GET') {
         axios.get(url, JSON.stringify(param.value),
-            {headers: {'Content-Type': `application/json`}}
+            {headers: param.header}
         ).then(param.resolve).catch(param.reject)
     } else if (type.toUpperCase() === 'POST') {
-
+        axios.post(url, JSON.stringify(param.value),
+            {headers: param.header}
+        ).then(param.resolve).catch(param.reject)
     } else {
         alert('HTTP Method is allow "GET, POST"')
         return false
