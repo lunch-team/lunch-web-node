@@ -21,7 +21,7 @@
 </head>
 <body>
 <div class="home_header">
-    <b>점심 뭐 먹지?</b>
+    <b class="main-title">점심 뭐 먹지?</b>
     <span id="welcome" class="float-right"></span>
 </div>
 
@@ -76,7 +76,31 @@
 <script src="../resources/js/axios.min.js"></script>
 <script src="../resources/js/common.js"></script>
 <script type="text/javascript">
-    localStorage.clear();
+    localStorage.clear()
+
+    function connectionTest() {
+        // TEST Code
+        const params = {
+            value: {
+                param1: 'param1',
+                param2: 'param2'
+            },
+            resolve: function (response) {
+                console.log('Call Axios')
+                console.log(response)
+            },
+            reject: function (error) {
+                console.log(error.response)
+            },
+            header: {
+                'Content-Type': `application/json`,
+                'Authorization': `Bearer ${sessionStorage.getItem('_accessToken')}`
+            }
+        }
+        callAxios('post', '/api/postTest', params)
+    }
+
+    $('.main-title').on('click', connectionTest)
 
     $('#btn-allFood').on('click', function () {
         location.href = 'lunch_allMenuList.html';
@@ -107,26 +131,6 @@
             $('#loginText').text('로그아웃')
             $('#welcome').text(sessionStorage.getItem('_name') + '님')
         }
-
-        // TEST Code
-        const params = {
-            value: {
-                param1: 'param1',
-                param2: 'param2'
-            },
-            resolve: function (response) {
-                console.log('Call Axios')
-                console.log(response)
-            },
-            reject: function (error) {
-                console.log(error.response)
-            },
-            header: {
-                'Content-Type': `application/json`,
-                'Authorization': `Bearer ${sessionStorage.getItem('_accessToken')}`
-            }
-        }
-        callAxios('post', '/api/postTest', params)
     })
 </script>
 </body>
