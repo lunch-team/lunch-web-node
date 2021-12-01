@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Test</title>
+    <link rel="stylesheet" href="../../../resources/css/bootstrap.min.css"/>
+</head>
+<style>
+    .header {
+        margin-top: 30px;
+    }
+
+    .btn-back {
+        margin-right: 10px;
+        padding-left: 7px;
+        width: 30px;
+        height: 30px;
+        border: 1px solid #d2d2d2;
+        border-radius: 5px;
+    }
+
+    .upload-wrapper {
+        margin-bottom: 20px;
+    }
+
+    .file-list-wrapper {
+        margin-bottom: 30px;
+    }
+</style>
+<body>
+<div class="container">
+    <div class="header">
+        <span class="float-left btn-back"><</span>
+        <h3>파일 테스트</h3>
+    </div>
+    <hr/>
+    <div class="contents-wrapper">
+        <div class="upload-wrapper">
+            <label for="inputFile">
+                <input class="form-control-file" id="inputFile" name="files[]" type="file" multiple>
+            </label>
+            <button class="btn btn-primary btn-block" id="btnUpload">Upload</button>
+        </div>
+        <div class="file-list-wrapper">
+            <ul id="fileList" class="list-group"></ul>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../../resources/js/jquery-3.5.1.min.js"></script>
+<script src="../../../resources/js/axios.min.js"></script>
+<script src="../../../resources/js/common.js"></script>
+<script>
+    /* Global Value */
+    let v = {
+        targetId: 9001,
+        fileList: []
+    }
+
+    const fn = {
+        upload: function () {
+            let formData = new FormData()
+            const target = document.getElementsByName('files[]')
+            Array.prototype.push.apply(v.fileList, target[0].files)
+
+            console.log(v.fileList)
+            for (let i = 0; i < v.fileList.length; i++) {
+                let file = v.fileList[i]
+                formData.append('files', file)
+            }
+            formData.append('targetId', 9001)
+            formData.append('memberId', 8001)
+            if (!formData.has('files')) {
+                console.log('No File Check')
+                return false
+            }
+            axios.post('/file/upload', formData,
+                {header: {'Content-Type': `multipart/form-data`}}
+            ).then(response => {
+                console.log(response)
+                console.log(response.data)
+            }).catch(error => {
+                console.log(error.response)
+            })
+        },
+        download: function () {
+            console.log($(this).attr('data-file'))
+            const params = {
+                fileKey: $(this).attr('data-file')
+            }
+            axios.post('/file/downloadFile', params,
+                {header: {'Content-Type': `application/json`}}
+            ).then(response => {
+                // console.log(response)
+                // console.log(response.data)
+                console.log(params.fileKey)
+                console.log($('[data-file="' + params.fileKey + '"]'))
+                $('[data-file="' + params.fileKey + '"]').append('<img alt="" src="' + response.data + '">')
+            }).catch(error => {
+                console.log(error.response)
+            })
+        },
+        getFileList: function () {
+            const params = {
+                targetId: v.targetId
+            }
+            axios.post(
+                '/file/getFileList',
+                JSON.stringify(params),
+                {headers: {'Content-Type': `application/json`}}
+            ).then(response => {
+                // console.log(response)
+                // console.log(response.data)
+                v.fileList = response.data.data
+                fn.drawList()
+            }).catch(error => {
+                console.log(error)
+                console.log(error.response)
+            })
+        },
+        drawList: function () {
+            console.log(v.fileList)
+            if (v.fileList) {
+                const files = v.fileList
+                let $fileList = $('#fileList')
+                for (let i = 0; i < files.length; i++) {
+                    console.log(files[i].fileName)
+                    let file = files[i]
+                    $fileList.append(
+                        '<li data-file="' + file.fileKey + '"'
+                        + ' class="file-item list-group-item">'
+                        + file.fileName
+                        + '</li>'
+                    )
+                }
+                $('.file-item').on('click', fn.download)
+            }
+        }
+    }
+    const init = {
+        event: function () {
+            $('#btnUpload').on('click', fn.upload)
+        },
+        created: function () {
+            fn.getFileList()
+        }
+    }
+    init.event()
+    init.created()
+</script>
+</html>
