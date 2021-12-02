@@ -27,6 +27,7 @@
             padding-left: 5px;
             margin-left: 30px;
         }
+        .visit_date_detail{font-size: 14px; color:#8C8D8D;}
     </style>
 </head>
 <body>
@@ -57,7 +58,9 @@
         data-food_id="{{id}}"
     >
         <p class="visit_date">
-            {{dateFormat insertDateTime}} {{getDate insertDateTime}} 방문
+            <span class="visit_date_detail" data-food_id="{{id}}" data-insdttm="{{insertDateTime}}">
+                {{dateFormat insertDateTime}} {{getDate insertDateTime}} 방문
+            </span>
             <span class="delete" data-food_id="{{id}}">
                 <img src="../resources/images/cancel_x.png" width="13px">
             </span>
@@ -66,7 +69,7 @@
             <span class="visit_name">
                 {{name}}
             </span>
-            <span class="req_dt update" data-food_id="{{id}}" data-insdttm="{{insertDateTime}}">
+            <span class="req_dt update">
               {{location}}
             </span>
         </div>
@@ -137,7 +140,7 @@
         }
     });
 
-    $(document).on('click', 'span[class="req_dt update"]', function (e) {
+    $(document).on('click', 'span[class="visit_date_detail"]', function (e) {
         e.preventDefault()
         e.stopPropagation()
 
