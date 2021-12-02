@@ -190,6 +190,11 @@
     const init = {
         event: function () {
             $('#btnUpload').on('click', fn.upload)
+            $('.btn-back').on('click', function (e) {
+                e.preventDefault()
+                e.stopPropagation()
+                window.history.back()
+            })
         },
         created: function () {
             fn.getFileList()
