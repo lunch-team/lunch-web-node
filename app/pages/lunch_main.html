@@ -74,11 +74,7 @@
             }
         }
         callAxios('post', '/api/postTest', params)
-        .then(response => {
-            if(response){
-                location.href='./test/test-index.html'
-            }
-        })
+        location.href='./test/test-index.html'
     }
 
     $('.main-title').on('click', connectionTest)
