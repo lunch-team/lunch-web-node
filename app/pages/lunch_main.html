@@ -9,68 +9,44 @@
     <link href="../resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="../resources/css/style.css" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
-    <style>
-        .home_header {
-            padding-top: 20px;
-        }
-
-        .float-right {
-            float: right;
-        }
-    </style>
 </head>
 <body>
 <div class="home_header">
     <b class="main-title">점심 뭐 먹지?</b>
-    <span id="welcome" class="float-right"></span>
+    <span id="logout_btn"><img src="../resources/images/logout.svg"></span>
 </div>
 
 <div class="home_wrap">
-    <ul>
-        <li id="btn-allFood">
-            <img
-                src="../resources/images/food.png"
-                alt=""
-            />
-            <p>메뉴 보기</p>
+    <ul class="menu_list">
+        <li id="btn-allFood" class="all_food_wrap">
+            <div>맛집</div>
+            <div>세상은 넓고<br>맛집은 많다.</div>
         </li>
+
         <li id="btn-random">
-            <img
-                src="../resources/images/random.png"
-                alt=""
-            />
-            <p>랜덤 메뉴</p>
+            <div>랜덤메뉴</div>
+            <div>당신의 결정장애를<br>치유해드립니다.</div>
         </li>
-        <li id="btn-add">
-            <img
-                src="../resources/images/add-cart.png"
-                alt=""
-            />
-            <p>메뉴 추가</p>
+
+        <li style="grid-column: 1 / -1; height: 100px;">
+            <div>메뉴추가</div>
+            <div>새로운 맛집을 추가해보세요</div>
         </li>
-        <li id="btn-visit">
-            <img
-                src="../resources/images/visitor.png"
-                alt=""
-            />
-            <p>방문 기록</p>
-        </li>
+
         <li id="btn-test">
-            <img
-                src="../resources/images/korean.png"
-                alt=""
-            />
-            <p>테스트</p>
+            <div>방문내역</div>
+            <div>언제, 어디갔는지<br>기억이 안난다면?</div>
         </li>
+
         <li id="btn-sign-in">
-            <img
-                src="../resources/images/japan.png"
-                alt=""
-            />
-            <p id="loginText">로그인</p>
+            <div>리뷰</div>
+            <div>후기가 궁금할 때!</div>
         </li>
     </ul>
+
+ 
 </div>
+
 <script src="../resources/js/jquery-3.5.1.min.js"></script>
 <script src="../resources/js/handlebars-4.0.11.js"></script>
 <script src="../resources/js/axios.min.js"></script>
@@ -119,17 +95,17 @@
     })
 
     $('#btn-test').on('click', function () {
-        location.href = 'test/test-index.html';
+        location.href = 'test/ws-room-list.html';
     })
 
-    $('#btn-sign-in').on('click', function () {
+    $('#logout_btn').on('click', function () {
         location.href = 'auth/sign-in.html';
     })
 
     $(function () {
         if (sessionStorage.getItem('_name')) {
-            $('#loginText').text('로그아웃')
-            $('#welcome').text(sessionStorage.getItem('_name') + '님')
+            // $('#loginText').text('로그아웃')
+            // $('#welcome').text(sessionStorage.getItem('_name') + '님')
         }
     })
 </script>
