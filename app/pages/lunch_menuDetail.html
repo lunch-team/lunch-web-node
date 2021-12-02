@@ -17,52 +17,39 @@
     <span class="title">메뉴 상세</span>
 </header>
 <div class="contents_wrap">
-    <ul class="field_wrap">
-        <li>
-            <span>음식점명</span>
-            <input type="text" id="restaurant" name="nm"/>
+    <ul>
+        <li class="restaurant_name">
+            <span id="restaurant" name="nm"></span>
+            <span id="btn_more"><img src="../resources/images/option.png" width="24px"></span>
         </li>
-        <li>
-            <span>주소</span>
-            <div class="search">
+        <li class="restaurant_address">
+            <span id="address" name="nm"></span>
+            <!-- <div class="search">
                 <input type="text" id="address" name="nm"/>
                 <button type="button" style="float: right; line-height: 50px;">
                     <i class="fas fa-search fa-xs" onclick="findAddr()"></i>
                 </button>
-            </div>
+            </div> -->
         </li>
-        <li>
-            <span>종류</span>
-            <select id="typeName"></select>
+        <li class="restaurant_review">
+            <span>⭐4.8</span>
+            <span id="btn_review_detail">리뷰 12</span>
         </li>
-
+        <li class="restaurant_location">
+            <span id="location"></span>
+        </li>
+        
     </ul>
-    <button 
-        type="button" 
-        class="main_btn" 
-        id="btn_delete"
-        style="float: left; background-color: white; color: #08213f;"
-    >
-        삭제
-    </button>
-    <button 
-        type="button" 
-        class="main_btn" 
-        id="btn_save" 
-        style="float: right;"
-    >
-        수정
-    </button>
 
-    <button 
-        type="button" 
-        class="main_btn" 
-        id="btn_add" 
-        style="width: 100%; margin-top: 10px;"
-    >
-        방문 추가
-    </button>
-
+    <!--팝업-->
+    <div class="more_menu">
+        <span id="btn_delete">삭제하기</span><br>
+        <span id="btn_save">수정하기</span><br>
+        <span id="btn_add">방문추가</span>
+    </div>
+    <div class="dimmed">
+    </div>
+   
 </div>
 
 <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
@@ -99,8 +86,8 @@
             $("#typeName").append(html);
         }
 
-        $('#restaurant').val(getParameters('name'));
-        $('#address').val(getParameters('location'));
+        $('#restaurant').text(getParameters('name'));
+        $('#address').text(getParameters('location'));
         $('#typeName').val(getParameters('type'));
     });
 
@@ -119,6 +106,10 @@
             }
         }).open();
     }
+
+    $('#btn_review_detail').on('click',function(){
+        location.href = 'lunch_reviewWrite.html';
+    });
 
     $('#btn_save').on('click', function () {
         var msg = "수정하시겠습니까?";
@@ -149,6 +140,8 @@
 
     $('#btn_delete').on('click', function () {
         var msg = "삭제하시겠습니까?";
+        showModal('2', '삭제하시겠습니까?');
+        return;
         if (confirm(msg) != 0) {
             var p_id = getParameters('id');
 
@@ -188,7 +181,20 @@
         }
     });
 
+    $('#btn_more').on('click', function(){
+        $('.more_menu').css('display','block');
+        $('.dimmed').css('display','block');
+    });
     // 58.181.28.53:11199/menu/getAllMenu(GET) // addMenu(POST)
+
+    $(document).mouseup(function (e){
+        var LayerPopup = $(".more_menu");
+        console.log(LayerPopup.has(e.target))
+        if(!(LayerPopup.has(e.target).length)) {
+            LayerPopup.css('display','none');
+            $('.dimmed').css('display','none');
+        }
+    });
 
     //좌측 상단 뒤로가기 버튼
     $('.back_btn').on('click', function () {

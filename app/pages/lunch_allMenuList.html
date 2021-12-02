@@ -11,36 +11,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
 
     <style>
-        .clear {
-            clear: both;
-        }
-        .btn-wrapper {
-            float: right;
-            padding-top: 10px;
-            padding-bottom: 10px;
-        }
-        
-        .btn-wrapper button {
-            font-size: 12px;
-            color: #707070;
-            float: left;
-            border: 0;
-            background-color: white;
-            border-radius: 5px;
-            width: 75px;
-            height: 30px;
-            margin-left: 5px;
-        }
+       
     </style>
 </head>
 <body>
 <header>
     <button class="back_btn"></button>
-    <span class="title">메뉴목록</span>
+    <span class="title">맛집</span>
 </header>
 <div class="contents_wrap">
     <div class="btn-wrapper">
-        <button 
+        <!-- <button 
             class="btn-order" 
             data-order="asc"
             data-order-type="abc"
@@ -54,9 +35,15 @@
             class="btn-order" 
             data-order="desc"
             data-order-type="count"
-        >방문수</button>
+        >방문수</button> -->
+        <input class="btn-order" type="checkbox" id="abc" data-order="asc" data-order-type="abc">
+        <label for="abc">가나다</label>
+        <input class="btn-order" type="checkbox" id="recent" data-order="desc" data-order-type="recent">
+        <label for="recent">최근방문</label>
+        <input class="btn-order" type="checkbox" id="count" data-order="desc" data-order-type="count">
+        <label for="count">방문수</label>
     </div>
-    <div class="clear"></div>
+ 
     <div class="list-wrap" id="contents_list"></div>
     <div class="loading-container" id="loading_container">
         <div class="loading"></div>
@@ -69,27 +56,22 @@
 
 <script id="menuList" type="text/x-handlebars-template">
     {{#menuList}}
-    <div 
-        class="round_box" 
+    <div class="round_box" 
         name="food_box" 
         data-food_name="{{name}}"
-        data-food_location="{{location}}"
         data-food_menutype="{{menuType}}" 
         data-food_id="{{id}}"
-    >
+        data-food_location="{{location}}">
         <p class="req_title">
             {{name}}
-            <span style="float: right; font-size: 13px; color: #707070; font-weight: 400;">
+            <span>
                 {{visitCount}}회 방문
             </span>
         </p>
-        <div class="req_dt_wrap">
-            <span class="req_dt">
-                {{location}}
-            </span>
-            <span class="req_dt">
-                {{menuName}}
-            </span>
+
+        <div class="req_content">
+            <span style="margin-right: 6px;">⭐4.8</span>
+            <span>{{menuName}}</span>
         </div>
     </div>
     {{/menuList}}

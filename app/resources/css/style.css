@@ -33,20 +33,14 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"] + label {
-    display: inline-block;
-    font-size: 16px;
-    height: 30px;
-    line-height: 30px;
-    background-image: url(../images/check-off.svg);
-    background-repeat: no-repeat;
-    background-size: 30px;
-    background-position: 0 center;
-    padding-left: 40px;
-    text-align: left;
+    display: inline-block; font-size: 14px;
+    text-align: center;
+    color: #606464;
+    font-weight: 500; 
 }
 
 input[type="checkbox"]:checked + label {
-    background-image: url(../images/check-on.svg);
+    border-radius: 10px;
 }
 
 /* 텍스트 정렬 */
@@ -135,7 +129,7 @@ input[type="checkbox"]:checked + label {
 /* --------------------------  헤더 --------------------------------*/
 header {
     width: 100%;
-    height: 50px;
+    height: 60px;
     position: fixed;
     z-index: 10;
     top: 0;
@@ -146,8 +140,8 @@ header {
 }
 
 header .back_btn {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     background: url(../images/arrow-back.svg) no-repeat center / 14px;
 }
 
@@ -168,19 +162,6 @@ header .title {
     border-radius: 30px;
     color: #fff;
     width: 48%;
-    height: 50px;
-    line-height: 50px;
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-}
-
-.bottom_btn {
-    background: #08213f;
-    box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 30px;
-    color: #fff;
-    width: 100%;
     height: 50px;
     line-height: 50px;
     font-size: 20px;
@@ -248,45 +229,40 @@ header .title {
     padding-bottom: 20px;
 }
 
-/* ------------------------  홈 -----------------------------------*/
-.home_header {
-    height: 50px;
-    padding: 0 20px;
+/* 메인 */
+.home_header {display:flex; height: 60px; padding: 20px; background-color: #62F2D2;}
+.home_header > span {margin-left: auto;}
+.home_wrap {
+    padding: 20px;
+    width: 100%;
+    height: calc(100vh - 60px);
+    position: relative;
     background-color: #fff;
 }
 
-.home_wrap {
-    width: 100%;
-    height: calc(100vh - 50px);
-    position: relative;
-    background-color: #d9dbdc;
-}
-
-.home_wrap ul {
-    height: calc(100% - 140px);
-    padding: 20px;
+.home_wrap .menu_list {
     display: grid;
-    margin-left: 30px;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
     gap: 20px;
+    margin-bottom: 20px;
 }
 
-.home_wrap ul li {
+.menu_list > li {
     display: flex;
+    height: 180px;
+    border: 1px solid #dddddd;
     flex-direction: column;
     box-sizing: border-box;
-    justify-content: center;
-    align-items: center;
-    background: #ffffff;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 25px;
+    background: #F4F7F7;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    padding: 16px;
 }
-
-.home_wrap ul li > img {
-    max-height: 40px;
-}
-
+.menu_list .all_food_wrap {background: #fff; background-image: url(/resources/images/all_menu.png); background-size: 80px; background-repeat: no-repeat; background-position: 80% 90%;}
+.menu_list > li > div:nth-of-type(1) {font-family:bmhanna_pro; font-size: 24px; font-weight: 700; margin-bottom: 8px;}
+.menu_list > li > div:nth-of-type(2) {font-size: 14px;}
+.menu_list > li:nth-of-type(4), .menu_list > li:nth-of-type(5) {height: 130px;}
+.menu_list li > img {max-height: 40px;}
 .home_wrap ul li > p {
     margin-top: 10px;
     color: #08213f;
@@ -296,193 +272,31 @@ header .title {
     line-height: 30px;
 }
 
-.contents_wrap {
-    background-color: #d9dbdc;
-    padding: 50px 20px 20px 20px;
-    min-height: 100vh;
-}
+/* 전체 맛집 리스트*/
+.contents_wrap {background-color: #ffffff;padding: 70px 20px 20px 20px;min-height: 100vh;}
+.round_box {display: block; background-color: #fff; padding: 12px; color: #000; font-size: 15px;text-align: left;border-bottom: 1px solid #EFF1F1;}
+.round_box .req_title {font-size:15px; font-weight: 700; display: flex; justify-content: space-between; word-break: keep-all; line-height: 1;}
+.req_title span{float: right; font-size: 13px; color: #707070; font-weight: 400;}
+.round_box .req_content{margin-top: 8px;}
+.round_box .req_content > span{font-size: 14px;}
+.round_box .req_content > span:nth-of-type(2) {color: #AAADAD; font-weight: 600;}
+.req_dt_wrap {display: flex; justify-content: space-between; padding-top: 6px;}
+.req_dt { font-size: 13px; color: #707070;}
+.btn-wrapper {display: grid; grid-template-columns: repeat(3,70px); align-items: center; gap: 15px;}
+.btn-wrapper button {font-size: 12px; color: #707070; border: 0; background-color: white; border-radius: 5px; width: 75px; height: 30px;}
+.active {background-color : #E6DAB8; font-weight : '700';}
+.btn-order:checked + label {background-color: #E0DBB0;color: #7F734B;}
 
-.field_wrap {
-    margin-top: 20px;
-}
-
-.field_wrap li {
-    display: grid;
-    grid-template-columns: 90px auto;
-    height: 70px;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.field_wrap li > span {
-    color: #08213f;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.field_wrap li > input[name="nm"] {
-    background: #ffffff;
-    box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 30px;
-    height: 50px;
-    padding: 0 20px;
-    font-size: 16px;
-    font-weight: 600;
-    width: 100%;
-    box-sizing: border-box;
-    display: inline;
-}
-
-.field_wrap li > textarea[name="addr"] {
-    background: #ffffff;
-    box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 30px;
-    height: 60px;
-    padding: 20px 20px;
-    font-size: 16px;
-    font-weight: 600;
-    width: 85%;
-    box-sizing: border-box;
-    text-align: left;
-}
-
-.field_wrap li > select {
-    background-color: #ffffff;
-    box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 30px;
-    height: 50px;
-    padding: 0 20px;
-    background-image: url(../images/combo.svg);
-    background-repeat: no-repeat;
-    background-size: 16px;
-    background-position: 96% center;
-    color: #08213f;
-    font-size: 16px;
-    font-weight: 600;
-    width: 100%;
-    text-overflow: ellipsis;
-}
-
-.type_wrap {
-    background-color: #fff;
-    border-radius: 20px;
-    padding: 10px;
-    box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1);
-}
-
-.search {
-    display: inline-block;
-    background: #ffffff;
-    box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 30px;
-    height: 50px;
-    padding: 0 20px;
-    font-size: 16px;
-    font-weight: 600;
-    width: 100%;
-    text-overflow: ellipsis;
-}
-
-.search > input {
-    font-size: 16px;
-    width: 90%;
-    font-weight: 600;
-    line-height: 50px;
-}
-
-.type_title {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    text-align: center;
-    border-bottom: 1px dashed #d9dbdc;
-    padding: 10px 0;
-}
-
-.type_title span {
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.type_detail li {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    padding: 10px 0;
-}
-
-.type_detail li input[type="text"], .type_detail li input[type="tel"] {
-    width: 70px;
-    height: 40px;
-    border: 1px solid #d9dbdc;
-    text-align: center;
-    margin-right: 5px;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.type_detail li select {
-    background-color: #ffffff;
-    width: 70px;
-    height: 40px;
-    background-image: url(../images/combo.svg);
-    background-repeat: no-repeat;
-    background-size: 16px;
-    background-position: 92% center;
-    color: #08213f;
-    font-size: 16px;
-    font-weight: 600;
-    text-overflow: ellipsis;
-    border: 1px solid #d9dbdc;
-    padding-left: 10px;
-    margin-right: 5px;
-}
-
-.type_detail li span {
-    line-height: 40px;
-    text-align: center;
-}
-
-.break_wrap {
-    display: grid;
-    grid-template-columns: 110px auto;
-    height: 50px;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
-
-.break_wrap > span {
-    color: #08213f;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.break_wrap select {
-    width: 150px;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 30px;
-    height: 50px;
-    padding: 0 20px;
-    background-image: url(../images/combo.svg);
-    background-repeat: no-repeat;
-    background-size: 16px;
-    background-position: 92% center;
-    color: #08213f;
-    font-size: 16px;
-    font-weight: 600;
-    text-overflow: ellipsis;
-    justify-content: space-between;
-    margin-right: 10px;
-}
-
-.break_wrap div {
-    text-align: right;
-}
-
-.break_wrap div span {
-    line-height: 40px;
-}
-
+/* 맛집 상세 */
+.contents_wrap > ul {box-shadow: 0px 4px 11px 6px rgba(0, 0, 0, 0.1); border: 1px solid #dddddd; padding: 16px; border-radius: 10px; height: 140px; grid-template-rows: repeat(3,1fr);
+    display: grid;  position: relative;}
+ul > .restaurant_name {display: flex; align-items: center;}
+.restaurant_name > span:nth-of-type(2) {margin-left: auto;}
+.restaurant_name > span {font-size: 20px; font-weight: 700;}
+.restaurant_review > span:nth-of-type(1) {margin-right: 12px;}
+.restaurant_review > span:nth-of-type(2) {font-size: 14px; color:#7A7D7D;}
+.more_menu{display:none; z-index:15;background-color:#F2F2F2;  border:1px solid #F2F2F2; width: 100px; padding: 15px; position: absolute; top: 70px; right: 20px;}
+.dimmed{display:none;position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: #000; opacity: .8; z-index: 10;}
 
 .mb-5 {
     margin-bottom: 5px;
@@ -539,84 +353,7 @@ label {
     transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 
-.round_box {
-    display: block;
-    background-color: #fff;
-    border: solid 1px #d2d2d2;
-    border-radius: 5px;
-    padding: 15px;
-    color: #000;
-    font-size: 15px;
-    text-align: left;
-    margin-bottom: 8px;
-}
 
-.req_list_wrap {
-    height: calc(100vh - 170px);
-    overflow: scroll;
-    padding: 10px 0;
-    margin-top: 5px;
-}
-
-.req_list_wrap .round_box {
-    text-align: left;
-    margin-bottom: 10px;
-}
-
-.req_title {
-    font-size: 20px;
-    font-weight: 600;
-    display: flex;
-    justify-content: space-between;
-    word-break: keep-all;
-    line-height: 1;
-}
-
-.req_title2 {
-    font-size: 20px;
-    font-weight: 600;
-    display: flex;
-    text-align: right;
-    justify-content: space-between;
-    word-break: keep-all;
-    line-height: 1;
-}
-
-.req_dt_wrap {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 10px;
-}
-
-.req_dt {
-    font-size: 13px;
-    color: #707070;
-}
-
-.req_status {
-    display: inline-block;
-    padding: 0 10px;
-    border-radius: 20px;
-    text-align: center;
-    color: #fff;
-    font-size: 13px;
-    width: 72px;
-    height: 23px;
-    line-height: 23px;
-}
-
-.req_status.green {
-    background-color: #00a88e;
-}
-
-.req_status.gray {
-    background-color: #eaeaea;
-    color: #8c8c8c;
-}
-
-.req_status.red {
-    background-color: #ff6363;
-}
 
 #link {
     color: #E45635;
