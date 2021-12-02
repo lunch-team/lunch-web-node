@@ -11,12 +11,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
 
     <style>
-        .contents_wrap {
-            background-color: #d9dbdc;
-            padding: 60px 20px 20px 20px;
-            min-height: 100vh;
-        }
-
         .input-wrap {
             margin-top: 15px;
         }
@@ -40,12 +34,12 @@
     <button class="back_btn"></button>
     <span class="title">방문 기록</span>
 </header>
-<div class="contents_wrap" id="contents_list">
-    <div class="loading-container" id="loading_container">
+<div class="contents_visit_wrap" id="contents_list">
+    <!-- <div class="loading-container" id="loading_container">
         <div class="loading"></div>
         <div id="loading-text">loading</div>
-    </div>
-    <br/>
+    </div> -->
+]
 </div>
 <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
@@ -56,24 +50,24 @@
 
     {{#menuList}}
     <div
-        class="round_box"
+        class="visit_box"
         data-food_name="{{name}}"
         data-food_location="{{location}}"
         data-food_menutype="{{menuType}}"
         data-food_id="{{id}}"
     >
-        <p class="req_title">
-            {{name}}
-            <span class="delete" data-food_id="{{id}}" style="float: right">
-                <img src="/resources/images/delete.svg" width="20" height="20" alt="">
+        <p class="visit_date">
+            {{dateFormat insertDateTime}} {{getDate insertDateTime}} 방문
+            <span class="delete" data-food_id="{{id}}">
+                <img src="../resources/images/cancel_x.png" width="13px">
             </span>
         </p>
-        <div class="req_dt_wrap">
-            <span class="req_dt">
-                {{location}}
+        <div class="visit_detail_wrap">
+            <span class="visit_name">
+                {{name}}
             </span>
             <span class="req_dt update" data-food_id="{{id}}" data-insdttm="{{insertDateTime}}">
-                {{dateFormat insertDateTime}} {{getDate insertDateTime}}
+              {{location}}
             </span>
         </div>
     </div>
@@ -83,7 +77,7 @@
 <script type="text/javascript">
     function drawList(callback) {
         if (callback.data !== undefined) {
-            $('#loading_container').hide();
+            // $('#loading_container').hide();
             var obj = callback.data;
             // console.log(JSON.stringify(obj));
             var source = $("#menuList").html();
@@ -113,9 +107,9 @@
     }
 
     $(function () {
-        $('#loading_container').hide(); //로딩바 숨기기
+        // $('#loading_container').hide(); //로딩바 숨기기
         var callback = ajaxConnect('POST', 'getVisitMenuList', {"order": "DESC"});
-        $('#loading_container').show();
+        // $('#loading_container').show();
         drawList(callback);
     });
 

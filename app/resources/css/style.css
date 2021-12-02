@@ -293,11 +293,54 @@ header .title {
 ul > .restaurant_name {display: flex; align-items: center;}
 .restaurant_name > span:nth-of-type(2) {margin-left: auto;}
 .restaurant_name > span {font-size: 20px; font-weight: 700;}
+.restaurant_review{display: flex; align-items: center;}
 .restaurant_review > span:nth-of-type(1) {margin-right: 12px;}
 .restaurant_review > span:nth-of-type(2) {font-size: 14px; color:#7A7D7D;}
+.restaurant_review > span:nth-of-type(3) {font-size: 14px; color:#7A7D7D; margin-left: auto;}
 .more_menu{display:none; z-index:15;background-color:#F2F2F2;  border:1px solid #F2F2F2; width: 100px; padding: 15px; position: absolute; top: 70px; right: 20px;}
 .dimmed{display:none;position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: #000; opacity: .8; z-index: 10;}
 
+/*방문 기록*/
+.contents_visit_wrap {background-color: #f8f8f8; padding: 70px 0 20px 0;}
+.visit_box {display: block; background-color: #fff; padding: 16px; color: #000; font-size: 15px;text-align: left;border-bottom: 1px solid #EFF1F1; margin-bottom: 8px;}
+.visit_box .visit_date {display:flex; align-items:center; justify-content: space-between; font-size: 13px; color: #949797;margin-bottom: 8px;}
+.visit_detail_wrap{display: flex; justify-content: space-between;}
+.visit_detail_wrap .visit_name {font-size: 16px; font-weight: 600;}
+
+/*랜덤메뉴 추천*/
+.random_btn{font-size: 15px; border: 1px solid #dddddd; width: 100%; height: 42px; display: flex;
+    justify-content: center; align-items: center;border-radius: 5px;}
+.random_list_wrap{padding-top: 12px;}
+.random_list{padding: 10px; border-bottom: 1px solid #EFF1F1;}
+.random_list .req_title{font-size: 15px; font-weight: 700;}
+
+
+/* 메뉴추가 */
+.addmenu_wrap > div {margin-bottom: 12px;}
+.addmenu_wrap > div > span {display: block; margin-bottom: 6px;}
+.addmenu_wrap > div > input[type="text"] {width:100%; box-sizing: border-box; padding-left:8px; height:35px; line-height: 35px;border: solid 1px#d2d2d2;
+    border-radius: 5px}
+.addmenu_wrap > div > select{background-image: url(/resources/images/img_combo_tri.png);
+    height: 35px;
+    width: 100%;
+    border: solid 1px#d2d2d2;
+    border-radius: 5px;
+    padding-left: 8px;
+    background-repeat: no-repeat;
+    background-position: 98%;
+    background-size: 16px;}
+.srch_box {border: solid 1px#d2d2d2; border-radius: 5px; position: relative; height: 37px; }
+.srch_box > input[type='text'] {padding-left:8px; height:35px; width: calc(100% - 50px); border: none;}
+.srch_box .srch_btn {
+    font-size: 15px;
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-image: url(../images/ic_find.svg);
+    background-position: center;}
+    .bottom_btn {position: fixed;left: 0; bottom: 0;right: 0; background: #49dfda; color: #fff;width: 100%; height: 50px; line-height: 50px; font-size: 20px; font-weight: 600;letter-spacing: 0.1em;}
 .mb-5 {
     margin-bottom: 5px;
 }
@@ -376,7 +419,7 @@ label {
 }
 
 /** BEGIN CSS **/
-body {
+/* body {
     background: #333333;
 }
 
@@ -574,9 +617,9 @@ body {
     100% {
         opacity: 0
     }
-}
+} */
 
-.loading-container,
+/* .loading-container,
 .loading {
     height: 100px;
     position: relative;
@@ -632,4 +675,4 @@ body {
     text-transform: uppercase;
     top: 0;
     width: 100px;
-}
+} */

@@ -102,6 +102,7 @@
     $(function () {
         localStorage.clear();
         $('#loading_container').hide();
+        $('#abc').trigger('click');
         getAllMenu({'orderType': 'ABC', 'order': 'ASC'})
     });
 

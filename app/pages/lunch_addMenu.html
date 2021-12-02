@@ -21,33 +21,29 @@
         <div class="loading"></div>
         <div id="loading-text">loading</div>
     </div>
-    <div class="detail" id="content_detail">
-        <ul class="field_wrap" id="field_wrap">
-            <li>
-                <span>음식점명</span>
-                <input type="text" id="restaurant" name="nm"/>
-            </li>
-            <li>
-                <span>주소</span>
-                <div class="search">
-                    <input 
-                        type="text" 
-                        id="address" 
-                        name="nm"
-                        style="font-size:16px; width:260px; line-height: 50px;"
-                    />
-                    <button type="button" style="float: right; line-height: 50px;">
-                        <i class="fas fa-search fa-xs" onclick="findAddr()"></i>
-                    </button>
-                </div>
-            </li>
-            <li>
-                <span>종류</span>
-                <select id="typeName"></select>
-            </li>
-        </ul>
-        <button type="button" class="bottom_btn" id="btn_save">저장</button>
+
+    <div class="addmenu_wrap" id="addmenu_input">
+        <div>
+            <span>음식점명</span>
+            <input type="text" id="restaurant" name="nm"/>
+        </div>
+        <div>
+            <span>주소</span>
+            <div class="srch_box">
+                <input type="text" id="address" name="nm" style="font-size:13px;"/>
+                <button type="button" class="srch_btn" onclick="findAddr()"></button>
+            
+            </div>
+                
+        </div>
+        <div>
+            <span>종류</span>
+            <select id="typeName"></select>
+        </div>
+     
+        
     </div>
+    <button type="button" class="bottom_btn" id="btn_save">저장</button>
 </div>
 
 <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
@@ -64,12 +60,12 @@
 <script type="text/javascript">
     $(function () {
         //$('#loading_container').hide();
-        $('#content_detail').hide();
+        $('#addmenu_input').hide();
         var callback = ajaxConnect('GET', 'getMenuType', '');
 
         if (callback.data != undefined) {
             $('#loading_container').hide();
-            $('#content_detail').show();
+            $('#addmenu_input').show();
             var obj = callback.data;
             var source = $("#selectMenuType").html();
             var template = Handlebars.compile(source);

@@ -30,13 +30,12 @@
 </header>
 
 <div class="contents_wrap" id="contents_list">
-    <br/>
-    <button class="bottom_btn mb-10" id="btnRandomMenu">메뉴 추천</button>
+    <button class="random_btn" id="btnRandomMenu">메뉴 추천</button>
     <div class="loading-container" id="loading_container">
         <div class="loading"></div>
         <div id="loading-text">loading</div>
     </div>
-    <div class="btn-wrap" id="contents"></div>
+    <div class="random_list_wrap" id="contents"></div>
     <br/>
 </div>
 
@@ -49,7 +48,7 @@
 
     {{#menuList}}
     <div
-        class="round_box" 
+        class="random_list" 
         name="food_box" 
         data-food_name="{{name}}"
         data-food_location="{{location}}"
