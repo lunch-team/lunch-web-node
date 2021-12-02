@@ -55,86 +55,135 @@
     /* Global Value */
     let v = {
         targetId: 9001,
+        memberId: 8001,
         fileList: []
     }
 
     const fn = {
+        /**
+         * 파일 업로드
+         * @return {boolean}
+         */
         upload: function () {
+            // 파일 파라미터 준비
             let formData = new FormData()
             const target = document.getElementsByName('files[]')
+            // target[0]인 이유는 getElementsByName 하면 리스트로 받아옴
             Array.prototype.push.apply(v.fileList, target[0].files)
 
             console.log(v.fileList)
+            // 서버에서는 항상 여러 파일로 받아옴
             for (let i = 0; i < v.fileList.length; i++) {
-                let file = v.fileList[i]
-                formData.append('files', file)
+                // files 이름으로 업로드할 파일들 추가
+                formData.append('files', v.fileList[i])
             }
-            formData.append('targetId', 9001)
-            formData.append('memberId', 8001)
+            // targetId: 메뉴 id(Long) 받아와서 넣기 !!
+            formData.append('targetId', v.targetId)
+            // memberId: 로그인 유저 id(Long) 받아와서 넣기 !! (로그인 아이디 아님)
+            formData.append('memberId', v.memberId)
+
+            // 파일 없을 경우 그냥 리턴
             if (!formData.has('files')) {
                 console.log('No File Check')
                 return false
             }
+            // 업로드 api 호출
             axios.post('/file/upload', formData,
                 {header: {'Content-Type': `multipart/form-data`}}
             ).then(response => {
                 console.log(response)
-                console.log(response.data)
-            }).catch(error => {
-                console.log(error.response)
-            })
-        },
-        download: function () {
-            console.log($(this).attr('data-file'))
-            const params = {
-                fileKey: $(this).attr('data-file')
-            }
-            axios.post('/file/downloadFile', params,
-                {header: {'Content-Type': `application/json`}}
-            ).then(response => {
-                // console.log(response)
-                // console.log(response.data)
-                console.log(params.fileKey)
-                console.log($('[data-file="' + params.fileKey + '"]'))
-                $('[data-file="' + params.fileKey + '"]').append('<img alt="" src="' + response.data + '">')
-            }).catch(error => {
-                console.log(error.response)
-            })
-        },
-        getFileList: function () {
-            const params = {
-                targetId: v.targetId
-            }
-            axios.post(
-                '/file/getFileList',
-                JSON.stringify(params),
-                {headers: {'Content-Type': `application/json`}}
-            ).then(response => {
-                // console.log(response)
-                // console.log(response.data)
-                v.fileList = response.data.data
-                fn.drawList()
+                // 업로드가 되었으면 리스트 다시 그리기
+                if (response.status === 204) {
+                    fn.getFileList()
+                } else {
+                    alert('파일업로드를 실패했습니다.')
+                }
             }).catch(error => {
                 console.log(error)
                 console.log(error.response)
             })
         },
+        /**
+         * 이미지 다운로드
+         * @param fileKey
+         */
+        download: function (fileKey) {
+            // 파라미터 이름은 fileKey
+            const params = {
+                fileKey: fileKey
+            }
+            // responseType: blob
+            axios.post('/file/downloadFile', params,
+                {
+                    header: {
+                        'Content-Type': `application/json`
+                    },
+                    responseType: 'blob'
+                }
+            ).then(response => {
+                // FileReader를 통해 blob 형식 파일 읽기
+                let reader = new FileReader()
+                let imgRaw = response.data
+
+                reader.readAsDataURL(response.data)
+
+                // reader의 onload event 발생했을 때 이미지 태그 찾아 집어 넣기
+                reader.onload = () => {
+                    imgRaw = reader.result
+                    $('[data-file="' + fileKey + '"]')
+                    .append('<img alt="" src="' + imgRaw + '" width="100%">')
+                }
+            }).catch(error => {
+                console.log(error)
+                console.log(error.response)
+            })
+        },
+        /**
+         * 파일 리스트 가져오기
+         */
+        getFileList: function () {
+            // targetId는 메뉴 아이디! Long 타입임
+            const params = {
+                targetId: v.targetId
+            }
+            // getFileList api 호출
+            axios.post(
+                '/file/getFileList',
+                JSON.stringify(params),
+                {headers: {'Content-Type': `application/json`}}
+            ).then(response => {
+                v.fileList = response.data.data
+                // 파일 리스트가 있을 경우에만 리스트 그리기
+                if (v.fileList) {
+                    fn.drawList()
+                } else {
+                    console.log('file list is empty')
+                }
+            }).catch(error => {
+                console.log(error)
+                console.log(error.response)
+            })
+        },
+        /**
+         * List 그리기 함수
+         */
         drawList: function () {
-            console.log(v.fileList)
             if (v.fileList) {
                 const files = v.fileList
                 let $fileList = $('#fileList')
                 for (let i = 0; i < files.length; i++) {
-                    console.log(files[i].fileName)
                     let file = files[i]
+                    // fileKey: 파일이 저장된 이름
+                    // fileName: 저장한 파일의 실제 이름
                     $fileList.append(
                         '<li data-file="' + file.fileKey + '"'
                         + ' class="file-item list-group-item">'
                         + file.fileName
                         + '</li>'
                     )
+                    // 파일 다운로드까지 추가
+                    fn.download(file.fileKey)
                 }
-                $('.file-item').on('click', fn.download)
             }
         }
     }
