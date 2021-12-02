@@ -28,17 +28,17 @@
             <div>당신의 결정장애를<br>치유해드립니다.</div>
         </li>
 
-        <li style="grid-column: 1 / -1; height: 100px;">
+        <li id="btn-add" style="grid-column: 1 / -1; height: 100px;">
             <div>메뉴추가</div>
             <div>새로운 맛집을 추가해보세요</div>
         </li>
 
-        <li id="btn-test">
+        <li id="btn-visit">
             <div>방문내역</div>
             <div>언제, 어디갔는지<br>기억이 안난다면?</div>
         </li>
 
-        <li id="btn-sign-in">
+        <li id="btn-review">
             <div>리뷰</div>
             <div>후기가 궁금할 때!</div>
         </li>
@@ -97,6 +97,10 @@
 
     $('#btn-test').on('click', function () {
         location.href = 'test/ws-room-list.html';
+    })
+
+    $('#btn-review').on('click', function () {
+        alert('준비중');
     })
 
     $('#logout_btn').on('click', function () {
