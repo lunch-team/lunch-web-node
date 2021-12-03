@@ -32,7 +32,7 @@
             background-image: none; padding: 0;
         }
         input[name="rating"]+label {background-image: none; padding: 0;}
-        .contents_wrap .review_write{margin: 30px 0;}
+        .contents_wrap .review_write{margin-top: 30px;}
         .review_write > p {margin-bottom: 12px;}
         .review_write > input[type="text"] {border: 1px solid #dddddd;}
         .review_write textarea{border:1px solid #dddddd;margin-bottom:20px; overflow: hidden; width: 100%; height: 180px; padding: 15px; line-height: 24px;}
@@ -41,6 +41,7 @@
             box-sizing: border-box;
             border:1px solid #dddddd; padding:12px; width:100%;margin-bottom:20px; display: flex; justify-content: center;
           }
+        .review_write .img_thumbnail_wrap{height: 100px; display: grid; grid-template-columns: repeat(3,1fr);}
     </style>
 </head>
 <body>
@@ -48,7 +49,7 @@
     <button class="back_btn"></button>
     <span class="title">리뷰작성</span>
 </header>
-<div class="contents_wrap" style="height: calc(100%-120px);">
+<div class="contents_wrap" style="padding-bottom: 0px;">
     <div class="restaurant_name_wrap" id="restaurant_name"></div>
     <div style="margin-bottom: 30px; font-weight: 600;">
         식사는 맛있게 하셨나요?
@@ -75,33 +76,50 @@
         <label class="input-file-button" for="input-file">
             <img src="/resources/images/icon-gallery.png"><span style="margin-left: 8px;">사진 첨부하기</span>
         </label>
-        <input type="file" name="files[]" id="input-file" style="display: none;"/>
-          
-          
+        <input type="file" name="files[]" id="input-file" style="display: none;" multiple/>
+        <div id="img_thumbnail" class="img_thumbnail_wrap">
+    
+        </div>
+        
     </div>
 
-    <button type="button" class="bottom_btn bg_color_mint" id="btnUpload">저장</button>
+    
 </div>
+<button type="button" class="bottom_btn bg_color_mint" id="btnUpload">저장</button>
 
 <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
 <script type="text/javascript" src="/resources/js/axios.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-
 <script type="module">
     import {
         callAxios,
-                ajaxConnect,
+        ajaxConnect,
         _BASE_URL,
         popup,
         popupHide,
         toBase64,
         showModal
-    } from "../resources/js/common.js";
-         var getParameters = function (paramName) {
+    } from "../../resources/js/common.js";
+     var getParameters = function (paramName) {
         return localStorage.getItem(paramName);
     };
+
+    $('#input-file').on('change',function(){
+
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            // get loaded data and render thumbnail.
+            //alert(e.target.result);
+            $("#img_thumbnail").append('<img src =' + e.target.result + '>');
+         //document.getElementById("image").src = e.target.result;
+        };
+
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
+    });
 
     let v = {
         targetId:  getParameters('id'),
@@ -183,10 +201,10 @@
             axios.post('/file/upload', formData,
                 {header: {'Content-Type': `multipart/form-data`}}
             ).then(response => {
-                console.log(response)
+                console.log('upload_response' + response)
                 // 업로드가 되었으면 리스트 다시 그리기
                 if (response.status === 200) {
-                    fn.getFileList()
+                    // fn.getFileList()
                 } else {
                     alert('파일업로드를 실패했습니다.')
                 }
