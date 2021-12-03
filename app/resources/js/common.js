@@ -1,12 +1,15 @@
-'use strict';
+'use strict'
 
-const _BASEURL = 'http://192.168.0.15:9090'
+import _BASE_URL from "./config.js"
 
-try {
-    axios.defaults.baseURL = _BASEURL
-} catch (e) {
-    console.log('axios is not imported')
-}
+// 즉시 실행 함수로 url 세팅
+(function (url) {
+    try {
+        axios.defaults.baseURL = url
+    } catch (e) {
+        console.log('axios is not imported')
+    }
+})(_BASE_URL)
 
 function callAxios(type, url, param) {
     if (!url) {
@@ -46,7 +49,7 @@ function callAxios(type, url, param) {
 //parameter : type, url, data
 function ajaxConnect(type, url, param) {
 
-    var connectUrl = _BASEURL + "/menu/";
+    var connectUrl = _BASE_URL + "/menu/";
     var returnData = {};
     $.ajax({
         type: type,
@@ -350,3 +353,5 @@ String.prototype.zf = function (len) {
 Number.prototype.zf = function (len) {
     return this.toString().zf(len);
 };
+
+export {callAxios, ajaxConnect, _BASE_URL, popup, popupHide, toBase64, showModal}

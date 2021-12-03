@@ -9,7 +9,6 @@
     <script src="../../../resources/js/sockjs.min.js"></script>
     <script src="../../../resources/js/stomp.min.js"></script>
     <script src="../../../resources/js/axios.min.js"></script>
-    <script src="../../../resources/js/common.js"></script>
     <style>
         body {
             background-color: rgb(32, 33, 36);
@@ -95,8 +94,17 @@
     </div>
 </div>
 </body>
-<script>
-    const sock = new SockJS(axios.defaults.baseURL + "/ws-stomp")
+<script type="module">
+    import {
+        callAxios,
+                ajaxConnect,
+        _BASE_URL,
+        popup,
+        popupHide,
+        toBase64,
+        showModal
+    } from "../../../resources/js/common.js";
+        const sock = new SockJS(axios.defaults.baseURL + "/ws-stomp")
     const ws = Stomp.over(sock)
 
     const v = {

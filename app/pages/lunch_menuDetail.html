@@ -78,8 +78,18 @@
     {{/menuType}}
 </script>
 
-<script type="text/javascript">
-    var getParameters = function (paramName) {
+
+<script type="module">
+    import {
+        callAxios,
+                ajaxConnect,
+        _BASE_URL,
+        popup,
+        popupHide,
+        toBase64,
+        showModal
+    } from "../resources/js/common.js";
+        var getParameters = function (paramName) {
         return localStorage.getItem(paramName);
     };
     

@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>점심 뭐 먹지?</title>
 
-    <link href="/resources/css/common.css" rel="stylesheet" type="text/css"/>
-    <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../../resources/css/common.css" rel="stylesheet" type="text/css"/>
+    <link href="../../resources/css/style.css" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
 </head>
 <body>
@@ -27,10 +27,10 @@
 
         <!-- 아이디 찾기 탭 컨텐츠-->
         <div class="tab_content" id="find_id" style="display: block;">
-            <div class="find_id_wrap" >
-               <span>회원가입 시 등록한 이름과 이메일을 <br>입력 해주세요. 가입이력 확인 후 아이디를 <br>알 수 있습니다.</span>
+            <div class="find_id_wrap">
+                <span>회원가입 시 등록한 이름과 이메일을 <br>입력 해주세요. 가입이력 확인 후 아이디를 <br>알 수 있습니다.</span>
             </div>
-            
+
             <div class="addmenu_wrap" id="addmenu_input">
                 <div>
                     <span>이름</span>
@@ -41,40 +41,49 @@
                     <input type="email" id="email"/>
                 </div>
             </div>
-            
+
             <button type="button" class="bottom_btn bg_color_mint">아이디 찾기</button>
         </div><!--아이디 찾기 탭 컨텐츠-->
 
         <!-- 비밀번호 찾기 탭 컨텐츠-->
-        <div class="tab_content" id="find_pw" >
-            <div class="find_id_wrap" >
+        <div class="tab_content" id="find_pw">
+            <div class="find_id_wrap">
                 <span>아이디와 이메일을 입력 해주세요. <br>입력된 아이디와 이메일 인증 후 비밀번호를<br>재설정 할 수 있습니다.</span>
-             </div>
-             
-             <div class="addmenu_wrap" id="addmenu_input">
-                 <div>
-                     <span>아이디</span>
-                     <input type="text" id="id"/>
-                 </div>
-                 <div>
-                     <span>이메일</span>
-                     <input type="email" id="email"/>
-                 </div>
-             </div>
-             
-             <button type="button" class="bottom_btn bg_color_mint">비밀번호 재설정</button>
+            </div>
+
+            <div class="addmenu_wrap" id="addmenu_input">
+                <div>
+                    <span>아이디</span>
+                    <input type="text" id="id"/>
+                </div>
+                <div>
+                    <span>이메일</span>
+                    <input type="email" id="email"/>
+                </div>
+            </div>
+
+            <button type="button" class="bottom_btn bg_color_mint">비밀번호 재설정</button>
         </div><!--비밀번호 찾기 탭 컨텐츠-->
 
     </div>
 </div>
 
-<script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
-<script type="text/javascript" src="/resources/js/common.js"></script>
+<script type="text/javascript" src="../../resources/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="../../resources/js/handlebars-4.0.11.js"></script>
 
-<script type="text/javascript">
+<script type="module">
+    import {
+        callAxios,
+                ajaxConnect,
+        _BASE_URL,
+        popup,
+        popupHide,
+        toBase64,
+        showModal
+    } from "../../resources/js/common.js";
+
     $(function () {
-       
+
     });
 
     $(document).on('click', 'div[name="food_box"]', function (e) {

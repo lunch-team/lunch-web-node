@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../../resources/css/bootstrap.min.css"/>
     <script src="../../resources/js/jquery-3.5.1.min.js"></script>
     <script src="../../resources/js/axios.min.js"></script>
-    <script src="../../resources/js/common.js"></script>
     <style>
         .mt-10 {
             margin-top: 10px;
@@ -52,8 +51,17 @@
     </div>
 </div>
 </body>
-<script>
-    localStorage.clear()
+<script type="module">
+    import {
+        callAxios,
+                ajaxConnect,
+        _BASE_URL,
+        popup,
+        popupHide,
+        toBase64,
+        showModal
+    } from "../../resources/js/common.js";
+        localStorage.clear()
 
     const init = {
         event: function () {
