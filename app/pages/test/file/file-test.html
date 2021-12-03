@@ -93,7 +93,7 @@
             ).then(response => {
                 console.log(response)
                 // 업로드가 되었으면 리스트 다시 그리기
-                if (response.status === 204) {
+                if (response.status === 200) {
                     fn.getFileList()
                 } else {
                     alert('파일업로드를 실패했습니다.')
