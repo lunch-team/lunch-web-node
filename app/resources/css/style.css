@@ -229,9 +229,36 @@ header .title {
     padding-bottom: 20px;
 }
 
+/* 공통 색상*/
+.bg_color_mint {background-color: #5ebebb;}
+.bg_color_mint_2 {background-color : #5dbebb}
+.bg_color_gray {background-color:#f6f6f6;}
+
+/* 공통 탭 */
+.common_tab{display: grid; grid-template-columns: repeat(2, 1fr); }
+.common_tab .tab_btn{color:#807F7F; font-size: 18px; font-weight: 500; height:40px; display: flex; align-items: center; justify-content: center;}
+.common_tab .tab_btn.active{color:#5ebebb; font-weight: 700; border-bottom: 3px solid #5ebebb; background-color: #FFF;}
+.tab_content{display: none;}
+
+/* 구분선 */
+.div_line{background-color: #EEF0F0;width:100%; height:7px;}
+
+/* 회원가입 */
+
+/* 로그인 */
+.contents-wrapper {padding: 20px;}
+.login-box {display: flex; flex-direction: column;}
+.login-box .login_input{font-size:15px; padding-left:8px; margin-bottom:20px; height: 40px; border-bottom: 1px solid #dddddd; border-left:none; border-right:none; border-top: none;}
+
+/* 아이디,비밀번호 찾기 */
+.find_wrap {margin-top: 20px;}
+.find_id_wrap {text-align: center; margin-bottom:20px;}
+.find_id_wrap > span {font-size: 16px; color:#807F7F;}
+
 /* 메인 */
-.home_header {display:flex; height: 60px; padding: 20px; background-color: #62F2D2;}
-.home_header > span {margin-left: auto;}
+.home_header {display:flex; height: 60px; padding: 20px;}
+.home_header .main-title {color: #ffffff; font-weight: 500;}
+.home_header .btn_logout {margin-left: auto;}
 .home_wrap {
     padding: 20px;
     width: 100%;
@@ -253,7 +280,6 @@ header .title {
     border: 1px solid #dddddd;
     flex-direction: column;
     box-sizing: border-box;
-    background: #F4F7F7;
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
     padding: 16px;
@@ -273,7 +299,7 @@ header .title {
 }
 
 /* 전체 맛집 리스트*/
-.contents_wrap {background-color: #ffffff;padding: 70px 20px 20px 20px;min-height: 100vh;}
+.contents_wrap {background-color: #ffffff;padding: 70px 20px 20px 20px;}
 .round_box {display: block; background-color: #fff; padding: 12px; color: #000; font-size: 15px;text-align: left;border-bottom: 1px solid #EFF1F1;}
 .round_box .req_title {font-size:15px; font-weight: 700; display: flex; justify-content: space-between; word-break: keep-all; line-height: 1;}
 .req_title span{float: right; font-size: 13px; color: #707070; font-weight: 400;}
@@ -299,6 +325,8 @@ ul > .restaurant_name {display: flex; align-items: center;}
 .restaurant_review > span:nth-of-type(3) {font-size: 14px; color:#7A7D7D; margin-left: auto;}
 .more_menu{display:none; z-index:15;background-color:#F2F2F2;  border:1px solid #F2F2F2; width: 100px; padding: 15px; position: absolute; top: 70px; right: 20px;}
 .dimmed{display:none;position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: #000; opacity: .8; z-index: 10;}
+.review_list_wrap {padding: 20px;}
+.review_count > span:nth-of-type(1) {font-weight: 700; font-size: 20px;}
 
 /*방문 기록*/
 .contents_visit_wrap {background-color: #f8f8f8; padding: 70px 0 20px 0;}
@@ -318,7 +346,7 @@ ul > .restaurant_name {display: flex; align-items: center;}
 /* 메뉴추가 */
 .addmenu_wrap > div {margin-bottom: 12px;}
 .addmenu_wrap > div > span {display: block; margin-bottom: 6px;}
-.addmenu_wrap > div > input[type="text"] {width:100%; box-sizing: border-box; padding-left:8px; height:35px; line-height: 35px;border: solid 1px#d2d2d2;
+.addmenu_wrap > div > input[type="text"], input[type="password"], input[type="email"] {width:100%; box-sizing: border-box; padding-left:8px; height:35px; line-height: 35px;border: solid 1px#d2d2d2;
     border-radius: 5px}
 .addmenu_wrap > div > select{background-image: url(/resources/images/img_combo_tri.png);
     height: 35px;
@@ -340,7 +368,7 @@ ul > .restaurant_name {display: flex; align-items: center;}
     top: 0;
     background-image: url(../images/ic_find.svg);
     background-position: center;}
-    .bottom_btn {position: fixed;left: 0; bottom: 0;right: 0; background: #49dfda; color: #fff;width: 100%; height: 50px; line-height: 50px; font-size: 20px; font-weight: 600;letter-spacing: 0.1em;}
+.bottom_btn {position: fixed;left: 0; bottom: 0;right: 0; color: #fff;width: 100%; height: 50px; line-height: 50px; font-size: 20px; font-weight: 600;letter-spacing: 0.1em;}
 .mb-5 {
     margin-bottom: 5px;
 }

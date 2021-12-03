@@ -27,8 +27,8 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6 {
 }
 
 input, select, textarea {
-    vertical-align: bottom;
-    border: none;
+    /* vertical-align: bottom;
+    border: none; */
 }
 
 label, input[type='button'] {
@@ -156,6 +156,8 @@ body {
     DEFAULT  / COMMON
   ************************** */
 body, div, p, span, textarea, button {
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;
     margin: 0;
     padding: 0;

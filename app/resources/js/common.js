@@ -156,6 +156,41 @@ function popup(options) {
     }
 }
 
+/* ----------------------------------------------
+    탭 (공통)
+--------------------------------------------------- */
+$(".tab_btn").click(function(){
+    $(".tab_btn").removeClass("active");
+    $(this).addClass("active");
+    var tab_target = $(this).data("target");
+    $(".tab_content").hide();
+    $("#" + tab_target).show();
+});
+
+var showModal = function(btn_cnt, content){
+    var temp = '';
+    temp += '<div class="popup">';
+    temp += '<div class="wrapper"><span class="txt">' + content + '</span></div>';
+    if(btn_cnt === 1){  //알림
+        temp += '<div class="popup_btn_wrap">';
+        temp += '<button type="button" class="popup_cls" >확인</button>';
+    }else if(btn_cnt === 2){  //컨펌
+        temp += '<div class="popup_btn2_wrap">';
+        temp += '<button type="button" class="popup_cls" >아니오</button>';
+        temp += '<button type="submit" class="popup_cls" >예</button>';
+    }
+    temp += '</div></div>';
+    temp += '<div class="dimmed"></div>';
+    $("body").append(temp);
+    $(".popup").show();
+    $(".dimmed").show();
+    /* 팝업 닫기 */
+    $(".popup_cls").click(function(){
+        $(".popup").remove();
+        $(".dimmed").remove();
+    });
+};
+
 // text to base64  p.s) 브라우저가 제공하는 btoa는 jsonstring을 base64로 변환하지 못해서 따로 사용함.
 function toBase64(str) {
     var Base64 = {

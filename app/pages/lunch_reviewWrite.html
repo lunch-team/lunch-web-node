@@ -9,6 +9,7 @@
     <link href="/resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
+   
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 
     <style>
@@ -35,7 +36,6 @@
         .review_write > p {margin-bottom: 12px;}
         .review_write > input[type="text"] {border: 1px solid #dddddd;}
         .review_write textarea{border:1px solid #dddddd;margin-bottom:20px; overflow: hidden; width: 100%; height: 180px; padding: 15px; line-height: 24px;}
-        .bottom_btn {position: fixed;left: 0; bottom: 0;right: 0; background: #49dfda; color: #fff;width: 100%; height: 50px; line-height: 50px; font-size: 20px; font-weight: 600;letter-spacing: 0.1em;}
     </style>
 </head>
 <body>
@@ -43,7 +43,7 @@
     <button class="back_btn"></button>
     <span class="title">리뷰작성</span>
 </header>
-<div class="contents_wrap">
+<div class="contents_wrap" style="height: calc(100%-120px);">
     <div class="restaurant_name_wrap" id="restaurant_name"></div>
     <div style="margin-bottom: 30px; font-weight: 600;">
         식사는 맛있게 하셨나요?
@@ -60,18 +60,19 @@
 
     <div class="review_write">
         <p style="font-weight: 600;">리뷰를 작성해 주세요</p>
-        <textarea class="review_write_wrap" placeholder="만족도에 대한 후기를 남겨주세요."></textarea>
-        <div class="" id="btn_save" style="border:1px solid #dddddd; padding:12px; width:100%;margin-bottom:20px; display: flex; justify-content: center;">
+        <textarea class="review_write_wrap" id="review_content" placeholder="만족도에 대한 후기를 남겨주세요."></textarea>
+        <div class="" id="btn_gallery" style="border:1px solid #dddddd; padding:12px; width:100%;margin-bottom:20px; display: flex; justify-content: center;">
             <img src="/resources/images/icon-gallery.png"><span style="margin-left: 8px;">사진 첨부하기</span>
         </div>
        
     </div>
 
-    <button type="button" class="bottom_btn" id="btn_save">저장</button>
+    <button type="button" class="bottom_btn bg_color_mint" id="btn_save2">저장</button>
 </div>
 
 <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
+<script type="text/javascript" src="/resources/js/axios.min.js"></script>
 <script type="text/javascript" src="/resources/js/common.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
@@ -80,9 +81,62 @@
         return localStorage.getItem(paramName);
     };
     $(function () {
+        alert(getParameters('id'));
         $('#restaurant_name').text(getParameters('name'));
     });
+    const common = {
+        goMain: function () {
+            location.href = '../lunch_main.html'
+        },
+        verify: function (data) {
+            return !!($('#review_content').val().trim());
+        },
+        emailCheck: function (email) {
+            const regex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$/;
+            console.log('email check')
+            return !!(email !== '' && email !== 'undefined' && regex.test(email));
+        }
+    }
 
+    const fn = {
+        saveReview: function () {
+            const params = {
+                contents: $('#review_content').val(),
+                memberId : sessionStorage.getItem('_memberId'),
+                menuId : getParameters('id'),
+                star : 4
+            }
+            if (common.verify(params)) {
+                alert("!")
+                axios.post('/menu/registerReview', JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    console.log(response)
+                    
+                    // axios.defaults.headers.common['Authorization'] = `Bearer ${_accessToken}`
+                    alert('리뷰가 등록되었습니다.')
+                    return;
+                }).catch(error => {
+                    if (error.response.status === 401) {
+                        alert('리뷰를 등록하는 도중 오류가 발생했습니다.')
+                    }
+                })
+            }
+        },
+        signUp: function () {
+            location.href = './sign-up.html'
+        },
+        findPw: function () {
+
+        }
+    }
+
+    $('#btn_save2').on('click',function(){
+        var msg = "리뷰를 등록하시겠습니까?";
+        if (confirm(msg) != 0) {
+            fn.saveReview();
+        }
+    });
 
     $('#btn_save').on('click', function () {
         var p_address = $('#address').val();
