@@ -157,7 +157,7 @@
                     JSON.stringify(params),
                     {headers: {'Content-Type': `application/json`}}
                 ).then(response => {
-                    if (response.status === 204) {
+                    if (response.status === 200) {
                         alert('삭제하였습니다.')
                         fn.getFileList()
                     } else {
@@ -191,8 +191,14 @@
                     console.log('file list is empty')
                 }
             }).catch(error => {
-                console.log(error)
-                console.log(error.response)
+                // 404 (list가 비어있을 경우)일 경우
+                if(error.response.status === 404) {
+                    let $fileList = $('#fileList')
+                    $fileList.empty()
+                } else {
+                    console.log(error)
+                    console.log(error.response)
+                }
             })
         },
         /**

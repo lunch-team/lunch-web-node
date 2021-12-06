@@ -175,7 +175,7 @@
             var callback = ajaxConnect('POST', 'modifyMenu', modifyData);
             console.log(JSON.stringify(callback))
 
-            if (callback.xhr == '204') {
+            if (callback.xhr == '200') {
                 alert('수정되었습니다.');
                 location.href = 'lunch_allMenuList.html';
             } else if (callback.error != undefined) {
@@ -196,7 +196,7 @@
             var callback = ajaxConnect('POST', 'deleteMenu', deleteParam);
             console.log(JSON.stringify(callback))
 
-            if (callback.xhr == '204') {
+            if (callback.xhr == '200') {
                 alert('삭제되었습니다.');
                 location.href = 'lunch_allMenuList.html';
             } else if (callback.error != undefined) {

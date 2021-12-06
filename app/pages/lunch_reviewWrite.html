@@ -322,7 +322,7 @@
             var callback = ajaxConnect('POST', 'addMenu', addMenuData);
             // $('#loading_container').show();
 
-            if (callback.xhr == '204') {
+            if (callback.xhr == '200') {
                 //$('#loading_container').hide();
                 alert('메뉴가 추가되었습니다.');
                 location.href = 'lunch_main.html';
