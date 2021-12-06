@@ -53,14 +53,15 @@
 <script type="module">
     import {
         callAxios,
-                ajaxConnect,
+        ajaxConnect,
         _BASE_URL,
         popup,
         popupHide,
         toBase64,
         showModal
     } from "../../../resources/js/common.js";
-        /* Global Value */
+
+    /* Global Value */
     let v = {
         targetId: 9001,
         memberId: 8001,
@@ -146,6 +147,28 @@
                 console.log(error.response)
             })
         },
+        delete: function () {
+            const params = {
+                fileKey: $(this).data('file')
+            }
+            if (confirm('삭제하시겠습니까?')) {
+                axios.post(
+                    '/file/delete',
+                    JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    if (response.status === 204) {
+                        alert('삭제하였습니다.')
+                        fn.getFileList()
+                    } else {
+                        console.log(response)
+                        alert('삭제할 수 없습니다.')
+                    }
+                }).catch(error => {
+                    console.log(error.response)
+                })
+            }
+        },
         /**
          * 파일 리스트 가져오기
          */
@@ -179,6 +202,7 @@
             if (v.fileList) {
                 const files = v.fileList
                 let $fileList = $('#fileList')
+                $fileList.empty()
                 for (let i = 0; i < files.length; i++) {
                     let file = files[i]
                     // fileKey: 파일이 저장된 이름
@@ -192,6 +216,7 @@
                     // 파일 다운로드까지 추가
                     fn.download(file.fileKey)
                 }
+                $('.file-item').on('click', fn.delete)
             }
         }
     }
