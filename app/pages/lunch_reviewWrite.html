@@ -11,37 +11,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
    
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
-
     <style>
-        .restaurant_name_wrap {margin: 20px 0; font-weight: 700; font-size: 24px;}
-        #myform input[type=checkbox]{display: none;}  /* 체크박스 감춤 */
-        #myform label{
-            font-size: 2em;                 /* 이모지 크기 */
-            color: transparent;             /* 기존 이모지 컬러 제거 */
-            text-shadow: 0 0 0 #f0f0f0;   /* 새 이모지 색상 부여 */
-        }
-       
-        #myform fieldset{
-            display: inline-block;  /* 하위 별점 이미지들이 있는 영역만 자리를 차지함.*/
-            direction: rtl;         /* 이모지 순서 반전 */
-            border: 0;              /* 필드셋 테두리 제거 */
-        }
-      
-        #myform input[type=checkbox]:checked ~ label{
-            text-shadow: 0 0 0 #52E2E2;    /* 마우스 클릭 체크 */
-            background-image: none; padding: 0;
-        }
-        input[name="rating"]+label {background-image: none; padding: 0;}
-        .contents_wrap .review_write{margin-top: 30px;}
-        .review_write > p {margin-bottom: 12px;}
-        .review_write > input[type="text"] {border: 1px solid #dddddd;}
-        .review_write textarea{border:1px solid #dddddd;margin-bottom:20px; overflow: hidden; width: 100%; height: 180px; padding: 15px; line-height: 24px;}
-       
-          .input-file-button{
-            box-sizing: border-box;
-            border:1px solid #dddddd; padding:12px; width:100%;margin-bottom:20px; display: flex; justify-content: center;
-          }
-        .review_write .img_thumbnail_wrap{height: 100px; display: grid; grid-template-columns: repeat(3,1fr);}
+          #star a{
+            text-decoration: none;
+            color: gray;
+            }
+            #star a.on{
+            color: red;
+            } 
     </style>
 </head>
 <body>
@@ -49,7 +26,14 @@
     <button class="back_btn"></button>
     <span class="title">리뷰작성</span>
 </header>
-<div class="contents_wrap" style="padding-bottom: 0px;">
+<div class="contents_wrap" style="padding-bottom: 0px; overflow: scroll;">
+    <P id="star"> <!-- 부모 -->
+        <a href="#" value="1">★</a> <!-- 자식들-->
+        <a href="#" value="2">★</a>
+        <a href="#" value="3">★</a>
+        <a href="#" value="4">★</a>
+        <a href="#" value="5">★</a>
+    <p>
     <div class="restaurant_name_wrap" id="restaurant_name"></div>
     <div style="margin-bottom: 30px; font-weight: 600;">
         식사는 맛있게 하셨나요?
@@ -61,6 +45,7 @@
             <input type="checkbox" name="rating" value="3" id="rate3"><label for="rate3">⭐</label>
             <input type="checkbox" name="rating" value="2" id="rate4"><label for="rate4">⭐</label>
             <input type="checkbox" name="rating" value="1" id="rate5"><label for="rate5">⭐</label>
+            <input type="hidden" id="star_cnt">
         </fieldset>
     </div>
 
@@ -83,6 +68,7 @@
         
     </div>
 
+   
     
 </div>
 <button type="button" class="bottom_btn bg_color_mint" id="btnUpload">저장</button>
@@ -105,6 +91,11 @@
      var getParameters = function (paramName) {
         return localStorage.getItem(paramName);
     };
+
+    $('input:checkbox[name="rating"]').on('change',function(){
+        console.log($(this).val());
+    });
+
 
     $('#input-file').on('change',function(){
 
@@ -298,6 +289,12 @@
         }
     }
 
+    $('#star a').click(function(){ 
+	 $(this).parent().children("a").removeClass("on");    
+	 $(this).addClass("on").prevAll("a").addClass("on");
+	 console.log($(this).attr("value"));
+ });
+   
     $('#btnUpload').on('click',function(){
         var msg = "리뷰를 등록하시겠습니까?";
         if (confirm(msg) != 0) {
