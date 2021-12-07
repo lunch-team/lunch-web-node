@@ -321,19 +321,27 @@ ul > .restaurant_name {display: flex; align-items: center;}
 .restaurant_name > span {font-size: 20px; font-weight: 700;}
 .restaurant_review{display: flex; align-items: center;}
 .restaurant_review > span:nth-of-type(1) {margin-right: 12px;}
-.restaurant_review > span:nth-of-type(2) {font-size: 14px; color:#7A7D7D;}
+.restaurant_review > span:nth-of-type(2) , .restaurant_review > span:nth-of-type(2)>span {font-size: 14px; color:#7A7D7D;}
 .restaurant_review > span:nth-of-type(3) {font-size: 14px; color:#7A7D7D; margin-left: auto;}
 .more_menu{display:none; z-index:15;background-color:#F2F2F2;  border:1px solid #F2F2F2; width: 100px; padding: 15px; position: absolute; top: 70px; right: 20px;}
 .dimmed{display:none;position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: #000; opacity: .8; z-index: 10;}
 .review_list_wrap {padding: 20px;}
+.review_list_wrap .review_count {padding-bottom: 15px;}
 .review_count > span:nth-of-type(1) {font-weight: 700; font-size: 20px;}
+.review_list_wrap .review_detail_box {padding-top:20px; padding-bottom:20px; border-top: 1px solid #F3F8F8;}
+.review_detail_box > span{font-size: 15px; color:#000000; font-weight: 600;}
+.review_detail_box > span:nth-of-type(2) {font-weight:500;}
+.review_detail_box > span:nth-of-type(3) {font-size:13px; color:#808282;}
+.review_detail_box > span:nth-of-type(4) > img{height:300px; padding:15px 0;}
+.review_detail_box .review_no_data {color: #707474; font-weight: 500;}
+
 
 /*방문 기록*/
 .contents_visit_wrap {background-color: #f8f8f8; padding: 70px 0 20px 0;}
 .visit_box {display: block; background-color: #fff; padding: 16px; color: #000; font-size: 15px;text-align: left;border-bottom: 1px solid #EFF1F1; margin-bottom: 8px;}
 .visit_box .visit_date {display:flex; align-items:center; justify-content: space-between; font-size: 13px; color: #949797;margin-bottom: 8px;}
 .visit_detail_wrap{display: flex; justify-content: space-between;}
-.visit_detail_wrap .visit_name {font-size: 16px; font-weight: 600;}
+.visit_detail_wrap .visit_name {font-size: 16px; font-weight: 600;}  
 
 /*랜덤메뉴 추천*/
 .random_btn{font-size: 15px; border: 1px solid #dddddd; width: 100%; height: 42px; display: flex;
@@ -372,9 +380,10 @@ ul > .restaurant_name {display: flex; align-items: center;}
 
 /* 리뷰 작성 */
 .restaurant_name_wrap {margin: 20px 0; font-weight: 700; font-size: 24px;}
-#myform input[type=checkbox]{display: none;}  /* 체크박스 감춤 */
+#myform input[type=radio]{display: none;}  /* 체크박스 감춤 */
 #myform label{
     font-size: 2em;                 /* 이모지 크기 */
+    font-weight: normal;
     color: transparent;             /* 기존 이모지 컬러 제거 */
     text-shadow: 0 0 0 #f0f0f0;   /* 새 이모지 색상 부여 */
 }
@@ -385,7 +394,7 @@ ul > .restaurant_name {display: flex; align-items: center;}
     border: 0;              /* 필드셋 테두리 제거 */
 }
 
-#myform input[type=checkbox]:checked ~ label{
+#myform input[type=radio]:checked ~ label{
     text-shadow: 0 0 0 #52E2E2;    /* 마우스 클릭 체크 */
     background-image: none; padding: 0;
 }
@@ -395,7 +404,10 @@ input[name="rating"]+label {background-image: none; padding: 0;}
 .review_write > input[type="text"] {border: 1px solid #dddddd;}
 .review_write textarea{border:1px solid #dddddd;margin-bottom:20px; overflow: hidden; width: 100%; height: 180px; padding: 15px; line-height: 24px;}
 .input-file-button{box-sizing: border-box;border:1px solid #dddddd; padding:12px; width:100%;margin-bottom:20px; display: flex; justify-content: center;}
-.review_write .img_thumbnail_wrap{height: 100px; display: grid; grid-template-columns: repeat(3,1fr);}
+.review_write .img_thumbnail_wrap{border:1px solid #dddddd; padding:5px; height: 170px; display: grid; grid-template-columns: repeat(3,1fr);align-items: center;}
+.img_thumbnail_wrap > img {height: 150px; width: 100%;}
+
+
 .mb-5 {
     margin-bottom: 5px;
 }

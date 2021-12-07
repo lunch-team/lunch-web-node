@@ -32,8 +32,8 @@
             </div> -->
         </li>
         <li class="restaurant_review">
-            <span>⭐4.8</span>
-            <span>리뷰 12</span>
+            <span>⭐<span id="review_star_cnt"></span></span>
+            <span>리뷰 <span id="review_top_cnt"></span></span>
             <span id="btn_review_detail">리뷰작성</span>
         </li>
         <li class="restaurant_location">
@@ -56,20 +56,38 @@
 </div>
 
 <!--리뷰 리스트-->
-<div class="review_list_wrap">
+<div class="review_list_wrap" id="review_list_wrap">
     <div class="review_count">
         <span>리뷰</span>
-        <span>81개</span>
+        <span id="review_length"></span>
     </div>
-    <div>
-        <span id="review_content"></span>
-    </div>
+    <!-- <div class="review_detail_box">
+        <span>연지</span><br>
+        <span>⭐⭐⭐⭐</span><br>
+        <span>img</span><br>
+        <span>리뷰내용</span>
+    </div>  -->
 </div>
 
 <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
 <script type="text/javascript" src="/resources/js/axios.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+<script id="reviewList" type="text/x-handlebars-template">
+    {{#reviewList}}
+        <div class="review_detail_box">
+            <span>{{memberName}}</span><br>
+            <span>{{starcntFormat star}}</span>
+            <span>{{dateFormat insertDateTime}}</span><br>
+            {{#each files}}
+                <span id="imgFile" data-stored-filename="{{storedFileName}}">{{storedFileName}}</span>
+                <br>
+            {{/each}}
+            <span>{{contents}}</span>
+        </div>
+    {{/reviewList}}
+</script>
 
 <script id="selectMenuType" type="text/x-handlebars-template">
     {{#menuType}}
@@ -98,35 +116,96 @@
         },
         verify: function (data) {
             return !!(getParameters('id').trim());
-        },
-        emailCheck: function (email) {
-            const regex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$/;
-            console.log('email check')
-            return !!(email !== '' && email !== 'undefined' && regex.test(email));
         }
     }
 
     const fn = {
-        saveReview: function () {
+        getReview: function () {
             const params = {
                 menuId : getParameters('id')
             }
             if (common.verify(params)) {
-                alert("!")
+
                 axios.post('/menu/getReviewList', JSON.stringify(params),
                     {headers: {'Content-Type': `application/json`}}
                 ).then(response => {
                     console.log(response)
                     
-                    // axios.defaults.headers.common['Authorization'] = `Bearer ${_accessToken}`
-                    alert('리뷰가져오기 성공.')
-                    return;
+                    console.log('리뷰가져오기 성공.');
+
+                    var obj = response.data;
+                    
+                    //리뷰리스트 템플릿
+                    var source = $("#reviewList").html();
+                    var template = Handlebars.compile(source);
+                    var res = {
+                        reviewList: obj.data
+                    };
+
+                    var html = template(res);
+                    $("#review_list_wrap").append(html);
+
+                    var list_length = obj.data.length;
+                    var star_cnt = (obj.data[0].star)/2 ;
+                
+                    $('#review_top_cnt').text(list_length);
+                    $('#review_length').text(list_length + '개');
+                    $('#review_star_cnt').text(star_cnt);
+                    
+                    $('.review_detail_box > #imgFile').each(function(index){
+                        console.log($(this).data());
+                        var fileName = $(this).data();
+                        fn.download(fileName.storedFilename);
+                    });
+                    // var review_arr = obj.data;
+                    console.log(obj.data);
+                    // console.log(obj.data.length);
+                    // console.log(obj.data[0].files.length)
+                    // console.log(obj.data[1].files)
+                    // console.log(obj.data[0].files[0].storedFileName);
+                   
                 }).catch(error => {
-                    if (error.response.status === 401) {
-                        alert('리뷰를 가져오는 도중 오류가 발생했습니다.')
-                    }
+                    // if (error.response.status === 401) {
+                    //     alert('리뷰를 가져오는 도중 오류가 발생했습니다.')
+                    // }
                 })
             }
+        },
+        
+        /**
+         * 이미지 다운로드
+         * @param fileKey
+         */
+         download: function (fileKey) {
+            // 파라미터 이름은 fileKey
+            const params = {
+                fileKey: fileKey
+            }
+            // responseType: blob
+            axios.post('/file/downloadFile', params,
+                {
+                    header: {
+                        'Content-Type': `application/json`
+                    },
+                    responseType: 'blob'
+                }
+            ).then(response => {
+                // FileReader를 통해 blob 형식 파일 읽기
+                let reader = new FileReader()
+                let imgRaw = response.data
+                
+                reader.readAsDataURL(response.data)
+
+                // reader의 onload event 발생했을 때 이미지 태그 찾아 집어 넣기
+                reader.onload = () => {
+                    imgRaw = reader.result
+                    $('#imgFile')
+                    .append('<img alt="" src="' + imgRaw + '" width="100%" height=250px>')
+                }
+            }).catch(error => {
+                console.log(error)
+                console.log(error.response)
+            })
         }
     }
 
@@ -151,6 +230,17 @@
         $('#restaurant').text(getParameters('name'));
         $('#address').text(getParameters('location'));
         $('#typeName').val(getParameters('type'));
+
+        //날짜 포맷 yy-mm-dd
+        Handlebars.registerHelper('dateFormat', function (insertDateTime) {
+            return insertDateTime.substring(0, 10);
+        });
+
+        Handlebars.registerHelper('starcntFormat', function (star) {
+            return star/2;
+        });
+
+        fn.getReview();
     });
 
     $('#btn_review_detail').on('click',function(){
@@ -235,7 +325,7 @@
 
     $(document).mouseup(function (e){
         var LayerPopup = $(".more_menu");
-        console.log(LayerPopup.has(e.target))
+        
         if(!(LayerPopup.has(e.target).length)) {
             LayerPopup.css('display','none');
             $('.dimmed').css('display','none');

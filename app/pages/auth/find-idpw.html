@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <button type="button" class="bottom_btn bg_color_mint">아이디 찾기</button>
+            <button type="button" id="btn_findId" class="bottom_btn bg_color_mint">아이디 찾기</button>
         </div><!--아이디 찾기 탭 컨텐츠-->
 
         <!-- 비밀번호 찾기 탭 컨텐츠-->
@@ -69,7 +69,7 @@
 </div>
 
 <script type="text/javascript" src="../../resources/js/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="../../resources/js/handlebars-4.0.11.js"></script>
+<script src="../../resources/js/axios.min.js"></script>
 
 <script type="module">
     import {
@@ -81,33 +81,48 @@
         toBase64,
         showModal
     } from "../../resources/js/common.js";
-
-    $(function () {
-
-    });
-
-    $(document).on('click', 'div[name="food_box"]', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var id = $(this).data('food_id');
-        var msg = "추가하시겠습니까?";
-
-        if (confirm(msg) != 0) {
-            // Yes click
-            var addData = {"id": id};
-            var callback = ajaxConnect('POST', 'visitMenu', addData);
-            console.log(JSON.stringify(callback));
-
-            //성공
-            if (callback.data != undefined) {
-                alert('추가되었습니다.');
-                //location.href = 'lunch_allMenuList.html';
-            } else if (callback.error != undefined) { //실패
-                alert(callback.errMsg);
-            }
-        } else {
-            // no click
+    const common = {
+        goMain: function () {
+            location.href = '../lunch_main.html'
+        },
+        verify: function (data) {
+            return !!($('#name').val().trim() && $('#email').val().trim());
+        },
+        emailCheck: function (email) {
+            const regex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$/;
+            console.log('email check')
+            return !!(email !== '' && email !== 'undefined' && regex.test(email));
         }
+    }
+    const fn = {
+        findId: function () {
+            const params = {
+                name: $('#name').val(),
+                email: $('#email').val()
+            }
+            if (common.verify(params)) {
+                axios.post('/auth/findId', JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    console.log(response)
+                    return;
+                }).catch(error => {
+                    if (error.response.status === 401) {
+                        alert('회원 정보가 없습니다.')
+                    }
+                })
+            }
+        },
+        signUp: function () {
+            location.href = './sign-up.html'
+        },
+        findPw: function () {
+            location.href = './find-idpw.html'
+        }
+    }
+   
+    $('#btn_findId').on('click',function(){
+        fn.findId();
     });
 
     //좌측 상단 뒤로가기 버튼
