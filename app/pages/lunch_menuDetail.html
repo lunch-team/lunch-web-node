@@ -39,7 +39,7 @@
         <li class="restaurant_location">
             <span id="location"></span>
         </li>
-        
+
     </ul>
 
     <!--팝업-->
@@ -49,7 +49,7 @@
         <span id="btn_add">방문추가</span>
     </div>
     <div class="dimmed"></div>
-   
+
 </div>
 
 <div class="div_line">
@@ -76,16 +76,19 @@
 
 <script id="reviewList" type="text/x-handlebars-template">
     {{#reviewList}}
-        <div class="review_detail_box">
-            <span>{{memberName}}</span><br>
-            <span>{{starcntFormat star}}</span>
-            <span>{{dateFormat insertDateTime}}</span><br>
-            {{#each files}}
-                <span id="imgFile" data-stored-filename="{{storedFileName}}">{{storedFileName}}</span>
-                <br>
-            {{/each}}
-            <span>{{contents}}</span>
-        </div>
+    <div class="review_detail_box">
+        <span>{{memberName}}</span><br>
+        <span>{{starcntFormat star}}</span>
+        <span>{{dateFormat insertDateTime}}</span><br>
+        {{#each files}}
+        <span
+            class="file-wrapper"
+            data-stored-filename="{{storedFileName}}">{{storedFileName}}
+        </span>
+        <br>
+        {{/each}}
+        <span>{{contents}}</span>
+    </div>
     {{/reviewList}}
 </script>
 
@@ -106,7 +109,8 @@
         toBase64,
         showModal
     } from "../resources/js/common.js";
-        var getParameters = function (paramName) {
+
+    var getParameters = function (paramName) {
         return localStorage.getItem(paramName);
     };
 
@@ -122,7 +126,7 @@
     const fn = {
         getReview: function () {
             const params = {
-                menuId : getParameters('id')
+                menuId: getParameters('id')
             }
             if (common.verify(params)) {
 
@@ -130,11 +134,11 @@
                     {headers: {'Content-Type': `application/json`}}
                 ).then(response => {
                     console.log(response)
-                    
+
                     console.log('리뷰가져오기 성공.');
 
                     var obj = response.data;
-                    
+
                     //리뷰리스트 템플릿
                     var source = $("#reviewList").html();
                     var template = Handlebars.compile(source);
@@ -146,24 +150,20 @@
                     $("#review_list_wrap").append(html);
 
                     var list_length = obj.data.length;
-                    var star_cnt = (obj.data[0].star)/2 ;
-                
+                    var star_cnt = (obj.data[0].star) / 2;
+
                     $('#review_top_cnt').text(list_length);
                     $('#review_length').text(list_length + '개');
                     $('#review_star_cnt').text(star_cnt);
-                    
-                    $('.review_detail_box > #imgFile').each(function(index){
-                        console.log($(this).data());
-                        var fileName = $(this).data();
-                        fn.download(fileName.storedFilename);
+                    console.log($('.file-wrapper').data('storedFilename'))
+                    console.log($('.file-wrapper'))
+                    $('.file-wrapper').each(function (index) {
+                        console.log('storedFileName: ' + $(this).data('storedFilename'))
+                        fn.download($(this).data('storedFilename'));
                     });
-                    // var review_arr = obj.data;
+
                     console.log(obj.data);
-                    // console.log(obj.data.length);
-                    // console.log(obj.data[0].files.length)
-                    // console.log(obj.data[1].files)
-                    // console.log(obj.data[0].files[0].storedFileName);
-                   
+
                 }).catch(error => {
                     // if (error.response.status === 401) {
                     //     alert('리뷰를 가져오는 도중 오류가 발생했습니다.')
@@ -171,12 +171,12 @@
                 })
             }
         },
-        
+
         /**
          * 이미지 다운로드
          * @param fileKey
          */
-         download: function (fileKey) {
+        download: function (fileKey) {
             // 파라미터 이름은 fileKey
             const params = {
                 fileKey: fileKey
@@ -193,13 +193,15 @@
                 // FileReader를 통해 blob 형식 파일 읽기
                 let reader = new FileReader()
                 let imgRaw = response.data
-                
+
                 reader.readAsDataURL(response.data)
 
                 // reader의 onload event 발생했을 때 이미지 태그 찾아 집어 넣기
                 reader.onload = () => {
                     imgRaw = reader.result
-                    $('#imgFile')
+                    console.log('fileKey: ' + fileKey)
+                    let targetEl = '.file-wrapper[data-stored-filename="' + fileKey + '"]'
+                    $(targetEl)
                     .append('<img alt="" src="' + imgRaw + '" width="100%" height=250px>')
                 }
             }).catch(error => {
@@ -237,13 +239,13 @@
         });
 
         Handlebars.registerHelper('starcntFormat', function (star) {
-            return star/2;
+            return star / 2;
         });
 
         fn.getReview();
     });
 
-    $('#btn_review_detail').on('click',function(){
+    $('#btn_review_detail').on('click', function () {
         location.href = 'lunch_reviewWrite.html';
     });
 
@@ -317,18 +319,18 @@
         }
     });
 
-    $('#btn_more').on('click', function(){
-        $('.more_menu').css('display','block');
-        $('.dimmed').css('display','block');
+    $('#btn_more').on('click', function () {
+        $('.more_menu').css('display', 'block');
+        $('.dimmed').css('display', 'block');
     });
     // 58.181.28.53:11199/menu/getAllMenu(GET) // addMenu(POST)
 
-    $(document).mouseup(function (e){
+    $(document).mouseup(function (e) {
         var LayerPopup = $(".more_menu");
-        
-        if(!(LayerPopup.has(e.target).length)) {
-            LayerPopup.css('display','none');
-            $('.dimmed').css('display','none');
+
+        if (!(LayerPopup.has(e.target).length)) {
+            LayerPopup.css('display', 'none');
+            $('.dimmed').css('display', 'none');
         }
     });
 
