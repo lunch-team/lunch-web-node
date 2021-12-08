@@ -332,9 +332,9 @@ ul > .restaurant_name {display: flex; align-items: center;}
 .review_detail_box > span{font-size: 15px; color:#000000; font-weight: 600;}
 .review_detail_box > span:nth-of-type(2) {font-weight:500;}
 .review_detail_box > span:nth-of-type(3) {font-size:13px; color:#808282;}
-.review_detail_box > span:nth-of-type(4) > img{height:300px; padding:15px 0;}
 .review_detail_box .review_no_data {color: #707474; font-weight: 500;}
-
+.review_detailbox .review_img_box {margin-bottom:20px; display: grid; grid-template-columns: repeat(2,1fr);gap: 10px;}
+.review_img_box .file-wrapper > img {height:150px;}
 
 /*방문 기록*/
 .contents_visit_wrap {background-color: #f8f8f8; padding: 70px 0 20px 0;}
@@ -404,9 +404,12 @@ input[name="rating"]+label {background-image: none; padding: 0;}
 .review_write > input[type="text"] {border: 1px solid #dddddd;}
 .review_write textarea{border:1px solid #dddddd;margin-bottom:20px; overflow: hidden; width: 100%; height: 180px; padding: 15px; line-height: 24px;}
 .input-file-button{box-sizing: border-box;border:1px solid #dddddd; padding:12px; width:100%;margin-bottom:20px; display: flex; justify-content: center;}
-.review_write .img_thumbnail_wrap{border:1px solid #dddddd; padding:5px; height: 170px; display: grid; grid-template-columns: repeat(3,1fr);align-items: center;}
+.review_write .img_thumbnail_wrap{border:1px solid #dddddd; padding:5px; height: 170px; display: grid; overflow-y: auto;
+    grid-template-columns: repeat(auto-fill,minmax(114px,1fr));
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(144px,1fr);align-items: center; gap:10px;}
 .img_thumbnail_wrap > img {height: 150px; width: 100%;}
-
+.btn_imgdelete {position: absolute; bottom: 27%; left: 27%;} 
 
 .mb-5 {
     margin-bottom: 5px;

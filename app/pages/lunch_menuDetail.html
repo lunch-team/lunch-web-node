@@ -24,16 +24,10 @@
         </li>
         <li class="restaurant_address">
             <span id="address" name="nm"></span>
-            <!-- <div class="search">
-                <input type="text" id="address" name="nm"/>
-                <button type="button" style="float: right; line-height: 50px;">
-                    <i class="fas fa-search fa-xs" onclick="findAddr()"></i>
-                </button>
-            </div> -->
         </li>
         <li class="restaurant_review">
             <span>⭐<span id="review_star_cnt"></span></span>
-            <span>리뷰 <span id="review_top_cnt"></span></span>
+            <span>리뷰 <span id="review_top_cnt">0</span></span>
             <span id="btn_review_detail">리뷰작성</span>
         </li>
         <li class="restaurant_location">
@@ -59,14 +53,11 @@
 <div class="review_list_wrap" id="review_list_wrap">
     <div class="review_count">
         <span>리뷰</span>
-        <span id="review_length"></span>
+        <span id="review_length">0개</span>
     </div>
-    <!-- <div class="review_detail_box">
-        <span>연지</span><br>
-        <span>⭐⭐⭐⭐</span><br>
-        <span>img</span><br>
-        <span>리뷰내용</span>
-    </div>  -->
+    <div class="review_no_data">
+        등록된 리뷰가 없습니다.
+    </div>
 </div>
 
 <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
@@ -80,13 +71,15 @@
         <span>{{memberName}}</span><br>
         <span>{{starcntFormat star}}</span>
         <span>{{dateFormat insertDateTime}}</span><br>
-        {{#each files}}
-        <span
-            class="file-wrapper"
-            data-stored-filename="{{storedFileName}}">{{storedFileName}}
-        </span>
-        <br>
+        <div class="review_img_box">
+            {{#each files}}
+            <span
+                class="file-wrapper"
+                data-stored-filename="{{storedFileName}}">
+            </span>
         {{/each}}
+        </div>
+        
         <span>{{contents}}</span>
     </div>
     {{/reviewList}}
@@ -139,29 +132,34 @@
 
                     var obj = response.data;
 
-                    //리뷰리스트 템플릿
-                    var source = $("#reviewList").html();
-                    var template = Handlebars.compile(source);
-                    var res = {
-                        reviewList: obj.data
-                    };
-
-                    var html = template(res);
-                    $("#review_list_wrap").append(html);
-
                     var list_length = obj.data.length;
                     var star_cnt = (obj.data[0].star) / 2;
 
-                    $('#review_top_cnt').text(list_length);
-                    $('#review_length').text(list_length + '개');
-                    $('#review_star_cnt').text(star_cnt);
-                    console.log($('.file-wrapper').data('storedFilename'))
-                    console.log($('.file-wrapper'))
-                    $('.file-wrapper').each(function (index) {
-                        console.log('storedFileName: ' + $(this).data('storedFilename'))
-                        fn.download($(this).data('storedFilename'));
-                    });
+                    if(list_length > 0) {
+                        $('.review_no_data').hide();
 
+                         //리뷰리스트 템플릿
+                        var source = $("#reviewList").html();
+                        var template = Handlebars.compile(source);
+                        var res = {
+                            reviewList: obj.data
+                        };
+
+                        var html = template(res);
+                        $("#review_list_wrap").append(html);
+                        $('#review_top_cnt').text(list_length);
+                        $('#review_length').text(list_length + '개');
+                        $('#review_star_cnt').text(star_cnt);
+                        
+                        
+                        console.log($('.file-wrapper').data('storedFilename'))
+                        console.log($('.file-wrapper'))
+                        $('.file-wrapper').each(function (index) {
+                            console.log('storedFileName: ' + $(this).data('storedFilename'))
+                            fn.download($(this).data('storedFilename'));
+                        });
+                    }
+                   
                     console.log(obj.data);
 
                 }).catch(error => {
@@ -202,7 +200,8 @@
                     console.log('fileKey: ' + fileKey)
                     let targetEl = '.file-wrapper[data-stored-filename="' + fileKey + '"]'
                     $(targetEl)
-                    .append('<img alt="" src="' + imgRaw + '" width="100%" height=250px>')
+                    .append('<img alt="" src="' + imgRaw + '" width="150px" height="150px">')
+                    console.log(targetEl)
                 }
             }).catch(error => {
                 console.log(error)

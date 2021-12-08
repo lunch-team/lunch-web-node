@@ -36,25 +36,21 @@
     <div class="review_write">
         <p style="font-weight: 600;">리뷰를 작성해 주세요</p>
         <textarea class="review_write_wrap" id="review_content" placeholder="만족도에 대한 후기를 남겨주세요."></textarea>
-         <!-- <div class="" id="btn_gallery" style="border:1px solid #dddddd; padding:12px; width:100%;margin-bottom:20px; display: flex; justify-content: center;">
-            <img src="/resources/images/icon-gallery.png"><span style="margin-left: 8px;">사진 첨부하기</span>
-        </div> -->
-        <!-- <input class="form-control-file" id="inputFile" name="files[]" type="file" multiple>
         
-        <br>  -->
+        <!--사진첨부하기 버튼-->
         <label class="input-file-button" for="input-file">
             <img src="/resources/images/icon-gallery.png"><span style="margin-left: 8px;">사진 첨부하기</span>
         </label>
         <input type="file" name="files[]" id="input-file" style="display: none;" multiple/>
+
+        <!--업로드 이미지 썸네일-->
         <div id="img_thumbnail" class="img_thumbnail_wrap" style="display: none;">
     
         </div>
-        
+       
     </div>
-
-   
-    
 </div>
+
 <button type="button" class="bottom_btn bg_color_mint" id="btnUpload">저장</button>
 
 <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
@@ -84,20 +80,23 @@
         console.log('star_cnt: ' + star_cnt)
     });
 
-
-    $('#input-file').on('change',function(){
-
-        var reader = new FileReader();
-
+    $('#input-file').on('change',function(e){
+        
         $('.img_thumbnail_wrap').show();
-        reader.onload = function (e) {
-            //alert(e.target.result);
-            $("#img_thumbnail").append('<img src =' + e.target.result + ' height=150px>');
-        };
 
-        // read the image file as a data URL.
-        reader.readAsDataURL(this.files[0]);
+        var files = e.target.files;
+        var filesArr = Array.prototype.slice.call(files);
+
+        filesArr.forEach(function(f){
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#img_thumbnail").append('<img src =' + e.target.result + ' height=150px; style="position:relative;">');
+            }
+            reader.readAsDataURL(f);
+        });
     });
+
 
     let v = {
         targetId:  getParameters('id'),
@@ -106,7 +105,6 @@
     }
     // alert(v.memberId);
     $(function () {
-        alert(getParameters('id'));
         $('#restaurant_name').text(getParameters('name'));
     });
 
@@ -229,54 +227,6 @@
                 console.log(error)
                 console.log(error.response)
             })
-        },
-        /**
-         * 파일 리스트 가져오기
-         */
-        getFileList: function () {
-            // targetId는 메뉴 아이디! Long 타입임
-            const params = {
-                targetId: v.targetId
-            }
-            // getFileList api 호출
-            axios.post(
-                '/file/getFileList',
-                JSON.stringify(params),
-                {headers: {'Content-Type': `application/json`}}
-            ).then(response => {
-                v.fileList = response.data.data
-                // 파일 리스트가 있을 경우에만 리스트 그리기
-                if (v.fileList) {
-                    fn.drawList()
-                } else {
-                    console.log('file list is empty')
-                }
-            }).catch(error => {
-                console.log(error)
-                console.log(error.response)
-            })
-        },
-        /**
-         * List 그리기 함수
-         */
-        drawList: function () {
-            if (v.fileList) {
-                const files = v.fileList
-                let $fileList = $('#fileList')
-                for (let i = 0; i < files.length; i++) {
-                    let file = files[i]
-                    // fileKey: 파일이 저장된 이름
-                    // fileName: 저장한 파일의 실제 이름
-                    $fileList.append(
-                        '<li data-file="' + file.fileKey + '"'
-                        + ' class="file-item list-group-item">'
-                        + file.fileName
-                        + '</li>'
-                    )
-                    // 파일 다운로드까지 추가
-                    fn.download(file.fileKey)
-                }
-            }
         }
     }
    
