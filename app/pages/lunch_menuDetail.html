@@ -68,9 +68,11 @@
 <script id="reviewList" type="text/x-handlebars-template">
     {{#reviewList}}
     <div class="review_detail_box">
-        <span>{{memberName}}</span><br>
-        <span>{{starcntFormat star}}</span>
-        <span>{{dateFormat insertDateTime}}</span><br>
+        <span>{{memberName}}</span>
+        <span class="review_delete"></span>
+        <br>
+        <span class="review_star" data-star-cnt="{{starcntFormat star}}">{{starcntFormat star}}</span>
+        <span>{{dateFormat insertDateTime}}</span>
         <div class="review_img_box">
             {{#each files}}
             <span
@@ -79,7 +81,6 @@
             </span>
         {{/each}}
         </div>
-        
         <span>{{contents}}</span>
     </div>
     {{/reviewList}}
@@ -135,6 +136,7 @@
                     var list_length = obj.data.length;
                     var star_cnt = (obj.data[0].star) / 2;
 
+                    //리뷰가 있을때
                     if(list_length > 0) {
                         $('.review_no_data').hide();
 
@@ -146,11 +148,12 @@
                         };
 
                         var html = template(res);
+
                         $("#review_list_wrap").append(html);
+                       
                         $('#review_top_cnt').text(list_length);
                         $('#review_length').text(list_length + '개');
                         $('#review_star_cnt').text(star_cnt);
-                        
                         
                         console.log($('.file-wrapper').data('storedFilename'))
                         console.log($('.file-wrapper'))
@@ -200,7 +203,7 @@
                     console.log('fileKey: ' + fileKey)
                     let targetEl = '.file-wrapper[data-stored-filename="' + fileKey + '"]'
                     $(targetEl)
-                    .append('<img alt="" src="' + imgRaw + '" width="150px" height="150px">')
+                    .append('<img alt="" src="' + imgRaw + '" width="150px" height="150px" style="margin:20px 0;">')
                     console.log(targetEl)
                 }
             }).catch(error => {
@@ -237,6 +240,7 @@
             return insertDateTime.substring(0, 10);
         });
 
+        //별점 2로 나눠서 보여주기
         Handlebars.registerHelper('starcntFormat', function (star) {
             return star / 2;
         });

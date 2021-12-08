@@ -234,7 +234,12 @@
         var msg = "리뷰를 등록하시겠습니까?";
         if (confirm(msg) != 0) {
             // fn.saveReview();
-            fn.upload();//사진등록먼저
+            if($('#img_thumbnail').css('display') == 'none') {
+                fn.saveReview();
+            } else {
+                fn.upload();//사진등록먼저
+            }
+           
         }
     });
 

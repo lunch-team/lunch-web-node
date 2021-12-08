@@ -259,6 +259,7 @@ header .title {
 .home_header {display:flex; height: 60px; padding: 20px;}
 .home_header .main-title {color: #ffffff; font-weight: 500;}
 .home_header .btn_logout {margin-left: auto;}
+.btn_logout .login_user {color: #ffffff; font-weight: 500; margin-right: 10px;}
 .home_wrap {
     padding: 20px;
     width: 100%;
@@ -266,6 +267,7 @@ header .title {
     position: relative;
     background-color: #fff;
 }
+
 
 .home_wrap .menu_list {
     display: grid;
@@ -332,8 +334,9 @@ ul > .restaurant_name {display: flex; align-items: center;}
 .review_detail_box > span{font-size: 15px; color:#000000; font-weight: 600;}
 .review_detail_box > span:nth-of-type(2) {font-weight:500;}
 .review_detail_box > span:nth-of-type(3) {font-size:13px; color:#808282;}
+.review_detail_box .review_delete {content: url(../images/cancel_x.png); width: 18px; float: right;}
 .review_detail_box .review_no_data {color: #707474; font-weight: 500;}
-.review_detailbox .review_img_box {margin-bottom:20px; display: grid; grid-template-columns: repeat(2,1fr);gap: 10px;}
+.review_img_box {display: grid; grid-template-columns: repeat(2,1fr);gap: 10px;}
 .review_img_box .file-wrapper > img {height:150px;}
 
 /*방문 기록*/

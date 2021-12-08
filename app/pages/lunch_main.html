@@ -13,7 +13,11 @@
 <body>
 <div class="home_header bg_color_mint_2">
     <span class="main-title">점심 뭐 먹지?</span>
-    <span class="btn_logout" id="logout_btn"><img src="../resources/images/logout.svg"></span>
+    
+    <span class="btn_logout" id="logout_btn">
+        <span class="login_user" id="welcome"></span>
+        <img src="../resources/images/logout.svg">
+    </span>
 </div>
 
 <div class="home_wrap">
@@ -119,7 +123,7 @@
     $(function () {
         if (sessionStorage.getItem('_name')) {
             // $('#loginText').text('로그아웃')
-            // $('#welcome').text(sessionStorage.getItem('_name') + '님')
+            $('#welcome').text(sessionStorage.getItem('_name') + '님')
         }
     })
 </script>
