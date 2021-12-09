@@ -331,13 +331,13 @@ ul > .restaurant_name {display: flex; align-items: center;}
 .review_list_wrap .review_count {padding-bottom: 15px;}
 .review_count > span:nth-of-type(1) {font-weight: 700; font-size: 20px;}
 .review_list_wrap .review_detail_box {padding-top:20px; padding-bottom:20px; border-top: 1px solid #F3F8F8;}
-.review_detail_box > span{font-size: 15px; color:#000000; font-weight: 600;}
-.review_detail_box > span:nth-of-type(2) {font-weight:500;}
-.review_detail_box > span:nth-of-type(3) {font-size:13px; color:#808282;}
+.review_detail_box > div > span{font-size: 15px; color:#000000; font-weight: 600;}
+.review_detail_box .review_star {font-size:15px;}
+.review_detail_box .review_date {font-size:13px; color:#808282;}
 .review_detail_box .review_delete {content: url(../images/cancel_x.png); width: 18px; float: right;}
 .review_detail_box .review_no_data {color: #707474; font-weight: 500;}
-.review_img_box {display: grid; grid-template-columns: repeat(2,1fr);gap: 10px;}
-.review_img_box .file-wrapper > img {height:150px;}
+.review_img_box {height:380px;}
+/* .review_img_box .file-wrapper > img {height:150px;}  */
 
 /*방문 기록*/
 .contents_visit_wrap {background-color: #f8f8f8; padding: 70px 0 20px 0;}

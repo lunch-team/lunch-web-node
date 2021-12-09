@@ -68,11 +68,13 @@
 <script id="reviewList" type="text/x-handlebars-template">
     {{#reviewList}}
     <div class="review_detail_box">
-        <span>{{memberName}}</span>
-        <span class="review_delete"></span>
-        <br>
+        <div class="review_detail_top">
+            <span class="review_writer" data-member-id="{{insertMemberId}}">{{memberName}}</span>
+            <span class="review_delete" id="btnReviewRemove" data-review-id="{{id}}"></span>
+        </div>
+
         <span class="review_star" data-star-cnt="{{starcntFormat star}}">{{starcntFormat star}}</span>
-        <span>{{dateFormat insertDateTime}}</span>
+        <span class="review_date">{{dateFormat insertDateTime}}</span>
         <div class="review_img_box">
             {{#each files}}
             <span
@@ -86,13 +88,6 @@
     {{/reviewList}}
 </script>
 
-<script id="selectMenuType" type="text/x-handlebars-template">
-    {{#menuType}}
-    <option value="{{menuType}}">{{menuName}}</option>
-    {{/menuType}}
-</script>
-
-
 <script type="module">
     import {
         callAxios,
@@ -104,32 +99,28 @@
         showModal
     } from "../resources/js/common.js";
 
-    var getParameters = function (paramName) {
-        return localStorage.getItem(paramName);
-    };
-
     const common = {
         goMain: function () {
             location.href = '../lunch_main.html'
         },
         verify: function (data) {
             return !!(getParameters('id').trim());
+        },
+        getId: function() {
+            const search = location.search;
+            // console.log(sch)
+            const urlSearchParam = new URLSearchParams(search);
+            const sch_keyword = urlSearchParam.get('id');
+            return sch_keyword;
         }
     }
 
     const fn = {
         getMenuDetail : function(){
-            const search = location.search;
-            // console.log(sch)
-            const urlSearchParam = new URLSearchParams(search);
-            const sch_keyword = urlSearchParam.get('id');
-            // console.log(sch_keyword)
-
             const params ={
-                id : sch_keyword
+                id : common.getId()
             }
-            console.log(params.id);
-
+    
             axios.post('/menu/getMenuDetail', JSON.stringify(params),
                     {headers: {'Content-Type': `application/json`}}
                 ).then(response => {
@@ -145,7 +136,7 @@
 
             console.log('리뷰가져오기 성공.');
 
-            var obj = response.data;
+            const obj = response.data;
 
             //response.data.data.menuDetail , menuReview
             const menuDetail = obj.data.menuDetail;
@@ -160,7 +151,7 @@
             if(menuReview_length > 0) {
                 $('.review_no_data').hide();
 
-                //리뷰리스트 템플릿
+                //리뷰리스트 그리기
                 var source = $("#reviewList").html();
                 var template = Handlebars.compile(source);
                 var res = {
@@ -175,15 +166,24 @@
                 $('#review_length').text(menuReview_length + '개');
                 $('#review_star_cnt').text();
                 
-                console.log($('.file-wrapper').data('storedFilename'))
-                console.log($('.file-wrapper'))
+                // console.log($('.file-wrapper').data('storedFilename'))
+                // console.log($('.file-wrapper'))
+
+                //파일 리스트 그리기
                 $('.file-wrapper').each(function (index) {
-                    console.log('storedFileName: ' + $(this).data('storedFilename'))
+                    //console.log('storedFileName: ' + $(this).data('storedFilename'))
                     fn.download($(this).data('storedFilename'));
                 });
+
+                //본인 리뷰인 경우에만 x 버튼 표시
+                $('.review_writer').each(function(index){
+                    // console.log($(this))
+                    // console.log($(this).data('memberId'));
+                    if($(this).data('memberId') != sessionStorage.getItem('_memberId')) {
+                        $(this).next().css('display', 'none');
+                    }
+                });
             }
-            
-            console.log(obj.data);
         },
 
         /**
@@ -213,16 +213,49 @@
                 // reader의 onload event 발생했을 때 이미지 태그 찾아 집어 넣기
                 reader.onload = () => {
                     imgRaw = reader.result
-                    console.log('fileKey: ' + fileKey)
+                    // console.log('fileKey: ' + fileKey)
                     let targetEl = '.file-wrapper[data-stored-filename="' + fileKey + '"]'
                     $(targetEl)
-                    .append('<img alt="" src="' + imgRaw + '" width="150px" height="150px" style="margin:20px 0;">')
-                    console.log(targetEl)
+                    .append('<img alt="" src="' + imgRaw + '" style="margin-top:20px 0;">')
+                    // console.log(targetEl)
                 }
+
+                //파일리스트에 파일이 1개면 = review_img_box 아래 span이 1개면 height를 100%
+                //2개면 height를 50%
+                 //본인 리뷰인 경우에만 x 버튼 표시
+                $('.review_img_box').each(function(index){
+                    // console.log($(this))
+                    // console.log($(this).data('memberId'));
+                    // if() {
+                    //     $(this).next().css('display', 'none');
+                    // }
+                    console.log($(this).children('.file-wrapper'));
+                    //console.log($('.review_img_box > .file-wrapper'));
+                });
+
             }).catch(error => {
                 console.log(error)
                 console.log(error.response)
             })
+        },
+        removeReview : function(){
+            const p_id = $(this).data('reviewId');
+            console.log(p_id);
+
+            const params ={
+                id : p_id
+            }
+
+            axios.post('/menu/removeReview', JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    alert('리뷰가 삭제되었습니다.');
+                    
+                }).catch(error => {
+                    // if (error.response.status === 401) {
+                    //     alert('리뷰를 가져오는 도중 오류가 발생했습니다.')
+                    // }
+                })
         }
     }
 
@@ -241,7 +274,8 @@
     });
 
     $('#btn_review_detail').on('click', function () {
-        location.href = 'lunch_reviewWrite.html';
+        const menuId = common.getId();
+        window.location.href = 'lunch_reviewWrite.html?name='+$('#restaurant').text()+'&id='+menuId;
     });
 
     $('#btn_save').on('click', function () {
@@ -273,13 +307,13 @@
 
     $('#btn_delete').on('click', function () {
         var msg = "삭제하시겠습니까?";
-        showModal('2', '삭제하시겠습니까?');
-        return;
+       
         if (confirm(msg) != 0) {
-            var p_id = getParameters('id');
+            var p_id = common.getId();
 
             var deleteParam = {};
             deleteParam = {"id": p_id};
+            
             var callback = ajaxConnect('POST', 'deleteMenu', deleteParam);
             console.log(JSON.stringify(callback))
 
@@ -298,7 +332,8 @@
         if (confirm(msg) != 0) {
             // Yes click
             var addData = {};
-            addData = {"id": getParameters('id')};
+            addData = {"id": common.getId()};
+           
             var callback = ajaxConnect('POST', 'visitMenu', addData);
             console.log(JSON.stringify(callback));
 
@@ -320,6 +355,28 @@
     });
     // 58.181.28.53:11199/menu/getAllMenu(GET) // addMenu(POST)
 
+    $(document).on('click', 'span[id="btnReviewRemove"]', function (e) {
+        var msg = "리뷰를 삭제하시겠습니까?";
+        if (confirm(msg) != 0) {
+            const p_id = $(this).data('reviewId');
+            console.log(p_id);
+
+            const params = {
+                id : p_id
+            }
+            axios.post('/menu/removeReview', JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    if (response.status === 200) {
+                        alert('리뷰를 삭제하였습니다.');
+
+                    }
+                }).catch(error => {
+                    console.log(error.response);
+                });
+        }
+    });
+
     $(document).mouseup(function (e) {
         var LayerPopup = $(".more_menu");
 
@@ -333,8 +390,18 @@
     $('.back_btn').on('click', function () {
         window.history.back();
     });
+
+    let init = {
+        event: function () {
+            $('#btnReviewRemove').on('click', fn.removeReview)
+            $('.btn-back').on('click', function (e) {
+                e.preventDefault()
+                e.stopPropagation()
+                window.history.back()
+            })
+        }
+    }
+    init.event()
 </script>
-
-
 </body>
 </html>
