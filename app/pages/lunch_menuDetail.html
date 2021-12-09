@@ -118,59 +118,72 @@
     }
 
     const fn = {
-        getReview: function () {
-            const params = {
-                menuId: getParameters('id')
-            }
-            if (common.verify(params)) {
+        getMenuDetail : function(){
+            const search = location.search;
+            // console.log(sch)
+            const urlSearchParam = new URLSearchParams(search);
+            const sch_keyword = urlSearchParam.get('id');
+            // console.log(sch_keyword)
 
-                axios.post('/menu/getReviewList', JSON.stringify(params),
+            const params ={
+                id : sch_keyword
+            }
+            console.log(params.id);
+
+            axios.post('/menu/getMenuDetail', JSON.stringify(params),
                     {headers: {'Content-Type': `application/json`}}
                 ).then(response => {
-                    console.log(response)
-
-                    console.log('리뷰가져오기 성공.');
-
-                    var obj = response.data;
-
-                    var list_length = obj.data.length;
-                    var star_cnt = (obj.data[0].star) / 2;
-
-                    //리뷰가 있을때
-                    if(list_length > 0) {
-                        $('.review_no_data').hide();
-
-                         //리뷰리스트 템플릿
-                        var source = $("#reviewList").html();
-                        var template = Handlebars.compile(source);
-                        var res = {
-                            reviewList: obj.data
-                        };
-
-                        var html = template(res);
-
-                        $("#review_list_wrap").append(html);
-                       
-                        $('#review_top_cnt').text(list_length);
-                        $('#review_length').text(list_length + '개');
-                        $('#review_star_cnt').text(star_cnt);
-                        
-                        console.log($('.file-wrapper').data('storedFilename'))
-                        console.log($('.file-wrapper'))
-                        $('.file-wrapper').each(function (index) {
-                            console.log('storedFileName: ' + $(this).data('storedFilename'))
-                            fn.download($(this).data('storedFilename'));
-                        });
-                    }
-                   
-                    console.log(obj.data);
-
+                    fn.drawReviewList(response);
                 }).catch(error => {
                     // if (error.response.status === 401) {
                     //     alert('리뷰를 가져오는 도중 오류가 발생했습니다.')
                     // }
                 })
+        },
+        drawReviewList : function(response) {
+            console.log(response)
+
+            console.log('리뷰가져오기 성공.');
+
+            var obj = response.data;
+
+            //response.data.data.menuDetail , menuReview
+            const menuDetail = obj.data.menuDetail;
+            const menuReview = obj.data.menuReview;
+            const menuReview_length = menuReview.length;
+
+            //상단 음식점명, 주소 넣기
+            $('#restaurant').text(menuDetail.name);
+            $('#address').text(menuDetail.location);
+
+            //리뷰가 있을때
+            if(menuReview_length > 0) {
+                $('.review_no_data').hide();
+
+                //리뷰리스트 템플릿
+                var source = $("#reviewList").html();
+                var template = Handlebars.compile(source);
+                var res = {
+                    reviewList: menuReview
+                };
+
+                var html = template(res);
+
+                $("#review_list_wrap").append(html);
+                
+                $('#review_top_cnt').text(menuReview_length);
+                $('#review_length').text(menuReview_length + '개');
+                $('#review_star_cnt').text();
+                
+                console.log($('.file-wrapper').data('storedFilename'))
+                console.log($('.file-wrapper'))
+                $('.file-wrapper').each(function (index) {
+                    console.log('storedFileName: ' + $(this).data('storedFilename'))
+                    fn.download($(this).data('storedFilename'));
+                });
             }
+            
+            console.log(obj.data);
         },
 
         /**
@@ -214,27 +227,6 @@
     }
 
     $(function () {
-        if (!getParameters('id')) {
-            location.href = 'lunch_allMenuList.html';
-        }
-        var callback = ajaxConnect('GET', 'getMenuType', '');
-
-        if (callback.data != undefined) {
-            var obj = callback.data;
-            var source = $("#selectMenuType").html();
-            var template = Handlebars.compile(source);
-            var res = {
-                menuType: obj.data
-            };
-
-            var html = template(res);
-            $("#typeName").append(html);
-        }
-
-        $('#restaurant').text(getParameters('name'));
-        $('#address').text(getParameters('location'));
-        $('#typeName').val(getParameters('type'));
-
         //날짜 포맷 yy-mm-dd
         Handlebars.registerHelper('dateFormat', function (insertDateTime) {
             return insertDateTime.substring(0, 10);
@@ -244,8 +236,8 @@
         Handlebars.registerHelper('starcntFormat', function (star) {
             return star / 2;
         });
-
-        fn.getReview();
+        fn.getMenuDetail();
+        // fn.getReview();
     });
 
     $('#btn_review_detail').on('click', function () {

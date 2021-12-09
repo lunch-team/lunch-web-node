@@ -69,7 +69,7 @@
         </p>
 
         <div class="req_content">
-            <span style="margin-right: 6px;">⭐4.8</span>
+            <span id="star_cnt" style="margin-right: 6px;">⭐ {{star}}</span>
             <span>{{menuName}}</span>
         </div>
     </div>
@@ -103,6 +103,7 @@
             };
 
             $("#contents_list").html(template(res));
+
         } else if (callback.error !== undefined) {
             console.log(callback.error);
             alert(callback.errMsg);
@@ -113,19 +114,14 @@
         localStorage.clear();
         $('#loading_container').hide();
         $('#abc').trigger('click');
-        getAllMenu({'orderType': 'ABC', 'order': 'ASC'})
+        // getAllMenu({'orderType': 'ABC', 'order': 'ASC'})
     });
 
     $(document).on('click', 'div[name="food_box"]', function (e) {
         e.preventDefault();
         e.stopPropagation();
-
-        localStorage.setItem('name', $(this).data('food_name'))
-        localStorage.setItem('location', $(this).data('food_location'))
-        localStorage.setItem('type', $(this).data('food_menutype'))
-        localStorage.setItem('id', $(this).data('food_id'))
-
-        window.location.href = 'lunch_menuDetail.html';
+        // alert($(this).data('food_id'))
+        window.location.href = 'lunch_menuDetail.html?id='+$(this).data('food_id');
     });
 
     // 정렬하여 다시 가져오기
