@@ -54,7 +54,6 @@
     import {
         callAxios,
         ajaxConnect,
-        _BASE_URL,
         popup,
         popupHide,
         toBase64,
@@ -192,7 +191,7 @@
                 }
             }).catch(error => {
                 // 404 (list가 비어있을 경우)일 경우
-                if(error.response.status === 404) {
+                if (error.response.status === 404) {
                     let $fileList = $('#fileList')
                     $fileList.empty()
                 } else {
@@ -215,12 +214,15 @@
                     // fileName: 저장한 파일의 실제 이름
                     $fileList.append(
                         '<li data-file="' + file.fileKey + '"'
-                        + ' class="file-item list-group-item">'
+                        + ' class="file-item list-group-item"'
+                        + '>'
                         + file.fileName
+                        + '<img src="' + window._imgurl + '/' + file.fileKey
+                        + '" alt="' + file.fileName + '" />'
                         + '</li>'
                     )
                     // 파일 다운로드까지 추가
-                    fn.download(file.fileKey)
+                    // fn.download(file.fileKey)
                 }
                 $('.file-item').on('click', fn.delete)
             }

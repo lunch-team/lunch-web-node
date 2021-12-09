@@ -1,15 +1,16 @@
 'use strict'
 
-import _BASE_URL from "./config.js"
+import _CONFIG from "./config.js"
 
 // 즉시 실행 함수로 url 세팅
 (function (url) {
     try {
-        axios.defaults.baseURL = url
+        axios.defaults.baseURL = url._BASE_URL
+        window._imgurl = url._IMG_URL
     } catch (e) {
         console.log('axios is not imported')
     }
-})(_BASE_URL)
+})(_CONFIG)
 
 function callAxios(type, url, param) {
     if (!url) {
@@ -49,7 +50,7 @@ function callAxios(type, url, param) {
 //parameter : type, url, data
 function ajaxConnect(type, url, param) {
 
-    var connectUrl = _BASE_URL + "/menu/";
+    var connectUrl = _CONFIG._BASE_URL + "/menu/";
     var returnData = {};
     $.ajax({
         type: type,
@@ -162,7 +163,7 @@ function popup(options) {
 /* ----------------------------------------------
     탭 (공통)
 --------------------------------------------------- */
-$(".tab_btn").click(function(){
+$(".tab_btn").click(function () {
     $(".tab_btn").removeClass("active");
     $(this).addClass("active");
     var tab_target = $(this).data("target");
@@ -170,14 +171,15 @@ $(".tab_btn").click(function(){
     $("#" + tab_target).show();
 });
 
-var showModal = function(btn_cnt, content){
+var showModal = function (btn_cnt, content) {
     var temp = '';
     temp += '<div class="popup">';
-    temp += '<div class="wrapper"><span class="txt">' + content + '</span></div>';
-    if(btn_cnt === 1){  //알림
+    temp += '<div class="wrapper"><span class="txt">' + content
+        + '</span></div>';
+    if (btn_cnt === 1) {  //알림
         temp += '<div class="popup_btn_wrap">';
         temp += '<button type="button" class="popup_cls" >확인</button>';
-    }else if(btn_cnt === 2){  //컨펌
+    } else if (btn_cnt === 2) {  //컨펌
         temp += '<div class="popup_btn2_wrap">';
         temp += '<button type="button" class="popup_cls" >아니오</button>';
         temp += '<button type="submit" class="popup_cls" >예</button>';
@@ -188,7 +190,7 @@ var showModal = function(btn_cnt, content){
     $(".popup").show();
     $(".dimmed").show();
     /* 팝업 닫기 */
-    $(".popup_cls").click(function(){
+    $(".popup_cls").click(function () {
         $(".popup").remove();
         $(".dimmed").remove();
     });
@@ -354,4 +356,4 @@ Number.prototype.zf = function (len) {
     return this.toString().zf(len);
 };
 
-export {callAxios, ajaxConnect, _BASE_URL, popup, popupHide, toBase64, showModal}
+export {callAxios, ajaxConnect, popup, popupHide, toBase64, showModal}

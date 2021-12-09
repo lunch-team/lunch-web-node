@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
 
     <style>
-       
+
     </style>
 </head>
 <body>
@@ -38,12 +38,14 @@
         >방문수</button> -->
         <input class="btn-order" type="checkbox" id="abc" data-order="asc" data-order-type="abc">
         <label for="abc">가나다</label>
-        <input class="btn-order" type="checkbox" id="recent" data-order="desc" data-order-type="recent">
+        <input class="btn-order" type="checkbox" id="recent" data-order="desc"
+               data-order-type="recent">
         <label for="recent">최근방문</label>
-        <input class="btn-order" type="checkbox" id="count" data-order="desc" data-order-type="count">
+        <input class="btn-order" type="checkbox" id="count" data-order="desc"
+               data-order-type="count">
         <label for="count">방문수</label>
     </div>
- 
+
     <div class="list-wrap" id="contents_list"></div>
     <div class="loading-container" id="loading_container">
         <div class="loading"></div>
@@ -55,12 +57,12 @@
 
 <script id="menuList" type="text/x-handlebars-template">
     {{#menuList}}
-    <div class="round_box" 
-        name="food_box" 
-        data-food_name="{{name}}"
-        data-food_menutype="{{menuType}}" 
-        data-food_id="{{id}}"
-        data-food_location="{{location}}">
+    <div class="round_box"
+         name="food_box"
+         data-food_name="{{name}}"
+         data-food_menutype="{{menuType}}"
+         data-food_id="{{id}}"
+         data-food_location="{{location}}">
         <p class="req_title">
             {{name}}
             <span>
@@ -79,8 +81,7 @@
 <script type="module">
     import {
         callAxios,
-                ajaxConnect,
-        _BASE_URL,
+        ajaxConnect,
         popup,
         popupHide,
         toBase64,
@@ -90,7 +91,7 @@
     function getAllMenu(params) {
         $('.list-wrap').empty()
         $('#loading_container').show();
-        
+
         var callback = ajaxConnect('POST', 'getAllMenu', params);
         if (callback.data !== undefined) {
             $('#loading_container').hide();
@@ -121,7 +122,7 @@
         e.preventDefault();
         e.stopPropagation();
         // alert($(this).data('food_id'))
-        window.location.href = 'lunch_menuDetail.html?id='+$(this).data('food_id');
+        window.location.href = 'lunch_menuDetail.html?id=' + $(this).data('food_id');
     });
 
     // 정렬하여 다시 가져오기
@@ -135,7 +136,7 @@
         } else {
             $(this).data('order', 'ASC')
         }
-        
+
         getAllMenu(params)
     })
 

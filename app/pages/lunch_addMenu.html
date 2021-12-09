@@ -32,16 +32,16 @@
             <div class="srch_box">
                 <input type="text" id="address" name="nm" style="font-size:13px;"/>
                 <button type="button" class="srch_btn" onclick="findAddr()"></button>
-            
+
             </div>
-                
+
         </div>
         <div>
             <span>종류</span>
             <select id="typeName"></select>
         </div>
-     
-        
+
+
     </div>
     <button type="button" class="bottom_btn" id="btn_save">저장</button>
 </div>
@@ -59,14 +59,14 @@
 <script type="module">
     import {
         callAxios,
-                ajaxConnect,
-        _BASE_URL,
+        ajaxConnect,
         popup,
         popupHide,
         toBase64,
         showModal
     } from "../resources/js/common.js";
-        $(function () {
+
+    $(function () {
         //$('#loading_container').hide();
         $('#addmenu_input').hide();
         var callback = ajaxConnect('GET', 'getMenuType', '');

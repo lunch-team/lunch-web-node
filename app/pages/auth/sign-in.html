@@ -23,10 +23,34 @@
         border: 1px solid #d2d2d2;
         border-radius: 5px;
     }
-    .login-btn-wrapper {border-radius:5px; text-align:center; line-height:50px; height:50px;}
-    .login-btn-wrapper > button {color:#ffffff; font-weight: 600;}
-    .logo_wrapper { padding: 70px; text-align: center; font-family:bmhanna_pro; font-size: 40px;}
-    .additional-wrapper {margin-top: 20px; color: #888888; display: flex; justify-content: space-around; width: 100%; font-size: 15px;}
+
+    .login-btn-wrapper {
+        border-radius: 5px;
+        text-align: center;
+        line-height: 50px;
+        height: 50px;
+    }
+
+    .login-btn-wrapper > button {
+        color: #ffffff;
+        font-weight: 600;
+    }
+
+    .logo_wrapper {
+        padding: 70px;
+        text-align: center;
+        font-family: bmhanna_pro;
+        font-size: 40px;
+    }
+
+    .additional-wrapper {
+        margin-top: 20px;
+        color: #888888;
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        font-size: 15px;
+    }
 </style>
 <body>
 <div class="container">
@@ -37,7 +61,7 @@
         <div class="logo_wrapper">
             점심 뭐 먹지?
         </div>
-        
+
         <div class="login-wrapper">
             <div class="login-box">
                 <input id="id" type="text" class="login_input" placeholder="아이디를 입력하세요">
@@ -52,7 +76,7 @@
                 <a id="btnFindIdPw">아이디/비밀번호 찾기</a>
                 <a id="btnSignUp">회원가입</a>
             </div>
-           
+
         </div>
     </div>
 </div>
@@ -61,14 +85,14 @@
 <script type="module">
     import {
         callAxios,
-                ajaxConnect,
-        _BASE_URL,
+        ajaxConnect,
         popup,
         popupHide,
         toBase64,
         showModal
     } from "../../resources/js/common.js";
-        sessionStorage.clear()
+
+    sessionStorage.clear()
     const common = {
         goMain: function () {
             location.href = '../lunch_main.html'

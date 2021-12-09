@@ -13,12 +13,14 @@
         .right {
             float: right;
         }
+
         .left {
             float: left;
         }
+
         .visitCount {
-            font-size: 13px; 
-            color: #707070; 
+            font-size: 13px;
+            color: #707070;
             font-weight: 400;
         }
     </style>
@@ -47,11 +49,11 @@
 
     {{#menuList}}
     <div
-        class="random_list" 
-        name="food_box" 
+        class="random_list"
+        name="food_box"
         data-food_name="{{name}}"
         data-food_location="{{location}}"
-        data-food_menutype="{{menuType}}" 
+        data-food_menutype="{{menuType}}"
         data-food_id="{{id}}"
     >
         <p class="req_title">{{name}}
@@ -69,14 +71,14 @@
 <script type="module">
     import {
         callAxios,
-                ajaxConnect,
-        _BASE_URL,
+        ajaxConnect,
         popup,
         popupHide,
         toBase64,
         showModal
     } from "../resources/js/common.js";
-        $(function () {
+
+    $(function () {
         $('#loading_container').hide();
 
         drawMenu(getRandomMenu({"randomNumber": 5}))

@@ -80,7 +80,8 @@
 <body>
 <div class="container mt-10">
     <div class="header">
-        <span class="float-left btn-back"><</span><h3 id="roomName">Room</h3>
+        <span class="float-left btn-back"><</span>
+        <h3 id="roomName">Room</h3>
     </div>
     <div class="content">
         <ul class="list-group chat-list" id="chatList">
@@ -97,14 +98,14 @@
 <script type="module">
     import {
         callAxios,
-                ajaxConnect,
-        _BASE_URL,
+        ajaxConnect,
         popup,
         popupHide,
         toBase64,
         showModal
     } from "../../../resources/js/common.js";
-        const sock = new SockJS(axios.defaults.baseURL + "/ws-stomp")
+
+    const sock = new SockJS(axios.defaults.baseURL + "/ws-stomp")
     const ws = Stomp.over(sock)
 
     const v = {
@@ -172,7 +173,7 @@
             })
             $('#btnSend').on('click', fn.sendMessage)
             $('#inputText').on('keypress', function (e) {
-                if($('#inputText').val()) {
+                if ($('#inputText').val()) {
                     if (e.which === 13) {
                         fn.sendMessage()
                     }
@@ -181,7 +182,7 @@
         },
         created: function () {
             let sender = sessionStorage.getItem('_name')
-            if(!sender) {
+            if (!sender) {
                 // sender = prompt('대화명을 입력해 주세요.');
                 alert('로그인이 필요합니다.')
                 location.href = '../../auth/sign-in.html'

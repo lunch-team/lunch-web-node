@@ -9,7 +9,7 @@
     <link href="/resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
-   
+
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 </head>
 <body>
@@ -18,7 +18,7 @@
     <span class="title">리뷰작성</span>
 </header>
 <div class="contents_wrap" style="padding-bottom: 100px; overflow: scroll;">
-    
+
     <div class="restaurant_name_wrap" id="restaurant_name"></div>
     <div style="margin-bottom: 30px; font-weight: 600;">
         식사는 맛있게 하셨나요?
@@ -35,19 +35,21 @@
 
     <div class="review_write">
         <p style="font-weight: 600;">리뷰를 작성해 주세요</p>
-        <textarea class="review_write_wrap" id="review_content" placeholder="만족도에 대한 후기를 남겨주세요."></textarea>
-        
+        <textarea class="review_write_wrap" id="review_content"
+                  placeholder="만족도에 대한 후기를 남겨주세요."></textarea>
+
         <!--사진첨부하기 버튼-->
         <label class="input-file-button" for="input-file">
-            <img src="/resources/images/icon-gallery.png"><span style="margin-left: 8px;">사진 첨부하기</span>
+            <img src="/resources/images/icon-gallery.png"><span
+            style="margin-left: 8px;">사진 첨부하기</span>
         </label>
         <input type="file" name="files[]" id="input-file" style="display: none;" multiple/>
 
         <!--업로드 이미지 썸네일-->
         <div id="img_thumbnail" class="img_thumbnail_wrap" style="display: none;">
-    
+
         </div>
-       
+
     </div>
 </div>
 
@@ -62,17 +64,17 @@
     import {
         callAxios,
         ajaxConnect,
-        _BASE_URL,
         popup,
         popupHide,
         toBase64,
         showModal
     } from "../../resources/js/common.js";
-     var getParameters = function (paramName) {
+
+    var getParameters = function (paramName) {
         return localStorage.getItem(paramName);
     };
-     
-    var star_cnt ;
+
+    var star_cnt;
 
     const common = {
         goMain: function () {
@@ -81,14 +83,14 @@
         // verify: function (data) {
         //     // return !!(getParameters('id').trim());
         // },
-        getName: function() {
+        getName: function () {
             const search = location.search;
             // console.log(sch)
             const urlSearchParam = new URLSearchParams(search);
             const sch_keyword = urlSearchParam.get('name');
             return sch_keyword;
         },
-        getId: function() {
+        getId: function () {
             const search = location.search;
             // console.log(sch)
             const urlSearchParam = new URLSearchParams(search);
@@ -103,38 +105,37 @@
         fileList: []
     }
 
-    
-     const fn = {
+    const fn = {
         saveReview: function (groupId) {
             const params = {
                 contents: $('#review_content').val(),
-                memberId : sessionStorage.getItem('_memberId'),
-                menuId : common.getId(),
-                star :  star_cnt,
-                fileId : groupId
+                memberId: sessionStorage.getItem('_memberId'),
+                menuId: common.getId(),
+                star: star_cnt,
+                fileId: groupId
             }
-          
+
             // if (common.verify(params)) {
-                alert("!")
-                axios.post('/menu/registerReview', JSON.stringify(params),
-                    {headers: {'Content-Type': `application/json`}}
-                ).then(response => {
-                    console.log(response)
-                    // axios.defaults.headers.common['Authorization'] = `Bearer ${_accessToken}`
-                    alert('리뷰가 등록되었습니다.')
-                    location.href='lunch_menuDetail.html';
-                }).catch(error => {
-                    if (error.response.status === 401) {
-                        alert('리뷰를 등록하는 도중 오류가 발생했습니다.')
-                    }
-                })
+            alert("!")
+            axios.post('/menu/registerReview', JSON.stringify(params),
+                {headers: {'Content-Type': `application/json`}}
+            ).then(response => {
+                console.log(response)
+                // axios.defaults.headers.common['Authorization'] = `Bearer ${_accessToken}`
+                alert('리뷰가 등록되었습니다.')
+                location.href = 'lunch_menuDetail.html';
+            }).catch(error => {
+                if (error.response.status === 401) {
+                    alert('리뷰를 등록하는 도중 오류가 발생했습니다.')
+                }
+            })
             //}
         },
         /**
          * 파일 업로드
          * @return {boolean}
          */
-         upload: function () {
+        upload: function () {
             // 파일 파라미터 준비
             let formData = new FormData()
             const target = document.getElementsByName('files[]')
@@ -163,7 +164,7 @@
                 {header: {'Content-Type': `multipart/form-data`}}
             ).then(response => {
                 console.log(response.data)
-                
+
                 //이미지 groupId 받아서 리뷰 저장시 같이 보냄
                 const groupId = response.data.data[0].groupId;
 
@@ -216,47 +217,46 @@
             })
         }
     }
-     
-    $('input:radio[name="rating"]').on('change',function(){
+
+    $('input:radio[name="rating"]').on('change', function () {
         console.log($(this).val());
         star_cnt = ($(this).val()) * 2;
         console.log('star_cnt: ' + star_cnt)
     });
 
-    $('#input-file').on('change',function(e){
-        
+    $('#input-file').on('change', function (e) {
+
         $('.img_thumbnail_wrap').show();
 
         var files = e.target.files;
         var filesArr = Array.prototype.slice.call(files);
 
-        filesArr.forEach(function(f){
+        filesArr.forEach(function (f) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                $("#img_thumbnail").append('<img src =' + e.target.result + ' height=150px; style="position:relative;">');
+                $("#img_thumbnail").append(
+                    '<img src =' + e.target.result + ' height=150px; style="position:relative;">');
             }
             reader.readAsDataURL(f);
         });
     });
 
-
-  
     // alert(v.memberId);
     $(function () {
         $('#restaurant_name').text(common.getName());
     });
-   
-    $('#btnUpload').on('click',function(){
+
+    $('#btnUpload').on('click', function () {
         var msg = "리뷰를 등록하시겠습니까?";
         if (confirm(msg) != 0) {
             // fn.saveReview();
-            if($('#img_thumbnail').css('display') == 'none') {
+            if ($('#img_thumbnail').css('display') == 'none') {
                 fn.saveReview();
             } else {
                 fn.upload();//사진등록먼저
             }
-           
+
         }
     });
 

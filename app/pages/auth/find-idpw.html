@@ -74,13 +74,13 @@
 <script type="module">
     import {
         callAxios,
-                ajaxConnect,
-        _BASE_URL,
+        ajaxConnect,
         popup,
         popupHide,
         toBase64,
         showModal
     } from "../../resources/js/common.js";
+
     const common = {
         goMain: function () {
             location.href = '../lunch_main.html'
@@ -120,8 +120,8 @@
             location.href = './find-idpw.html'
         }
     }
-   
-    $('#btn_findId').on('click',function(){
+
+    $('#btn_findId').on('click', function () {
         fn.findId();
     });
 
