@@ -191,55 +191,26 @@
          * @param fileKey
          */
         download: function (fileKey) {
-            // 파라미터 이름은 fileKey
-            const params = {
-                fileKey: fileKey
-            }
-            // responseType: blob
-            axios.post('/file/downloadFile', params,
-                {
-                    header: {
-                        'Content-Type': `application/json`
-                    },
-                    responseType: 'blob'
-                }
-            ).then(response => {
-                // FileReader를 통해 blob 형식 파일 읽기
-                let reader = new FileReader()
-                let imgRaw = response.data
 
-                reader.readAsDataURL(response.data)
-
-                // reader의 onload event 발생했을 때 이미지 태그 찾아 집어 넣기
-                reader.onload = () => {
-                    imgRaw = reader.result
-                    // console.log('fileKey: ' + fileKey)
-                    let targetEl = '.file-wrapper[data-stored-filename="' + fileKey + '"]'
+            let targetEl = '.file-wrapper[data-stored-filename="' + fileKey + '"]'
                     $(targetEl)
-                    .append('<img alt="" src="' + imgRaw + '" style="margin-top:20px 0;">')
-                    // console.log(targetEl)
+                    .append('<img alt="" src="' + window._imgurl +'/' + fileKey + '" style="margin-top:20px 0;">')
+
+            //파일리스트에 파일이 1개면 = review_img_box 아래 span이 1개면 height를 100%
+            //2개면 height를 50%
+            //본인 리뷰인 경우에만 x 버튼 표시
+            $('.review_img_box').each(function (index) {
+                console.log($(this).children('.file-wrapper'));
+                console.log($(this).children('.file-wrapper').length);
+
+                if($(this).children('.file-wrapper').length == 1) {
+                    $(this).children('.file-wrapper').children('img').css('height','380px');
+                } else if($(this).children('.file-wrapper').length == 2) {
+                    $(this).children('.file-wrapper').children('img').css('height','160px');
+                    $(this).children('.file-wrapper').children('img').css('width','100%');
                 }
-
-                //파일리스트에 파일이 1개면 = review_img_box 아래 span이 1개면 height를 100%
-                //2개면 height를 50%
-                //본인 리뷰인 경우에만 x 버튼 표시
-                $('.review_img_box').each(function (index) {
-                    console.log($(this).children('.file-wrapper'));
-                    console.log($(this).children('.file-wrapper').length);
-
-                    if($(this).children('.file-wrapper').length == 1) {
-                        $(this).children('.file-wrapper').children('img').css('height','380px');
-                    } else if($(this).children('.file-wrapper').length == 2) {
-                        $(this).children('.file-wrapper').children('img').css('height','160px');
-                        $(this).children('.file-wrapper').children('img').css('width','100%');
-                    }
-                    
-                });
-
-            }).catch(error => {
-                console.log(error)
-                console.log(error.response)
-            })
+                
+            });
         },
         removeReview: function () {
             const p_id = $(this).data('reviewId');
