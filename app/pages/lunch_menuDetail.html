@@ -10,6 +10,7 @@
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
     <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+
 </head>
 <body>
 <header>
@@ -200,14 +201,13 @@
             //2개면 height를 50%
             //본인 리뷰인 경우에만 x 버튼 표시
             $('.review_img_box').each(function (index) {
-                console.log($(this).children('.file-wrapper'));
-                console.log($(this).children('.file-wrapper').length);
+                // console.log($(this).children('.file-wrapper'));
+                // console.log($(this).children('.file-wrapper').length);
 
                 if($(this).children('.file-wrapper').length == 1) {
-                    $(this).children('.file-wrapper').children('img').css('height','380px');
+                    $(this).children('.file-wrapper').children('img').addClass('img_one');
                 } else if($(this).children('.file-wrapper').length == 2) {
-                    $(this).children('.file-wrapper').children('img').css('height','160px');
-                    $(this).children('.file-wrapper').children('img').css('width','100%');
+                    $(this).children('.file-wrapper').children('img').addClass('img_multi');
                 }
                 
             });

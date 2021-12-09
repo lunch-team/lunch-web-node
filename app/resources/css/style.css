@@ -336,7 +336,9 @@ ul > .restaurant_name {display: flex; align-items: center;}
 .review_detail_box .review_date {font-size:13px; color:#808282;}
 .review_detail_box .review_delete {content: url(../images/cancel_x.png); width: 18px; float: right;}
 .review_detail_box .review_no_data {color: #707474; font-weight: 500;}
-.review_img_box {height:380px;}
+.review_img_box {height:420px;}
+.img_one {width:100%; height:360px; margin-top: 20px;}
+.img_multi {width:100%; height:180px; margin-top: 20px;}
 /* .review_img_box .file-wrapper > img {height:150px;}  */
 
 /*방문 기록*/
