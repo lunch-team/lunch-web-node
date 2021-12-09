@@ -72,77 +72,63 @@
         return localStorage.getItem(paramName);
     };
      
-     var star_cnt ;
-
-    $('input:radio[name="rating"]').on('change',function(){
-        console.log($(this).val());
-        star_cnt = ($(this).val()) * 2;
-        console.log('star_cnt: ' + star_cnt)
-    });
-
-    $('#input-file').on('change',function(e){
-        
-        $('.img_thumbnail_wrap').show();
-
-        var files = e.target.files;
-        var filesArr = Array.prototype.slice.call(files);
-
-        filesArr.forEach(function(f){
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $("#img_thumbnail").append('<img src =' + e.target.result + ' height=150px; style="position:relative;">');
-            }
-            reader.readAsDataURL(f);
-        });
-    });
-
-
-    let v = {
-        targetId:  getParameters('id'),
-        memberId: sessionStorage.getItem('_memberId'),
-        fileList: []
-    }
-    // alert(v.memberId);
-    $(function () {
-        $('#restaurant_name').text(getParameters('name'));
-    });
+    var star_cnt ;
 
     const common = {
         goMain: function () {
             location.href = '../lunch_main.html'
         },
-        verify: function (data) {
-            return !!($('#review_content').val());
+        // verify: function (data) {
+        //     // return !!(getParameters('id').trim());
+        // },
+        getName: function() {
+            const search = location.search;
+            // console.log(sch)
+            const urlSearchParam = new URLSearchParams(search);
+            const sch_keyword = urlSearchParam.get('name');
+            return sch_keyword;
+        },
+        getId: function() {
+            const search = location.search;
+            // console.log(sch)
+            const urlSearchParam = new URLSearchParams(search);
+            const sch_keyword = urlSearchParam.get('id');
+            return sch_keyword;
         }
     }
 
-    const fn = {
+    let v = {
+        targetId: common.getId(),
+        memberId: sessionStorage.getItem('_memberId'),
+        fileList: []
+    }
+
+    
+     const fn = {
         saveReview: function (groupId) {
             const params = {
                 contents: $('#review_content').val(),
                 memberId : sessionStorage.getItem('_memberId'),
-                menuId : getParameters('id'),
+                menuId : common.getId(),
                 star :  star_cnt,
                 fileId : groupId
             }
           
-            if (common.verify(params)) {
+            // if (common.verify(params)) {
                 alert("!")
                 axios.post('/menu/registerReview', JSON.stringify(params),
                     {headers: {'Content-Type': `application/json`}}
                 ).then(response => {
                     console.log(response)
-                    
                     // axios.defaults.headers.common['Authorization'] = `Bearer ${_accessToken}`
                     alert('리뷰가 등록되었습니다.')
-                    return;
+                    location.href='lunch_menuDetail.html';
                 }).catch(error => {
                     if (error.response.status === 401) {
                         alert('리뷰를 등록하는 도중 오류가 발생했습니다.')
                     }
                 })
-            }
+            //}
         },
         /**
          * 파일 업로드
@@ -156,6 +142,7 @@
             Array.prototype.push.apply(v.fileList, target[0].files)
 
             console.log(v.fileList)
+            console.log(v.targetId)
             // 서버에서는 항상 여러 파일로 받아옴
             for (let i = 0; i < v.fileList.length; i++) {
                 // files 이름으로 업로드할 파일들 추가
@@ -229,6 +216,36 @@
             })
         }
     }
+     
+    $('input:radio[name="rating"]').on('change',function(){
+        console.log($(this).val());
+        star_cnt = ($(this).val()) * 2;
+        console.log('star_cnt: ' + star_cnt)
+    });
+
+    $('#input-file').on('change',function(e){
+        
+        $('.img_thumbnail_wrap').show();
+
+        var files = e.target.files;
+        var filesArr = Array.prototype.slice.call(files);
+
+        filesArr.forEach(function(f){
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $("#img_thumbnail").append('<img src =' + e.target.result + ' height=150px; style="position:relative;">');
+            }
+            reader.readAsDataURL(f);
+        });
+    });
+
+
+  
+    // alert(v.memberId);
+    $(function () {
+        $('#restaurant_name').text(common.getName());
+    });
    
     $('#btnUpload').on('click',function(){
         var msg = "리뷰를 등록하시겠습니까?";
