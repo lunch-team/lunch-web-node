@@ -224,13 +224,16 @@
                 //2개면 height를 50%
                  //본인 리뷰인 경우에만 x 버튼 표시
                 $('.review_img_box').each(function(index){
-                    // console.log($(this))
-                    // console.log($(this).data('memberId'));
-                    // if() {
-                    //     $(this).next().css('display', 'none');
-                    // }
                     console.log($(this).children('.file-wrapper'));
-                    //console.log($('.review_img_box > .file-wrapper'));
+                    console.log($(this).children('.file-wrapper').length);
+
+                    if($(this).children('.file-wrapper').length == 1) {
+                        $(this).children('.file-wrapper').children('img').css('height','380px');
+                    } else if($(this).children('.file-wrapper').length == 2) {
+                        $(this).children('.file-wrapper').children('img').css('height','160px');
+                        $(this).children('.file-wrapper').children('img').css('width','100%');
+                    }
+                    
                 });
 
             }).catch(error => {
