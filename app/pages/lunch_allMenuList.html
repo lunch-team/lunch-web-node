@@ -21,29 +21,30 @@
 </header>
 <div class="contents_wrap">
     <div class="btn-wrapper">
-        <!-- <button 
+        <button 
             class="btn-order" 
             data-order="asc"
-            data-order-type="abc"
+            data-order-type="abc" id="abc"
         >가나다</button>
         <button 
             class="btn-order" 
             data-order="desc"
-            data-order-type="recent"
+            data-order-type="recent" id="recent"
         >최근방문</button>
         <button 
             class="btn-order" 
             data-order="desc"
-            data-order-type="count"
-        >방문수</button> -->
-        <input class="btn-order" type="checkbox" id="abc" data-order="asc" data-order-type="abc">
+            data-order-type="count" id="count"
+        >방문수</button>
+
+        <!-- <input class="btn-order" type="checkbox" id="abc" data-order="asc" data-order-type="abc">
         <label for="abc">가나다</label>
         <input class="btn-order" type="checkbox" id="recent" data-order="desc"
                data-order-type="recent">
         <label for="recent">최근방문</label>
         <input class="btn-order" type="checkbox" id="count" data-order="desc"
                data-order-type="count">
-        <label for="count">방문수</label>
+        <label for="count">방문수</label> -->
     </div>
 
     <div class="list-wrap" id="contents_list"></div>
@@ -71,7 +72,7 @@
         </p>
 
         <div class="req_content">
-            <span id="star_cnt" style="margin-right: 6px;">⭐ {{star}}</span>
+            <span id="star_cnt" style="margin-right: 6px;" value="{{star}}">⭐ {{starcntFormat star}}</span>
             <span>{{menuName}}</span>
         </div>
     </div>
@@ -97,6 +98,7 @@
             $('#loading_container').hide();
             var obj = callback.data;
             console.log(obj.data)
+                    
             var source = $("#menuList").html();
             var template = Handlebars.compile(source);
             var res = {
@@ -104,7 +106,7 @@
             };
 
             $("#contents_list").html(template(res));
-
+        
         } else if (callback.error !== undefined) {
             console.log(callback.error);
             alert(callback.errMsg);
@@ -126,7 +128,23 @@
     });
 
     // 정렬하여 다시 가져오기
+    // 가나다 정렬에서 최근방문순 정렬 누르면 가나다 desc, 최근방문 asc로 
     $('.btn-order').on('click', function () {
+        console.log($(this))
+        console.log($(this).hasClass('active'));
+        var isActive = $(this).hasClass('active');
+      
+        if(isActive == false) {
+            $('.btn-order').each(function (index){
+                if($(this).hasClass('active')) {
+                    $(this).removeClass('active');
+                }
+            });
+            $(this).addClass('active');
+        } else {
+            $(this).removeClass('active');
+        }
+      
         var params = {
             'orderType': $(this).data('order-type').toUpperCase(),
             'order': $(this).data('order').toUpperCase()
@@ -138,12 +156,25 @@
         }
 
         getAllMenu(params)
-    })
+    });
+
+    Handlebars.registerHelper('starcntFormat', function (star) {
+        var starCnt = star;
+        
+        if(starCnt != 0) {
+            starCnt = starCnt/2;
+            return starCnt.toFixed(1);
+        } 
+        else if(starCnt == 0) {
+            return '-';
+        }
+    });
 
     //좌측 상단 뒤로가기 버튼
     $('.back_btn').on('click', function () {
         location.href = 'lunch_main.html';
     });
+  
 </script>
 
 

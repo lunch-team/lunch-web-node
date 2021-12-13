@@ -45,6 +45,14 @@
     </div>
     <div class="dimmed"></div>
 
+    <div class="img_wrapper">
+        <span id="btn_img_close" class="btn_img_close"></span>
+        <img class="img_wrap">
+    </div>
+    <div class="dimmed_img">
+        
+    </div>
+    
 </div>
 
 <div class="div_line">
@@ -162,10 +170,10 @@
                 var html = template(res);
 
                 $("#review_list_wrap").append(html);
-
+                
                 $('#review_top_cnt').text(menuReview_length);
                 $('#review_length').text(menuReview_length + '개');
-                $('#review_star_cnt').text();
+                $('#review_star_cnt').text((menuDetail.star / 2).toFixed(1));
 
                 // console.log($('.file-wrapper').data('storedFilename'))
                 // console.log($('.file-wrapper'))
@@ -197,17 +205,20 @@
                     $(targetEl)
                     .append('<img alt="" src="' + window._imgurl +'/' + fileKey + '" style="margin-top:20px 0;">')
 
-            //파일리스트에 파일이 1개면 = review_img_box 아래 span이 1개면 height를 100%
-            //2개면 height를 50%
-            //본인 리뷰인 경우에만 x 버튼 표시
+            //파일리스트에 파일이 1개면 꽉차게 보이고
+            //2개면 height 반씩
             $('.review_img_box').each(function (index) {
                 // console.log($(this).children('.file-wrapper'));
                 // console.log($(this).children('.file-wrapper').length);
 
                 if($(this).children('.file-wrapper').length == 1) {
                     $(this).children('.file-wrapper').children('img').addClass('img_one');
-                } else if($(this).children('.file-wrapper').length == 2) {
+                } 
+                else if($(this).children('.file-wrapper').length == 2) {
                     $(this).children('.file-wrapper').children('img').addClass('img_multi');
+                } 
+                else {
+                    $(this).addClass('img_multi_grid');
                 }
                 
             });
@@ -230,6 +241,9 @@
                 //     alert('리뷰를 가져오는 도중 오류가 발생했습니다.')
                 // }
             })
+        },
+        viewImage: function () {
+            alert("이미지")
         }
     }
 
@@ -241,7 +255,22 @@
 
         //별점 2로 나눠서 보여주기
         Handlebars.registerHelper('starcntFormat', function (star) {
-            return star / 2;
+            const starCnt = star/2;
+            if(starCnt == 1) {
+                return '★☆☆☆☆';
+            } 
+            else if(starCnt == 2) {
+                return '★★☆☆☆';
+            }
+            else if(starCnt == 3) {
+                return '★★★☆☆';
+            }
+            else if(starCnt == 4) {
+                return '★★★★☆';
+            }
+            else if(starCnt == 5) {
+                return '★★★★★';
+            }
         });
         fn.getMenuDetail();
         // fn.getReview();
@@ -361,6 +390,20 @@
         }
     });
 
+    $(document).on('click','.file-wrapper > img', function (e) {
+        //alert('이미지 클릭');
+        const img_url = $(this).attr('src');
+        // alert(img_url);
+        $('.img_wrapper').show()
+        $('.dimmed_img').show()
+        $('.img_wrap').attr('src',img_url);
+    });
+
+    $('#btn_img_close').on('click', function(e){
+        $('.img_wrapper').hide()
+        $('.dimmed_img').hide()
+    });
+
     //좌측 상단 뒤로가기 버튼
     $('.back_btn').on('click', function () {
         window.history.back();
@@ -374,6 +417,7 @@
                 e.stopPropagation()
                 window.history.back()
             })
+            
         }
     }
     init.event()

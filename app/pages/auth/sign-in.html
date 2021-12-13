@@ -11,51 +11,14 @@
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <style>
-    .header {
-        margin-top: 30px;
-    }
-
-    .btn-back {
-        margin-right: 10px;
-        padding-left: 7px;
-        width: 30px;
-        height: 30px;
-        border: 1px solid #d2d2d2;
-        border-radius: 5px;
-    }
-
-    .login-btn-wrapper {
-        border-radius: 5px;
-        text-align: center;
-        line-height: 50px;
-        height: 50px;
-    }
-
-    .login-btn-wrapper > button {
-        color: #ffffff;
-        font-weight: 600;
-    }
-
-    .logo_wrapper {
-        padding: 70px;
-        text-align: center;
-        font-family: bmhanna_pro;
-        font-size: 40px;
-    }
-
-    .additional-wrapper {
-        margin-top: 20px;
-        color: #888888;
-        display: flex;
-        justify-content: space-around;
-        width: 100%;
-        font-size: 15px;
-    }
+   
 </style>
 <body>
 <div class="container">
     <div class="header">
-        <span class="float-left btn-back"><</span>
+        <span class="float-left btn-back">
+            <img src="../../resources/images/link_arrow_left.png">
+        </span>
     </div>
     <div class="contents-wrapper">
         <div class="logo_wrapper">
@@ -68,8 +31,8 @@
                 <input id="pw" type="password" class="login_input" placeholder="비밀번호를 입력하세요">
             </div>
 
-            <div class="login-btn-wrapper bg_color_mint">
-                <button id="btnSignIn">로그인</button>
+            <div class="login-btn-wrapper bg_color_mint" id="btnSignIn">
+                <button type="button">로그인</button>
             </div>
 
             <div class="additional-wrapper">
@@ -98,12 +61,23 @@
             location.href = '../lunch_main.html'
         },
         verify: function (data) {
-            return !!(data.loginId.trim() && data.password.trim());
-        },
-        emailCheck: function (email) {
-            const regex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$/;
-            console.log('email check')
-            return !!(email !== '' && email !== 'undefined' && regex.test(email));
+            console.log(data);
+            const loginId = data.loginId;
+            const password = data.password;
+
+            let result = '';
+            if (!loginId) {
+                result = '아이디를 입려해주세요.';
+            } else if(!password) {
+                result = '비밀번호를 입력해주세요.';
+            }
+            if(result) {
+                alert(result);
+                return false;
+            } else {
+                return true;
+            }
+            
         }
     }
     const fn = {
@@ -141,6 +115,11 @@
             location.href = './find-idpw.html'
         }
     }
+    $('#pw').on('keypress',function(e){
+        if(e.keyCode == '13') {
+            $('#btnSignIn').trigger('click')
+        }
+    });
     const init = {
         event: function () {
             $('.btn-back').on('click', common.goMain)
