@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>점심 뭐 먹지?</title>
+
+    <link href="../../resources/css/common.css" rel="stylesheet" type="text/css"/>
+    <link href="../../resources/css/style.css" rel="stylesheet" type="text/css"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+</head>
+<body>
+<header>
+    <button class="back_btn"></button>
+    <span class="title">아이디 찾기 결과</span>
+</header>
+
+<div class="contents_wrap">
+    
+    <div class="id_list_wrap">
+        <div class="id_list_image">
+            <span><img src="../../resources/images/icon_check1.png" width="30px"></span>
+        </div>
+        <p>고객님의 아이디는 아래와 같습니다.</p>
+        
+        <ul class="findid_list">
+            <li></li>
+        </ul>
+    </div>
+    <button type="button" id="btn_findPw" class="bottom_btn bg_color_mint">비밀번호 찾기</button>
+</div>
+
+<script type="text/javascript" src="../../resources/js/jquery-3.5.1.min.js"></script>
+<script src="../../resources/js/axios.min.js"></script>
+
+<script type="module">
+    import {
+        callAxios,
+        ajaxConnect,
+        popup,
+        popupHide,
+        toBase64,
+        showModal
+    } from "../../resources/js/common.js";
+
+    const common = {
+        goMain: function () {
+            location.href = '../lunch_main.html'
+        },
+        getId: function () {
+            const search = location.search;
+            // console.log(sch)
+            const urlSearchParam = new URLSearchParams(search);
+            const sch_keyword = urlSearchParam.get('id');
+            return sch_keyword;
+        }
+    }
+    const fn = {
+        signUp: function () {
+            location.href = './sign-up.html'
+        },
+        findPw: function () {
+            location.href = './find-idpw.html'
+        }
+    }
+
+    const init = {
+        event: function() {
+            $('.findid_list > li').text(common.getId())
+        }
+    }
+    init.event();
+    $('#btn_findId').on('click', function () {
+        fn.findId();
+    });
+
+    //좌측 상단 뒤로가기 버튼
+    $('.back_btn').on('click', function () {
+        window.history.back();
+    });
+
+</script>
+</body>
+</html>

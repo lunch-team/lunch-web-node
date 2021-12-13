@@ -23,6 +23,7 @@
             <div>
                 <span>아이디</span>
                 <input type="text" id="loginId"/>
+                <!-- <button>중복확인</button> -->
             </div>
             <div>
                 <span>이름</span>
@@ -40,10 +41,7 @@
                 <span>비밀번호 확인</span>
                 <input type="password" id="pw2"/>
             </div>
-
-
         </div>
-
 
         <button
             id="btnSignUp"
@@ -75,17 +73,17 @@
             const loginId = data.loginId
             let result = ''
 
-            if (!email) {
+            if (!loginId) {
+                result = '아이디를 입력해주세요.'
+            } else if (!name) {
+                result = '이름을 입력해주세요.'
+            } else if (!email) {
                 result = '이메일을 입력해주세요.'
             } else if (!password) {
                 result = '비밀번호를 입력해주세요.'
             } else if (!password2) {
                 result = '비밀번호 확인란을 입력해주세요.'
-            } else if (!name) {
-                result = '이름을 입력해주세요.'
-            } else if (!loginId) {
-                result = '로그인아이디를 입력해주세요.'
-            } else if (password !== password2) {
+            }  else if (password !== password2) {
                 result = '비밀번호가 다릅니다.'
             } else if (!common.emailCheck(email)) {
                 result = '올바른 이메일을 입력해주세요.'

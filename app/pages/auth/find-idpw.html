@@ -62,7 +62,7 @@
                 </div>
             </div>
 
-            <button type="button" class="bottom_btn bg_color_mint">비밀번호 재설정</button>
+            <button type="button"  id="btn_findPw" class="bottom_btn bg_color_mint">비밀번호 재설정</button>
         </div><!--비밀번호 찾기 탭 컨텐츠-->
 
     </div>
@@ -86,7 +86,29 @@
             location.href = '../lunch_main.html'
         },
         verify: function (data) {
-            return !!($('#name').val().trim() && $('#email').val().trim());
+            console.log(data);
+            const name = data.name;
+            const email = data.email;
+            const loginId = data.loginId;
+
+            let result = '';
+            if (!name && name != undefined) {
+                result = '이름을 입력해주세요.';
+            } else if(!loginId && loginId != undefined) {
+                result = '아이디를 입력해주세요.';
+            } else if(!email) {
+                result = '이메일을 입력해주세요.';
+            } else if (!common.emailCheck(email)) {
+                result = '올바른 이메일을 입력해주세요.'
+            }
+
+            if(result) {
+                alert(result);
+                return false;
+            } else {
+                return true;
+            }
+            // return !!($('#name').val().trim() && $('#email').val().trim());
         },
         emailCheck: function (email) {
             const regex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$/;
@@ -105,10 +127,13 @@
                     {headers: {'Content-Type': `application/json`}}
                 ).then(response => {
                     console.log(response)
-                    return;
+                    const obj = response.data; 
+                    const find_id = obj.data.loginId;
+                    // console.log(obj.data.email)
+                    location.href = 'find-id-list.html?id=' + find_id;
                 }).catch(error => {
                     if (error.response.status === 401) {
-                        alert('회원 정보가 없습니다.')
+                        alert('일치하는 회원 정보가 없습니다.')
                     }
                 })
             }
@@ -117,7 +142,46 @@
             location.href = './sign-up.html'
         },
         findPw: function () {
-            location.href = './find-idpw.html'
+            const params = {
+                loginId: $('#id').val(),
+                email: $('#email').val()
+            }
+            if (common.verify(params)) {
+                axios.post('/auth/findPw', JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    console.log(response)
+                    const obj = response.data; 
+                    const find_id = obj.data.loginId;
+                    // console.log(obj.data.email)
+                    location.href = 'find-id-list.html?id=' + find_id;
+                }).catch(error => {
+                    if (error.response.status === 401) {
+                        alert('일치하는 회원 정보가 없습니다.')
+                    }
+                })
+            }
+        },
+        resetPassword: function () {
+            const params = {
+                loginId: $('#id').val(),
+                email: $('#email').val()
+            }
+            if (common.verify(params)) {
+                axios.post('/auth/fin', JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    console.log(response)
+                    const obj = response.data; 
+                    const find_id = obj.data.loginId;
+                    // console.log(obj.data.email)
+                    location.href = 'find-id-list.html?id=' + find_id;
+                }).catch(error => {
+                    if (error.response.status === 401) {
+                        alert('일치하는 회원 정보가 없습니다.')
+                    }
+                })
+            }
         }
     }
 
@@ -125,11 +189,20 @@
         fn.findId();
     });
 
+    $('#btn_findPw').on('click', function () {
+        fn.findPw();
+    });
+
     //좌측 상단 뒤로가기 버튼
     $('.back_btn').on('click', function () {
         window.history.back();
     });
 
+    const init = {
+        event: function(){
+            $('#btn_findId').on('click', fn.findId)
+        }
+    }
 </script>
 </body>
 </html>

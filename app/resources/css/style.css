@@ -261,6 +261,12 @@ header .title {
 .find_wrap {margin-top: 20px;}
 .find_id_wrap {text-align: center; margin-bottom:20px;}
 .find_id_wrap > span {font-size: 16px; color:#807F7F;}
+.id_list_wrap > p {margin-bottom: 30px;}
+
+/* 아이디찾기 결과*/
+.id_list_wrap {padding-top:50px; text-align: center;}
+.id_list_wrap .id_list_image {margin-bottom:20px;}
+.findid_list > li {font-size: 16px;}
 
 /* 메인 */
 .home_header {display:flex; height: 60px; padding: 20px;}
@@ -315,6 +321,7 @@ header .title {
 ul > .restaurant_name {display: flex; align-items: center;}
 .restaurant_name > span:nth-of-type(2) {margin-left: auto;}
 .restaurant_name > span {font-size: 20px; font-weight: 700;}
+.restaurant_address > span {font-size:16px;}
 .restaurant_review{display: flex; align-items: center;}
 .restaurant_review > span:nth-of-type(1) {margin-right: 12px;}
 .restaurant_review > span:nth-of-type(2) , .restaurant_review > span:nth-of-type(2)>span {font-size: 14px; color:#7A7D7D;}
