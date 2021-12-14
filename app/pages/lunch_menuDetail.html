@@ -93,7 +93,7 @@
             </span>
             {{/each}}
         </div>
-        <span>{{contents}}</span>
+        <span class="review_content">{{contents}}</span>
     </div>
     {{/reviewList}}
 </script>
@@ -177,6 +177,9 @@
 
                 // console.log($('.file-wrapper').data('storedFilename'))
                 // console.log($('.file-wrapper'))
+                
+                //파일이 없을 경우 높이조절
+
 
                 //파일 리스트 그리기
                 $('.file-wrapper').each(function (index) {
@@ -217,7 +220,7 @@
                 else if($(this).children('.file-wrapper').length == 2) {
                     $(this).children('.file-wrapper').children('img').addClass('img_multi');
                 } 
-                else {
+                else if($(this).children('.file-wrapper').length >= 3){
                     $(this).addClass('img_multi_grid');
                 }
                 
@@ -277,9 +280,14 @@
     });
 
     $('#btn_review_detail').on('click', function () {
+        console.log(sessionStorage.getItem('_loginId'));
+        if(sessionStorage.getItem('_loginId') == null) {
+            alert('리뷰를 작성하려면 로그인이 필요합니다.');
+            return;
+        }
+       
         const menuId = common.getId();
-        window.location.href = 'lunch_reviewWrite.html?name=' + $('#restaurant').text() + '&id='
-            + menuId;
+        window.location.href = 'lunch_reviewWrite.html?name=' + $('#restaurant').text() + '&id='+ menuId;
     });
 
     $('#btn_save').on('click', function () {

@@ -41,8 +41,10 @@
                     <input type="email" id="email"/>
                 </div>
             </div>
-
-            <button type="button" id="btn_findId" class="bottom_btn bg_color_mint">아이디 찾기</button>
+            <div class="btn_wrap">
+                <button type="button" id="btn_findId">아이디 찾기</button>
+            </div>
+           
         </div><!--아이디 찾기 탭 컨텐츠-->
 
         <!-- 비밀번호 찾기 탭 컨텐츠-->
@@ -54,15 +56,17 @@
             <div class="addmenu_wrap" id="addmenu_input">
                 <div>
                     <span>아이디</span>
-                    <input type="text" id="id"/>
+                    <input type="text" id="loginId"/>
                 </div>
                 <div>
                     <span>이메일</span>
-                    <input type="email" id="email"/>
+                    <input type="email" id="loginEmail"/>
                 </div>
             </div>
 
-            <button type="button"  id="btn_findPw" class="bottom_btn bg_color_mint">비밀번호 재설정</button>
+            <div class="btn_wrap">
+                <button type="button" id="btn_resetPw" >비밀번호 재설정</button>
+            </div>
         </div><!--비밀번호 찾기 탭 컨텐츠-->
 
     </div>
@@ -114,9 +118,26 @@
             const regex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(]?)$/;
             console.log('email check')
             return !!(email !== '' && email !== 'undefined' && regex.test(email));
+        },
+        getId: function () {
+            const search = location.search;
+            // console.log(sch)
+            const urlSearchParam = new URLSearchParams(search);
+            const sch_keyword = urlSearchParam.get('type');
+            return sch_keyword;
         }
     }
     const fn = {
+        tabClick: function () {
+            const type = common.getId();
+            // console.log(type)
+            if(type == 'findPw') {
+                $('#tab_pw').trigger('click');
+                $('#loginId').val(localStorage.getItem('findLoginId'));
+
+                localStorage.clear();
+            }
+        },
         findId: function () {
             const params = {
                 name: $('#name').val(),
@@ -130,7 +151,8 @@
                     const obj = response.data; 
                     const find_id = obj.data.loginId;
                     // console.log(obj.data.email)
-                    location.href = 'find-id-list.html?id=' + find_id;
+                    localStorage.setItem('findLoginId', find_id);
+                    location.href = 'find-id-list.html';
                 }).catch(error => {
                     if (error.response.status === 401) {
                         alert('일치하는 회원 정보가 없습니다.')
@@ -143,8 +165,8 @@
         },
         findPw: function () {
             const params = {
-                loginId: $('#id').val(),
-                email: $('#email').val()
+                loginId: $('#loginId').val(),
+                email: $('#loginEmail').val()
             }
             if (common.verify(params)) {
                 axios.post('/auth/findPw', JSON.stringify(params),
@@ -152,9 +174,16 @@
                 ).then(response => {
                     console.log(response)
                     const obj = response.data; 
-                    const find_id = obj.data.loginId;
-                    // console.log(obj.data.email)
-                    location.href = 'find-id-list.html?id=' + find_id;
+                    console.log(obj);
+                    const memberId = obj.data.memberId;
+                    console.log(memberId)
+                    
+                    localStorage.setItem('loginId', $('#loginId').val());
+                    localStorage.setItem('loginEmail', $('#loginEmail').val());
+                    localStorage.setItem('memberId', memberId);
+
+                    location.href = 'reset-password.html';
+
                 }).catch(error => {
                     if (error.response.status === 401) {
                         alert('일치하는 회원 정보가 없습니다.')
@@ -189,7 +218,7 @@
         fn.findId();
     });
 
-    $('#btn_findPw').on('click', function () {
+    $('#btn_resetPw').on('click', function () {
         fn.findPw();
     });
 
@@ -201,8 +230,13 @@
     const init = {
         event: function(){
             $('#btn_findId').on('click', fn.findId)
+        },
+        created: function () {
+            fn.tabClick();
         }
     }
+    init.event()
+    init.created()
 </script>
 </body>
 </html>

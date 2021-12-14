@@ -22,8 +22,9 @@
     </div> -->
     ]
 </div>
-<script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
+<script type="text/javascript" src="../resources/js/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" src="../resources/js/handlebars-4.0.11.js"></script>
+<script src="../resources/js/axios.min.js"></script>
 
 <script id="menuList" type="text/x-handlebars-template">
     <!-- 컨텐츠영역 -->
@@ -112,19 +113,17 @@
         var msg = '삭제하시겠습니까?';
         var deleteParam = {"id": id};
 
-        if (confirm(msg) !== 0) {
-            var callback = ajaxConnect('POST', 'deleteMenuLog', deleteParam);
-            console.log(deleteParam.id);
-            
-            console.log(JSON.stringify(callback));
-            console.log(callback.xhr);
-
-            if (callback.xhr === '200') {
-                alert('삭제되었습니다.');
+        if (confirm(msg)) {
+            axios.post(
+                '/menu/deleteMenuLog',
+                JSON.stringify(deleteParam),
+                {headers: {'Content-Type': `application/json`}}
+            ).then(() => {
+                alert('삭제되었습니다.')
                 window.location.reload()
-            } else {
-                alert('오류가 발생하였습니다.');
-            }
+            }).catch(() => {
+                alert('오류가 발생하였습니다.')
+            })
         }
     });
 

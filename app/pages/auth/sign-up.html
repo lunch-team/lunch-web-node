@@ -22,8 +22,8 @@
         <div class="addmenu_wrap" id="addmenu_input">
             <div>
                 <span>아이디</span>
-                <input type="text" id="loginId"/>
-                <!-- <button>중복확인</button> -->
+                <input type="text" id="loginId" style="width:80%"/>
+                <button class="btn_id_check" id="btnIdCheck">중복확인</button>
             </div>
             <div>
                 <span>이름</span>
@@ -43,11 +43,9 @@
             </div>
         </div>
 
-        <button
-            id="btnSignUp"
-            class="bottom_btn bg_color_mint">
-            회원가입
-        </button>
+        <div class="btn_wrap">
+            <button type="button" id="btnSignUp">회원가입</button>
+        </div>
 
     </div>
 
@@ -73,19 +71,19 @@
             const loginId = data.loginId
             let result = ''
 
-            if (!loginId) {
+            if (!loginId && loginId != undefined) {
                 result = '아이디를 입력해주세요.'
-            } else if (!name) {
+            } else if (!name && name != undefined) {
                 result = '이름을 입력해주세요.'
-            } else if (!email) {
+            } else if (!email && email != undefined) {
                 result = '이메일을 입력해주세요.'
-            } else if (!password) {
+            } else if (!password && password != undefined) {
                 result = '비밀번호를 입력해주세요.'
-            } else if (!password2) {
+            } else if (!password2 && password2 != undefined) {
                 result = '비밀번호 확인란을 입력해주세요.'
             }  else if (password !== password2) {
                 result = '비밀번호가 다릅니다.'
-            } else if (!common.emailCheck(email)) {
+            } else if (!common.emailCheck(email) && email != undefined) {
                 result = '올바른 이메일을 입력해주세요.'
             }
 
@@ -103,6 +101,29 @@
         }
     }
     const fn = {
+        idCheck: function () {
+            const params = {
+                loginId: $('#loginId').val()
+            }
+            if(common.verify(params)) {
+                axios.post('/auth/checkId', JSON.stringify(params),
+                    {headers : {'Content-Type' : `application/json`}}
+                    ).then(response => {
+                        console.log(response)
+                        if(response.status == 200) {
+                            alert('사용할 수 있는 아이디입니다.');
+                        } 
+                        else if(response.status == 409) {
+                            alert('사용할 수 없는 아이디입니다.');
+                        }
+                    }).catch(error => {
+                        console.log(error.response);
+                        if(error.response.data.errorMessage) {
+                            alert(error.response.data.errorMessage); 
+                        }
+                    })
+            }
+        },
         signUp: function () {
             const params = {
                 loginId: $('#loginId').val(),
@@ -152,6 +173,7 @@
                 window.history.back()
             })
             $('#btnSignUp').on('click', fn.signUp)
+            $('#btnIdCheck').on('click', fn.idCheck)
         }
     }
     init.event()

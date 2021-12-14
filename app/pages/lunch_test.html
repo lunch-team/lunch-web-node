@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>점심 뭐 먹지?</title>
+
+    <link href="../resources/css/common.css" rel="stylesheet" type="text/css"/>
+    <link href="../resources/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../resources/css/skeleton.css" rel="stylesheet" type="text/css"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="bar">
+            <div class="indicator"></div>
+          </div>
+        <div class="wrapper">
+          <div class="list"> </div>
+        </div>
+    </div>
+
+<script src="../resources/js/jquery-3.5.1.min.js"></script>
+<script src="../resources/js/handlebars-4.0.11.js"></script>
+<script src="../resources/js/axios.min.js"></script>
+
+<script type="module">
+    import {
+        callAxios,
+        ajaxConnect,
+        popup,
+        popupHide,
+        toBase64,
+        showModal
+    } from "../resources/js/common.js";
+
+    localStorage.clear()
+
+    function connectionTest() {
+        // TEST Code
+        const params = {
+            value: {
+                param1: 'param1',
+                param2: 'param2'
+            },
+            resolve: function (response) {
+                console.log('Call Axios')
+                console.log(response)
+            },
+            reject: function (error) {
+                console.log(error.response)
+            },
+            header: {
+                'Content-Type': `application/json`,
+                'Authorization': `Bearer ${sessionStorage.getItem('_accessToken')}`
+            }
+        }
+        callAxios('post', '/api/postTest', params)
+        location.href = './test/test-index.html'
+    }
+
+    $('.main-title').on('click', connectionTest)
+
+    $('#btn-allFood').on('click', function () {
+        location.href = 'lunch_allMenuList.html';
+    })
+
+    $('#btn-random').on('click', function () {
+        location.href = 'lunch_randomMenu.html';
+    })
+
+    $('#btn-add').on('click', function () {
+        location.href = 'lunch_addMenu.html';
+    })
+
+    $('#btn-visit').on('click', function () {
+        location.href = 'lunch_visitMenuList.html';
+    })
+
+    $('#btn-test').on('click', function () {
+        location.href = 'test/ws-room-list.html';
+    })
+
+    $('#btn-review').on('click', function () {
+        alert('준비중');
+    })
+
+    $('#logout_btn').on('click', function () {
+        location.href = 'auth/sign-in.html';
+    })
+
+    $(function () {
+        if (sessionStorage.getItem('_name')) {
+            // $('#loginText').text('로그아웃')
+            $('#welcome').text(sessionStorage.getItem('_name') + '님')
+        }
+    })
+</script>
+</body>
+</html>
