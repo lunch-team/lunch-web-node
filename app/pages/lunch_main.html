@@ -117,7 +117,17 @@
     })
 
     $('#logout_btn').on('click', function () {
-        location.href = 'auth/sign-in.html';
+        if(sessionStorage.getItem('_loginId') != null) {
+            const msg = '로그아웃 하시겠습니까?';
+
+            if(confirm(msg) != 0) {
+                location.href = 'auth/sign-in.html';
+            }
+        } else if(sessionStorage.getItem('_loginId') == null) {
+            alert('로그인을 먼저 해주세요.');
+            location.href = 'auth/sign-in.html';
+        }
+       
     })
 
     $(function () {

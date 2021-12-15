@@ -12,53 +12,85 @@
     height: 80px;
 }
 
+.detail_wrapper {
+    height: 400px;
+}
+
+/* 메뉴 전체 리스트 */
 .list {
-width: 100%;
-height: 100%;
-background-image: linear-gradient(#f1f3f5 158px, transparent 0), linear-gradient(#f1f3f5 16px, transparent 0), linear-gradient(#f1f3f5 16px, transparent 0), linear-gradient(#f1f3f5 16px, transparent 0), linear-gradient(#f1f3f5 28px, transparent 0), linear-gradient(#f1f3f5 14px, transparent 0), linear-gradient(#f1f3f5 8px, transparent 0), linear-gradient(#f1f3f5 14px, transparent 0), linear-gradient(#f1f3f5 8px, transparent 0);
-/* background-repeat: repeat-y; */
-background-size: 40% 16px, 76px 236px, 65px 198px, 120px 288px;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(#f1f3f5 158px, transparent 0), linear-gradient(#f1f3f5 16px, transparent 0), linear-gradient(#f1f3f5 16px, transparent 0), linear-gradient(#f1f3f5 16px, transparent 0), linear-gradient(#f1f3f5 28px, transparent 0), linear-gradient(#f1f3f5 14px, transparent 0), linear-gradient(#f1f3f5 8px, transparent 0), linear-gradient(#f1f3f5 14px, transparent 0), linear-gradient(#f1f3f5 8px, transparent 0);
+    /* background-repeat: repeat-y; */
+    background-size: 40% 16px, 76px 236px, 65px 198px, 120px 288px;
 
-background-position: 0px 25px, 0px 60px, 313px 25px, 128px 60px
+    background-position: 0px 25px, 0px 60px, 313px 25px, 128px 60px
 }
+
+/* 메뉴 상세 */
+.detail {
+    width: 100%;
+    height: 100%;
+    background-image:   linear-gradient(#f1f3f5 26px, transparent 0), 
+                        linear-gradient(#f1f3f5 26px, transparent 0), 
+                        linear-gradient(#f1f3f5 26px, transparent 0), 
+                        linear-gradient(#f1f3f5 16px, transparent 0), 
+                        linear-gradient(#f1f3f5 26px, transparent 0),
+                        linear-gradient(#f1f3f5 26px, transparent 0); 
+                        
+    /* background-repeat: repeat-y; */
+    background-size: 40% 26px, 
+                    240px 236px, 
+                    65px 198px, 
+                    110px 26px,
+                    100px 20px,
+                    130px 20px;
+
+    background-position: 0px 25px, 
+                        0px 70px, 
+                        313px 25px, 
+                        270px 130px,
+                        0px 130px,
+                        0px 220px;
+}
+
 .bar {
-width: 100%;
-position: absolute;
-animation-name: skeleton;
-animation-duration: 1s;
-animation-iteration-count: infinite;
-animation-timing-function: ease-in;
+    width: 100%;
+    position: absolute;
+    animation-name: skeleton;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in;
 }
 
 .indicator {
-width: 0;
-box-shadow: 0 0 75px 75px white;
+    width: 0;
+    box-shadow: 0 0 75px 75px white;
 }
 
-.bar,
-.indicator {
-height: 100vh;
-}
+.bar, .indicator {
+    height: 100vh;
+    }
 @keyframes skeleton {
-0% {
-transform: translateX(0);
-opacity: 0;
-}
+    0% {
+    transform: translateX(0);
+    opacity: 0;
+    }
 
-20% {
-opacity: 0.25;
-}
+    20% {
+    opacity: 0.25;
+    }
 
-50% {
-opacity: 1;
-}
+    50% {
+    opacity: 1;
+    }
 
-80% {
-opacity: 0.5;
-}
+    80% {
+    opacity: 0.5;
+    }
 
-100% {
-transform: translateX(100%);
-opacity: 0;
-}
+    100% {
+    transform: translateX(100%);
+    opacity: 0;
+    }
 }

@@ -8,6 +8,7 @@
 
     <link href="/resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="/resources/css/skeleton.css" rel="stylesheet" type="text/css"/>
     <link rel="preconnect" href="https://fonts.gstatic.com"/>
     <style>
         .right {
@@ -33,11 +34,24 @@
 
 <div class="contents_wrap" id="contents_list">
     <button class="random_btn" id="btnRandomMenu">메뉴 추천</button>
-    <div class="loading-container" id="loading_container">
-        <div class="loading"></div>
-        <div id="loading-text">loading</div>
-    </div>
     <div class="random_list_wrap" id="contents"></div>
+    <div class="loading-container" id="loading_container" style="padding:0 20px;">
+        <div class="bar">
+            <div class="indicator"></div>
+        </div>
+        <div class="wrapper">
+          <div class="list"> </div>
+        </div>
+        <div class="wrapper">
+            <div class="list"> </div>
+        </div>
+        <div class="wrapper">
+            <div class="list"> </div>
+        </div>
+        <div class="wrapper">
+            <div class="list"> </div>
+        </div>
+    </div>
     <br/>
 </div>
 
@@ -79,8 +93,6 @@
     } from "../resources/js/common.js";
 
     $(function () {
-        $('#loading_container').hide();
-
         drawMenu(getRandomMenu({"randomNumber": 5}))
     });
 

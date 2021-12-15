@@ -347,7 +347,9 @@ ul > .restaurant_name {display: flex; align-items: center;}
 .review_detail_box > div > span{font-size: 15px; color:#000000; font-weight: 600;}
 .review_detail_box .review_star {font-size:15px; margin-right:10px;}
 .review_detail_box .review_date {font-size:13px; color:#808282;}
-.review_detail_box .review_delete {content: url(../images/cancel_x.png); width: 18px; float: right;}
+.review_detail_box .review_detail_top {display: flex; align-items: center;} 
+.review_detail_top .review_writer {margin-right:10px;}
+.review_detail_box .review_delete {content: url(../images/link_arrow_right.png); width: 10px;}
 .review_detail_box .review_no_data {color: #707474; font-weight: 500;}
 .review_detail_box .review_content {font-size:16px;}
 .review_img_box {height:auto; padding-bottom:10px;}
