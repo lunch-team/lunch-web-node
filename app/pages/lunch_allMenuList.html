@@ -125,7 +125,7 @@
         //return;
         var callback = ajaxConnect('POST', 'getAllMenu', params);
         if (callback.data !== undefined) {
-            // $('#loading_container').hide();
+            $('#loading_container').hide();
             var obj = callback.data;
             console.log(obj.data)
                     

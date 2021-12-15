@@ -238,25 +238,6 @@
                 
             });
         },
-        removeReview: function () {
-            const p_id = $(this).data('reviewId');
-            console.log(p_id);
-
-            const params = {
-                id: p_id
-            }
-
-            axios.post('/menu/removeReview', JSON.stringify(params),
-                {headers: {'Content-Type': `application/json`}}
-            ).then(response => {
-                alert('리뷰가 삭제되었습니다.');
-
-            }).catch(error => {
-                // if (error.response.status === 401) {
-                //     alert('리뷰를 가져오는 도중 오류가 발생했습니다.')
-                // }
-            })
-        },
         viewImage: function () {
             alert("이미지")
         }
@@ -393,7 +374,7 @@
             ).then(response => {
                 if (response.status === 200) {
                     alert('리뷰를 삭제하였습니다.');
-
+                    location.href = 'lunch_menuDetail.html?id=' + common.getId();
                 }
             }).catch(error => {
                 console.log(error.response);

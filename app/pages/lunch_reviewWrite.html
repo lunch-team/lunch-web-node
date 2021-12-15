@@ -17,6 +17,13 @@
     <button class="back_btn"></button>
     <span class="title">리뷰작성</span>
 </header>
+<div class="loadingbar_wrapper">
+    <div id="wrapper">
+        <div id="spinner"></div>
+    </div>
+</div>
+<div class="dimmed" style="opacity:0.5;"></div>
+
 <div class="contents_wrap" style="padding-bottom: 100px; overflow: scroll;">
 
     <div class="restaurant_name_wrap" id="restaurant_name"></div>
@@ -51,11 +58,12 @@
         </div>
 
     </div>
+    <div class="btn_wrap">
+        <button type="button" id="btnUpload" >저장</button>
+    </div>
 </div>
 
-<div class="btn_wrap">
-    <button type="button" id="btnUpload" >저장</button>
-</div>
+
 
 <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
@@ -79,12 +87,6 @@
             location.href = '../lunch_main.html'
         },
         verify: function (data) {
-            // contents: $('#review_content').val(),
-            // memberId: sessionStorage.getItem('_memberId'),
-            //     menuId: common.getId(),
-            //     star: star_cnt,
-            //     fileId: groupId
-
             //필수입력값 : 별점, 리뷰내용
             console.log(data)
             const star = data.star
@@ -137,16 +139,29 @@
                 fileId: groupId
             }
 
+             //로딩바
+            $('.contents_wrap').hide();
+            $('.loadingbar_wrapper').show();
+            $('.dimmed').show();
+            
             axios.post('/menu/registerReview', JSON.stringify(params),
                 {headers: {'Content-Type': `application/json`}}
             ).then(response => {
                 console.log(response)
+                
+                //로딩바
+                $('.contents_wrap').show();
+                $('.loadingbar_wrapper').hide();
+                $('.dimmed').hide();
+            
                 // axios.defaults.headers.common['Authorization'] = `Bearer ${_accessToken}`
                 alert('리뷰가 등록되었습니다.');
                 location.href = 'lunch_menuDetail.html?id=' + common.getId();
             }).catch(error => {
                 if (error.response.status === 401) {
                     alert('리뷰를 등록하는 도중 오류가 발생했습니다.')
+                } else {
+                    alert('오류가 발생했습니다.')
                 }
             })
             //}
@@ -179,6 +194,12 @@
                 console.log('No File Check')
                 return false
             }
+
+            //로딩바
+            $('.contents_wrap').hide();
+            $('.loadingbar_wrapper').show();
+            $('.dimmed').show();
+
             // 업로드 api 호출
             axios.post('/file/upload', formData,
                 {header: {'Content-Type': `multipart/form-data`}}
@@ -265,6 +286,7 @@
     // alert(v.memberId);
     $(function () {
         $('#restaurant_name').text(common.getName());
+        $('.loadingbar_wrapper').hide();
     });
 
     $('#btnUpload').on('click', function () {
