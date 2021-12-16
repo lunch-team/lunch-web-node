@@ -22,8 +22,11 @@
         <div class="addmenu_wrap" id="addmenu_input">
             <div>
                 <span>아이디</span>
-                <input type="text" id="loginId" style="width:80%"/>
-                <button class="btn_id_check" id="btnIdCheck">중복확인</button>
+                <div class="id_input_wrap">
+                    <input type="text" id="loginId" style="width:80%"/>
+                    <button class="btn_id_check" id="btnIdCheck">중복확인</button>
+                </div>
+               
             </div>
             <div>
                 <span>이름</span>
@@ -113,12 +116,13 @@
                         if(response.status == 200) {
                             alert('사용할 수 있는 아이디입니다.');
                         } 
-                        else if(response.status == 409) {
+                       
+                    }).catch(error => {
+                        if(error.response.status == 409) {
                             alert('사용할 수 없는 아이디입니다.');
                         }
-                    }).catch(error => {
-                        console.log(error.response);
-                        if(error.response.data.errorMessage) {
+
+                        else if(error.response.data.errorMessage) {
                             alert(error.response.data.errorMessage); 
                         }
                     })
