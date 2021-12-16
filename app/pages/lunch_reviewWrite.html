@@ -17,12 +17,14 @@
     <button class="back_btn"></button>
     <span class="title">리뷰작성</span>
 </header>
-<div class="loadingbar_wrapper">
-    <div id="wrapper">
-        <div id="spinner"></div>
+
+<div class="dimmed" style="opacity:0.5;">
+    <div class="loadingbar_wrapper">
+        <div id="wrapper">
+            <div id="spinner"></div>
+        </div>
     </div>
 </div>
-<div class="dimmed" style="opacity:0.5;"></div>
 
 <div class="contents_wrap" style="padding-bottom: 100px; overflow: scroll;">
 
@@ -140,7 +142,6 @@
             }
 
              //로딩바
-            $('.contents_wrap').hide();
             $('.loadingbar_wrapper').show();
             $('.dimmed').show();
             
@@ -150,7 +151,6 @@
                 console.log(response)
                 
                 //로딩바
-                $('.contents_wrap').show();
                 $('.loadingbar_wrapper').hide();
                 $('.dimmed').hide();
             
@@ -196,7 +196,6 @@
             }
 
             //로딩바
-            $('.contents_wrap').hide();
             $('.loadingbar_wrapper').show();
             $('.dimmed').show();
 

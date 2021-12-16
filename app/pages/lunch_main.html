@@ -8,15 +8,16 @@
 
     <link href="../resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="../resources/css/style.css" rel="stylesheet" type="text/css"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+   
 </head>
 <body>
 <div class="home_header bg_color_mint_2">
     <span class="main-title">점심 뭐 먹지?</span>
 
-    <span class="btn_logout" id="logout_btn">
+    <span class="login_out_wrap" id="login_out">
         <span class="login_user" id="welcome"></span>
-        <img src="../resources/images/logout.svg">
+        <img src="../resources/images/logout.svg" id="btn_logout">
+        <img src="../resources//images/login_icon.svg" style="height:25px;" id="btn_login">
     </span>
 </div>
 
@@ -67,6 +68,19 @@
 
     localStorage.clear()
 
+    const fn = {
+        //로그인 여부에 따른 아이콘 표시
+        setUserName: function() {
+            if (sessionStorage.getItem('_name')) {
+                // $('#loginText').text('로그아웃')
+                $('#btn_logout').show();
+                $('#welcome').text(sessionStorage.getItem('_name') + '님')
+            } else {
+                $('#btn_login').show();
+            }
+        }
+    }
+
     function connectionTest() {
         // TEST Code
         const params = {
@@ -113,29 +127,32 @@
     })
 
     $('#btn-review').on('click', function () {
-        alert('준비중');
+        alert('준비 중');
     })
 
-    $('#logout_btn').on('click', function () {
+    $('#btn_logout').on('click', function () {
         if(sessionStorage.getItem('_loginId') != null) {
             const msg = '로그아웃 하시겠습니까?';
 
             if(confirm(msg) != 0) {
                 location.href = 'auth/sign-in.html';
             }
-        } else if(sessionStorage.getItem('_loginId') == null) {
-            alert('로그인을 먼저 해주세요.');
-            location.href = 'auth/sign-in.html';
         }
-       
     })
 
-    $(function () {
-        if (sessionStorage.getItem('_name')) {
-            // $('#loginText').text('로그아웃')
-            $('#welcome').text(sessionStorage.getItem('_name') + '님')
+    $('#btn_login').on('click', function () {
+        location.href = 'auth/sign-in.html';
+    });
+
+    const init = {
+        created: function () {
+            fn.setUserName()
+        },
+        event: function() {
+            
         }
-    })
+    }
+    init.created()
 </script>
 </body>
 </html>

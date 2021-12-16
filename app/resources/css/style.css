@@ -294,8 +294,9 @@ header .title {
 /* 메인 */
 .home_header {display:flex; height: 60px; padding: 20px;}
 .home_header .main-title {color: #ffffff; font-weight: 500;}
-.home_header .btn_logout {margin-left: auto;}
-.btn_logout .login_user {color: #ffffff; font-weight: 500; margin-right: 10px;}
+.home_header .login_out_wrap {margin-left: auto;}
+.login_out_wrap .login_user {color: #ffffff; font-weight: 500; margin-right: 10px;}
+.login_out_wrap > img {display: none;}
 .home_wrap {padding: 20px; width: 100%; height: calc(100vh - 60px); position: relative; background-color: #fff;}
 .home_wrap .menu_list {display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px;}
 .menu_list > li {
@@ -364,7 +365,7 @@ ul > .restaurant_name {display: flex; align-items: center;}
 .review_detail_box .review_date {font-size:13px; color:#808282;}
 .review_detail_box .review_detail_top {display: flex; align-items: center;} 
 .review_detail_top .review_writer {margin-right:10px;}
-.review_detail_box .review_delete {content: url(../images/link_arrow_right.png); width: 10px;}
+.review_detail_box .review_delete {content: url(../images/cancel_x.png); width: 10px; margin-left:auto;}
 .review_detail_box .review_no_data {color: #707474; font-weight: 500;}
 .review_detail_box .review_content {font-size:16px;}
 .review_img_box {height:auto; padding-bottom:10px;}
