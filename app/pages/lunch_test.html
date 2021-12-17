@@ -45,16 +45,9 @@
 <script src="../resources/js/axios.min.js"></script>
 
 <script type="module">
-    import {
-        callAxios,
-        ajaxConnect,
-        popup,
-        popupHide,
-        toBase64,
-        showModal
-    } from "../resources/js/common.js";
+    import * as _cmm from "../resources/js/common.js";
 
-    localStorage.clear()
+    sessionStorage.clear()
 
     function connectionTest() {
         // TEST Code
@@ -72,10 +65,10 @@
             },
             header: {
                 'Content-Type': `application/json`,
-                'Authorization': `Bearer ${sessionStorage.getItem('_accessToken')}`
+                // 'Authorization': `Bearer ${localStorage.getItem('_accessToken')}`
             }
         }
-        callAxios('post', '/api/postTest', params)
+        _cmm.callAxios('post', '/api/postTest', params)
         location.href = './test/test-index.html'
     }
 
@@ -110,9 +103,9 @@
     })
 
     $(function () {
-        if (sessionStorage.getItem('_name')) {
+        if (localStorage.getItem('_name')) {
             // $('#loginText').text('로그아웃')
-            $('#welcome').text(sessionStorage.getItem('_name') + '님')
+            $('#welcome').text(localStorage.getItem('_name') + '님')
         }
     })
 </script>

@@ -8,7 +8,7 @@
 
     <link href="../resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="../resources/css/style.css" rel="stylesheet" type="text/css"/>
-   
+
 </head>
 <body>
 <div class="home_header bg_color_mint_2">
@@ -56,92 +56,77 @@
 <script src="../resources/js/axios.min.js"></script>
 
 <script type="module">
-    import {
-        callAxios,
-        ajaxConnect,
-        popup,
-        popupHide,
-        toBase64,
-        showModal
-    } from "../resources/js/common.js";
-
-    localStorage.clear()
+    import * as _cmm from "../resources/js/common.js";
 
     const fn = {
         //로그인 여부에 따른 아이콘 표시
-        setUserName: function() {
-            if (sessionStorage.getItem('_name')) {
+        setUserName: () => {
+            if (localStorage.getItem('_name')) {
                 // $('#loginText').text('로그아웃')
                 $('#btn_logout').show();
-                $('#welcome').text(sessionStorage.getItem('_name') + '님')
+                $('#welcome').text(localStorage.getItem('_name') + '님')
             } else {
                 $('#btn_login').show();
             }
         },
 
         //화면이동 이벤트
-        goMenuList: function() {
+        goMenuList: function () {
             location.href = 'lunch_allMenuList.html';
         },
-        goRandomMenu: function() {
+        goRandomMenu: function () {
             location.href = 'lunch_randomMenu.html';
         },
-        goAddMenu: function() {
+        goAddMenu: function () {
             location.href = 'lunch_addMenu.html';
         },
-        goVisitList: function() {
+        goVisitList: function () {
             location.href = 'lunch_visitMenuList.html';
         },
-        goRoomList: function() {
+        goRoomList: function () {
             location.href = 'test/ws-room-list.html';
         },
-        goReviewList: function() {
+        goReviewList: function () {
             alert('준비 중');
         },
-        goLogout: function() {
-            if(sessionStorage.getItem('_loginId') != null) {
-                const msg = '로그아웃 하시겠습니까?';
+        goLogout: function () {
+            const msg = '로그아웃 하시겠습니까?';
 
-                if(confirm(msg) != 0) {
-                    location.href = 'auth/sign-in.html';
-                }
+            if (confirm(msg)) {
+                location.href = 'auth/sign-in.html';
             }
         },
-        goLogin: function() {
+        goLogin: function () {
             location.href = 'auth/sign-in.html';
-        }
-    }
-
-    function connectionTest() {
-        // TEST Code
-        const params = {
-            value: {
-                param1: 'param1',
-                param2: 'param2'
-            },
-            resolve: function (response) {
-                console.log('Call Axios')
-                console.log(response)
-            },
-            reject: function (error) {
-                console.log(error.response)
-            },
-            header: {
-                'Content-Type': `application/json`,
-                'Authorization': `Bearer ${sessionStorage.getItem('_accessToken')}`
+        },
+        goTest: function () {
+            location.href = 'test/test-index.html'
+        },
+        checkLogin: () => {
+            const token = _cmm.getCookie('_accessToken')
+            if (token) {
+                axios.get('/member/me', {
+                    // headers: {
+                    //     Authorization: `Bearer ${token}`
+                    // }
+                }).then(response => {
+                    console.log(response)
+                }).catch(error => {
+                    console.log(error.response)
+                    alert('토큰이 만료되었습니다. 로그아웃됩니다.')
+                    _cmm.clearToken()
+                })
             }
         }
-        callAxios('post', '/api/postTest', params)
-        location.href = './test/test-index.html'
     }
-
-    $('.main-title').on('click', connectionTest)
 
     const init = {
         created: function () {
             fn.setUserName()
+            fn.checkLogin()
         },
-        event: function() {
+        event: function () {
+            $('.main-title').on('click', fn.goTest)
             $('#btn-allFood').on('click', fn.goMenuList)
             $('#btn-add').on('click', fn.goAddMenu)
             $('#btn-visit').on('click', fn.goVisitList)

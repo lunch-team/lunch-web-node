@@ -56,19 +56,12 @@
 </script>
 
 <script type="module">
-    import {
-        callAxios,
-        ajaxConnect,
-        popup,
-        popupHide,
-        toBase64,
-        showModal
-    } from "../resources/js/common.js";
+    import * as _cmm from "../resources/js/common.js";
 
     $(function () {
         //$('#loading_container').hide();
         $('#addmenu_input').hide();
-        var callback = ajaxConnect('GET', 'getMenuType', '');
+        var callback = _cmm.callAjax('GET', 'getMenuType', '');
 
         if (callback.data != undefined) {
             $('#loading_container').hide();
@@ -116,7 +109,7 @@
         var msg = "메뉴를 추가하시겠습니까?";
         if (confirm(msg) != 0) {
             // Yes click
-            var callback = ajaxConnect('POST', 'addMenu', addMenuData);
+            var callback = _cmm.callAjax('POST', 'addMenu', addMenuData);
             // $('#loading_container').show();
 
             if (callback.xhr == '200') {

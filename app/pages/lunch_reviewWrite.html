@@ -70,14 +70,7 @@
 <script type="text/javascript" src="/resources/js/axios.min.js"></script>
 
 <script type="module">
-    import {
-        callAxios,
-        ajaxConnect,
-        popup,
-        popupHide,
-        toBase64,
-        showModal
-    } from "../../resources/js/common.js";
+    import * as _cmm from "../../resources/js/common.js";
 
     let star_cnt;
 
@@ -326,7 +319,7 @@
         var msg = "메뉴를 추가하시겠습니까?";
         if (confirm(msg) != 0) {
             // Yes click
-            var callback = ajaxConnect('POST', 'addMenu', addMenuData);
+            var callback = _cmm.callAjax('POST', 'addMenu', addMenuData);
             // $('#loading_container').show();
 
             if (callback.xhr == '200') {

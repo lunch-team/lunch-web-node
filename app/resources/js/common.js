@@ -2,11 +2,50 @@
 
 import _CONFIG from "./config.js"
 
+function getCookie(name) {
+    let value
+        = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)')
+    return value ? unescape(value[2]) : null
+}
+
+function setCookie(name, value, exp) {
+    let date = new Date()
+    date.setTime(date.getTime() + (exp ? exp : 1) * 60 * 60 * 24 * 1000)
+    document.cookie
+        = name + '='
+        + value + ';expires='
+        + date.toUTCString() + ';path=/'
+}
+
+function deleteCookie(name) {
+    if (getCookie(name)) {
+        let date = new Date();
+        document.cookie = name + '= ' + '; expires=' + date.toUTCString()
+            + '; path=/'
+    } else {
+        console.log('no cookie: ' + name)
+    }
+}
+
+function clearToken() {
+    if (getCookie('_accessToken')) {
+        deleteCookie('_accessToken')
+    }
+    if (getCookie('_refreshToken')) {
+        deleteCookie('_refreshToken')
+    }
+    localStorage.clear()
+}
+
 // 즉시 실행 함수로 url 세팅
 (function (url) {
     try {
         axios.defaults.baseURL = url._BASE_URL
         window._imgurl = url._IMG_URL
+        const token = getCookie('_accessToken')
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+        }
     } catch (e) {
         console.log('axios is not imported')
     }
@@ -34,7 +73,8 @@ function callAxios(type, url, param) {
         param.header = {'Content-Type': `application/json`}
     }
     if (type.toUpperCase() === 'GET') {
-        axios.get(url, JSON.stringify(param.value),
+        axios.get(url,
+            // JSON.stringify(param.value),
             {headers: param.header}
         ).then(param.resolve).catch(param.reject)
     } else if (type.toUpperCase() === 'POST') {
@@ -48,14 +88,18 @@ function callAxios(type, url, param) {
 }
 
 //parameter : type, url, data
-function ajaxConnect(type, url, param) {
+function callAjax(type, url, param) {
 
     var connectUrl = _CONFIG._BASE_URL + "/menu/";
     var returnData = {};
+    var header = localStorage.getItem('_accessToken')
+    header = header ? {'Authorization': `Bearer ` + header} : ''
+    console.log(header)
     $.ajax({
         type: type,
         url: connectUrl + url,
         dataType: 'json',
+        header: header,
         async: false,
         contentType: 'application/json',
         data: JSON.stringify(param),
@@ -356,4 +400,15 @@ Number.prototype.zf = function (len) {
     return this.toString().zf(len);
 };
 
-export {callAxios, ajaxConnect, popup, popupHide, toBase64, showModal}
+export {
+    setCookie,
+    getCookie,
+    deleteCookie,
+    clearToken,
+    callAxios,
+    callAjax,
+    popup,
+    popupHide,
+    // toBase64,
+    // showModal
+}

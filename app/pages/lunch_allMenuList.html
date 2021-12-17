@@ -108,14 +108,7 @@
 </script>
 
 <script type="module">
-    import {
-        callAxios,
-        ajaxConnect,
-        popup,
-        popupHide,
-        toBase64,
-        showModal
-    } from "../resources/js/common.js";
+    import * as _cmm from "../resources/js/common.js";
 
 
     function getAllMenu(params) {
@@ -123,7 +116,7 @@
         $('#loading_container').show();
 
         //return;
-        var callback = ajaxConnect('POST', 'getAllMenu', params);
+        var callback = _cmm.callAjax('POST', 'getAllMenu', params);
         if (callback.data !== undefined) {
             $('#loading_container').hide();
             var obj = callback.data;
@@ -144,7 +137,6 @@
     }
 
     $(function () {
-        localStorage.clear();
         // $('#loading_container').hide();
         $('#abc').trigger('click');
         // getAllMenu({'orderType': 'ABC', 'order': 'ASC'})

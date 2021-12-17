@@ -83,21 +83,14 @@
 
 
 <script type="module">
-    import {
-        callAxios,
-        ajaxConnect,
-        popup,
-        popupHide,
-        toBase64,
-        showModal
-    } from "../resources/js/common.js";
+    import * as _cmm from "../resources/js/common.js";
 
     $(function () {
         drawMenu(getRandomMenu({"randomNumber": 5}))
     });
 
     function getRandomMenu(params) {
-        return ajaxConnect('POST', 'getRandomMenu', params);
+        return _cmm.callAjax('POST', 'getRandomMenu', params);
     }
 
     function drawMenu(callback) {
@@ -139,7 +132,7 @@
         if (confirm(msg) != 0) {
             // Yes click
             var addData = {"id": id};
-            var callback = ajaxConnect('POST', 'visitMenu', addData);
+            var callback = _cmm.callAjax('POST', 'visitMenu', addData);
             console.log(JSON.stringify(callback));
 
             //성공

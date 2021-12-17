@@ -11,7 +11,7 @@
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <style>
-   
+
 </style>
 <body>
 <div class="container">
@@ -46,16 +46,9 @@
 
 </body>
 <script type="module">
-    import {
-        callAxios,
-        ajaxConnect,
-        popup,
-        popupHide,
-        toBase64,
-        showModal
-    } from "../../resources/js/common.js";
+    import * as _cmm from "../../resources/js/common.js";
 
-    sessionStorage.clear()
+    localStorage.clear()
     const common = {
         goMain: function () {
             location.href = '../lunch_main.html'
@@ -68,16 +61,16 @@
             let result = '';
             if (!loginId) {
                 result = '아이디를 입력해주세요.';
-            } else if(!password) {
+            } else if (!password) {
                 result = '비밀번호를 입력해주세요.';
             }
-            if(result) {
+            if (result) {
                 alert(result);
                 return false;
             } else {
                 return true;
             }
-            
+
         }
     }
     const fn = {
@@ -92,14 +85,14 @@
                 ).then(response => {
                     console.log(response)
                     const _accessToken = response.data.token.accessToken
-                    sessionStorage.setItem('_accessToken', _accessToken)
-                    sessionStorage.setItem('_refreshToken', response.data.token.refreshToken)
-                    sessionStorage.setItem('_memberId', response.data.memberInfo.id)
-                    sessionStorage.setItem('_loginId', response.data.memberInfo.loginId)
-                    sessionStorage.setItem('_name', response.data.memberInfo.name)
+                    _cmm.setCookie('_accessToken', _accessToken)
+                    _cmm.setCookie('_refreshToken', response.data.token.refreshToken)
+                    localStorage.setItem('_memberId', response.data.memberInfo.id)
+                    localStorage.setItem('_loginId', response.data.memberInfo.loginId)
+                    localStorage.setItem('_name', response.data.memberInfo.name)
                     // axios.defaults.headers.common['Authorization'] = `Bearer ${_accessToken}`
 
-                    alert(sessionStorage.getItem('_name') + '님 안녕하세요.')
+                    alert(localStorage.getItem('_name') + '님 안녕하세요.')
                     common.goMain()
                 }).catch(error => {
                     if (error.response.status === 401) {
@@ -122,8 +115,11 @@
             }
         }
     }
-    
+
     const init = {
+        created: function () {
+            _cmm.clearToken()
+        },
         event: function () {
             $('.btn-back').on('click', common.goMain)
             $('#btnSignIn').on('click', fn.signIn)
@@ -132,6 +128,7 @@
             $('#pw').on('keypress', fn.onEnter)
         }
     }
+    init.created()
     init.event()
 </script>
 </html>

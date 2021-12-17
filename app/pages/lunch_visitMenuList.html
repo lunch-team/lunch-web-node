@@ -84,14 +84,7 @@
 </script>
 
 <script type="module">
-    import {
-        callAxios,
-        ajaxConnect,
-        popup,
-        popupHide,
-        toBase64,
-        showModal
-    } from "../resources/js/common.js";
+    import * as _cmm from "../resources/js/common.js";
 
     function drawList(callback) {
         if (callback.data !== undefined) {
@@ -126,7 +119,7 @@
 
     $(function () {
         // $('#loading_container').hide(); //로딩바 숨기기
-        var callback = ajaxConnect('POST', 'getVisitMenuList', {"order": "DESC"});
+        var callback = _cmm.callAjax('POST', 'getVisitMenuList', {"order": "DESC"});
         drawList(callback);
     });
 
@@ -174,18 +167,18 @@
             html: html,
             type: 2,
             callback: function () {
-                ajaxConnect('POST', 'updateMenuLog', {
+                _cmm.callAjax('POST', 'updateMenuLog', {
                     id: id,
                     insertDateTime: $('#insertDateTime').val() + 'T' + idt[1],
                     callback: function () {
-                        var callback = ajaxConnect('POST', 'getVisitMenuList', {"order": "DESC"})
+                        var callback = _cmm.callAjax('POST', 'getVisitMenuList', {"order": "DESC"})
                         drawList(callback)
                     }
                 })
             }
         }
 
-        popup(options)
+        _cmm.popup(options)
     })
 
     //좌측 상단 뒤로가기 버튼

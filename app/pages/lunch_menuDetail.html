@@ -105,14 +105,7 @@
 </script>
 
 <script type="module">
-    import {
-        callAxios,
-        ajaxConnect,
-        popup,
-        popupHide,
-        toBase64,
-        showModal
-    } from "../resources/js/common.js";
+    import * as _cmm from "../resources/js/common.js";
 
     const common = {
         goMain: function () {
@@ -297,7 +290,7 @@
 
             var modifyData = {};
             modifyData = {"id": p_id, "location": p_address, "menuType": p_type, "name": p_name};
-            var callback = ajaxConnect('POST', 'modifyMenu', modifyData);
+            var callback = _cmm.callAjax('POST', 'modifyMenu', modifyData);
             console.log(JSON.stringify(callback))
 
             if (callback.xhr == '200') {
@@ -318,7 +311,7 @@
             var deleteParam = {};
             deleteParam = {"id": p_id};
 
-            var callback = ajaxConnect('POST', 'deleteMenu', deleteParam);
+            var callback = _cmm.callAjax('POST', 'deleteMenu', deleteParam);
             console.log(JSON.stringify(callback))
 
             if (callback.xhr == '200') {
@@ -338,7 +331,7 @@
             var addData = {};
             addData = {"id": common.getId()};
 
-            var callback = ajaxConnect('POST', 'visitMenu', addData);
+            var callback = _cmm.callAjax('POST', 'visitMenu', addData);
             console.log(JSON.stringify(callback));
 
             //성공
