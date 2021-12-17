@@ -9,11 +9,11 @@
     <link href="/resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
     <link href="/resources/css/skeleton.css" rel="stylesheet" type="text/css"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+    
 </head>
 <body>
 <header>
-    <button class="back_btn"></button>
+    <button class="btn-back"></button>
     <span class="title">방문 기록</span>
 </header>
 <div class="contents_visit_wrap" id="contents_list">
@@ -182,7 +182,7 @@
     })
 
     //좌측 상단 뒤로가기 버튼
-    $('.back_btn').on('click', function () {
+    $('.btn-back').on('click', function () {
         location.href = 'lunch_main.html';
     });
 </script>

@@ -13,7 +13,7 @@
 </head>
 <body>
 <header>
-    <button class="back_btn"></button>
+    <button class="btn-back"></button>
     <span class="title">메뉴 상세</span>
 </header>
 <div class="contents_wrap">
@@ -182,9 +182,6 @@
                 // console.log($('.file-wrapper').data('storedFilename'))
                 // console.log($('.file-wrapper'))
                 
-                //파일이 없을 경우 높이조절
-
-
                 //파일 리스트 그리기
                 $('.file-wrapper').each(function (index) {
                     //console.log('storedFileName: ' + $(this).data('storedFilename'))
@@ -195,7 +192,7 @@
                 $('.review_writer').each(function (index) {
                     // console.log($(this))
                     // console.log($(this).data('memberId'));
-                    if ($(this).data('memberId') != sessionStorage.getItem('_memberId')) {
+                    if ($(this).data('memberId') != localStorage.getItem('_memberId')) {
                         $(this).next().css('display', 'none');
                     }
                 });
@@ -230,190 +227,184 @@
                 
             });
         },
-        viewImage: function () {
-            alert("이미지")
+        removeReview: function () {
+            const msg = "리뷰를 삭제하시겠습니까?";
+            if (confirm(msg) != 0) {
+                const p_id = $(this).data('reviewId');
+                console.log(p_id);
+
+                const params = {
+                    id: p_id
+                }
+                axios.post('/menu/removeReview', JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    if (response.status === 200) {
+                        alert('리뷰를 삭제하였습니다.');
+                        location.href = 'lunch_menuDetail.html?id=' + common.getId();
+                    }
+                }).catch(error => {
+                    console.log(error.response);
+                });
+            }
+        },
+        goReviewWrite: function () {
+            console.log(localStorage.getItem('_loginId'));
+            if(localStorage.getItem('_loginId') == null) {
+                alert('리뷰를 작성하려면 로그인이 필요합니다.');
+                return;
+            }
+        
+            const menuId = common.getId();
+            window.location.href = 'lunch_reviewWrite.html?name=' + $('#restaurant').text() + '&id='+ menuId;
+        },
+        openDetailFile: function() {
+            const img_url = $(this).attr('src');
+            // alert(img_url);
+            $('.img_wrapper').show()
+            $('.dimmed_img').show()
+            $('.img_wrap').attr('src',img_url);
+        },
+        openMoreMenu: function () {
+            $('.more_menu').css('display', 'block');
+            $('.dimmed').css('display', 'block');
+        },
+        closeMoreMenu: function (e) {
+            var LayerPopup = $(".more_menu");
+
+            if (!(LayerPopup.has(e.target).length)) {
+                LayerPopup.css('display', 'none');
+                $('.dimmed').css('display', 'none');
+            }
+        },
+        addMenu: function() {
+            const msg = "추가하시겠습니까?";
+            if (confirm(msg) != 0) {
+                // Yes click
+                const params = {
+                    "id": common.getId()
+                };
+
+                axios.post('/menu/visitMenu', JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    console.log(response)
+                    alert('추가되었습니다.');
+                    location.href = 'lunch_allMenuList.html';
+                }).catch(error => {
+                    if (error.response.status === 401) {
+                        alert('로그인이 필요한 서비스입니다.')
+                    } else {
+                        alert('오류가 발생했습니다.')
+                    }
+                })
+            } else {
+                // no click
+            }
+        },
+        deleteMenu : function() {
+            const msg = "삭제하시겠습니까?";
+
+            if (confirm(msg) != 0) {
+                const p_id = common.getId();
+
+                const params = {
+                    id : p_id
+                }
+
+                axios.post('/menu/deleteMenu', JSON.stringify(params),
+                {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    alert('삭제되었습니다.');
+                    location.href = 'lunch_allMenuList.html';
+                }).catch(error => {
+                    if (error.response.status === 401) {
+                        alert('로그인이 필요한 서비스입니다.')
+                    } else {
+                        alert('오류가 발생했습니다.');
+                    }
+                })
+            }
+        },
+        closeDetailFile: function () {
+            $('.img_wrapper').hide()
+            $('.dimmed_img').hide()
         }
     }
 
-    $(function () {
-        //날짜 포맷 yy-mm-dd
-        Handlebars.registerHelper('dateFormat', function (insertDateTime) {
+    Handlebars.registerHelper('dateFormat', function (insertDateTime) {
             return insertDateTime.substring(0, 10);
         });
 
-        //별점 2로 나눠서 보여주기
-        Handlebars.registerHelper('starcntFormat', function (star) {
-            const starCnt = star/2;
-            if(starCnt == 1) {
-                return '★☆☆☆☆';
-            } 
-            else if(starCnt == 2) {
-                return '★★☆☆☆';
-            }
-            else if(starCnt == 3) {
-                return '★★★☆☆';
-            }
-            else if(starCnt == 4) {
-                return '★★★★☆';
-            }
-            else if(starCnt == 5) {
-                return '★★★★★';
-            }
-        });
-        fn.getMenuDetail();
-        // fn.getReview();
-    });
-
-    $('#btn_review_detail').on('click', function () {
-        console.log(sessionStorage.getItem('_loginId'));
-        if(sessionStorage.getItem('_loginId') == null) {
-            alert('리뷰를 작성하려면 로그인이 필요합니다.');
-            return;
+    //별점 2로 나눠서 보여주기
+    Handlebars.registerHelper('starcntFormat', function (star) {
+        const starCnt = star/2;
+        if(starCnt == 1) {
+            return '★☆☆☆☆';
+        } 
+        else if(starCnt == 2) {
+            return '★★☆☆☆';
         }
-       
-        const menuId = common.getId();
-        window.location.href = 'lunch_reviewWrite.html?name=' + $('#restaurant').text() + '&id='+ menuId;
-    });
-
-    $('#btn_save').on('click', function () {
-        var msg = "수정하시겠습니까?";
-        if (confirm(msg) != 0) {
-            var p_address = $('#address').val();
-            var p_name = $('#restaurant').val();
-            var p_type = $('#typeName').val();
-            var p_id = getParameters('id');
-
-            if (p_address == '' || p_name == '' || p_type == '') {
-                alert('내용을 입력해주세요.');
-                return;
-            }
-
-            var modifyData = {};
-            modifyData = {"id": p_id, "location": p_address, "menuType": p_type, "name": p_name};
-            var callback = _cmm.callAjax('POST', 'modifyMenu', modifyData);
-            console.log(JSON.stringify(callback))
-
-            if (callback.xhr == '200') {
-                alert('수정되었습니다.');
-                location.href = 'lunch_allMenuList.html';
-            } else if (callback.error != undefined) {
-                alert(callback.errMsg);
-            }
+        else if(starCnt == 3) {
+            return '★★★☆☆';
+        }
+        else if(starCnt == 4) {
+            return '★★★★☆';
+        }
+        else if(starCnt == 5) {
+            return '★★★★★';
         }
     });
 
-    $('#btn_delete').on('click', function () {
-        var msg = "삭제하시겠습니까?";
 
-        if (confirm(msg) != 0) {
-            var p_id = common.getId();
+    // $('#btn_save').on('click', function () {
+    //     var msg = "수정하시겠습니까?";
+    //     if (confirm(msg) != 0) {
+    //         var p_address = $('#address').val();
+    //         var p_name = $('#restaurant').val();
+    //         var p_type = $('#typeName').val();
+    //         var p_id = getParameters('id');
 
-            var deleteParam = {};
-            deleteParam = {"id": p_id};
+    //         if (p_address == '' || p_name == '' || p_type == '') {
+    //             alert('내용을 입력해주세요.');
+    //             return;
+    //         }
 
-            var callback = _cmm.callAjax('POST', 'deleteMenu', deleteParam);
-            console.log(JSON.stringify(callback))
+    //         var modifyData = {};
+    //         modifyData = {"id": p_id, "location": p_address, "menuType": p_type, "name": p_name};
+    //         var callback = _cmm.callAjax('POST', 'modifyMenu', modifyData);
+    //         console.log(JSON.stringify(callback))
 
-            if (callback.xhr == '200') {
-                alert('삭제되었습니다.');
-                location.href = 'lunch_allMenuList.html';
-            } else if (callback.error != undefined) {
-                alert(callback.errMsg);
-            }
-        }
-    });
-
-    $('#btn_add').on('click', function () {
-
-        var msg = "추가하시겠습니까?";
-        if (confirm(msg) != 0) {
-            // Yes click
-            var addData = {};
-            addData = {"id": common.getId()};
-
-            var callback = _cmm.callAjax('POST', 'visitMenu', addData);
-            console.log(JSON.stringify(callback));
-
-            //성공
-            if (callback.data != undefined) {
-                alert('추가되었습니다.');
-                location.href = 'lunch_allMenuList.html';
-            } else if (callback.error != undefined) { //실패
-                alert(callback.errMsg);
-            }
-        } else {
-            // no click
-        }
-    });
-
-    $('#btn_more').on('click', function () {
-        $('.more_menu').css('display', 'block');
-        $('.dimmed').css('display', 'block');
-    });
-    // 58.181.28.53:11199/menu/getAllMenu(GET) // addMenu(POST)
-
-    $(document).on('click', 'span[id="btnReviewRemove"]', function (e) {
-        var msg = "리뷰를 삭제하시겠습니까?";
-        if (confirm(msg) != 0) {
-            const p_id = $(this).data('reviewId');
-            console.log(p_id);
-
-            const params = {
-                id: p_id
-            }
-            axios.post('/menu/removeReview', JSON.stringify(params),
-                {headers: {'Content-Type': `application/json`}}
-            ).then(response => {
-                if (response.status === 200) {
-                    alert('리뷰를 삭제하였습니다.');
-                    location.href = 'lunch_menuDetail.html?id=' + common.getId();
-                }
-            }).catch(error => {
-                console.log(error.response);
-            });
-        }
-    });
-
-    $(document).mouseup(function (e) {
-        var LayerPopup = $(".more_menu");
-
-        if (!(LayerPopup.has(e.target).length)) {
-            LayerPopup.css('display', 'none');
-            $('.dimmed').css('display', 'none');
-        }
-    });
-
-    $(document).on('click','.file-wrapper > img', function (e) {
-        //alert('이미지 클릭');
-        const img_url = $(this).attr('src');
-        // alert(img_url);
-        $('.img_wrapper').show()
-        $('.dimmed_img').show()
-        $('.img_wrap').attr('src',img_url);
-    });
-
-    $('#btn_img_close').on('click', function(e){
-        $('.img_wrapper').hide()
-        $('.dimmed_img').hide()
-    });
-
-    //좌측 상단 뒤로가기 버튼
-    $('.back_btn').on('click', function () {
-        window.history.back();
-    });
+    //         if (callback.xhr == '200') {
+    //             alert('수정되었습니다.');
+    //             location.href = 'lunch_allMenuList.html';
+    //         } else if (callback.error != undefined) {
+    //             alert(callback.errMsg);
+    //         }
+    //     }
+    // });
 
     const init = {
         event: function () {
-            $('#btnReviewRemove').on('click', fn.removeReview)
+            // $('#btnReviewRemove').on('click', fn.removeReview)
             $('.btn-back').on('click', function (e) {
                 e.preventDefault()
                 e.stopPropagation()
                 window.history.back()
             })
+            $('#btn_review_detail').on('click', fn.goReviewWrite)
+            $('#btn_img_close').on('click', fn.closeDetailFile)
+            $('#btn_more').on('click', fn.openMoreMenu)
+            $('#btn_add').on('click', fn.addMenu)
+            $('#btn_delete').on('click', fn.deleteMenu) 
+            $(document).mouseup(fn.closeMoreMenu)
+            $(document).on('click','.file-wrapper > img', fn.openDetailFile)
+            $(document).on('click', 'span[id="btnReviewRemove"]', fn.removeReview)
             
         },
         created: function() {
             $('.review_list_wrap').hide();
+            fn.getMenuDetail();
         }
     }
     init.event()

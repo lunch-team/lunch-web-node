@@ -9,16 +9,8 @@
     <link href="/resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
     <link href="/resources/css/skeleton.css" rel="stylesheet" type="text/css"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com"/>
+  
     <style>
-        .right {
-            float: right;
-        }
-
-        .left {
-            float: left;
-        }
-
         .visitCount {
             font-size: 13px;
             color: #707070;
@@ -28,13 +20,12 @@
 </head>
 <body>
 <header>
-    <button class="back_btn"></button>
+    <button class="btn-back"></button>
     <span class="title">메뉴 추천</span>
 </header>
 
 <div class="contents_wrap" id="contents_list">
     <button class="random_btn" id="btnRandomMenu">메뉴 추천</button>
-    <div class="random_list_wrap" id="contents"></div>
     <div class="loading-container" id="loading_container" style="padding:0 20px;">
         <div class="bar">
             <div class="indicator"></div>
@@ -52,11 +43,14 @@
             <div class="list"> </div>
         </div>
     </div>
+    <div class="random_list_wrap" id="contents"></div>
+    
     <br/>
 </div>
 
 <script type="text/javascript" src="/resources/js/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="/resources/js/handlebars-4.0.11.js"></script>
+<script type="text/javascript" src="/resources/js/axios.min.js"></script>
 
 <script id="menuList" type="text/x-handlebars-template">
     <!-- 컨텐츠영역 -->
@@ -71,7 +65,7 @@
         data-food_id="{{id}}"
     >
         <p class="req_title">{{name}}
-            <span class="right visitCount">{{visitCount}}회 방문</span>
+            <span class="visitCount">{{visitCount}}회 방문</span>
         </p>
         <div class="req_dt_wrap">
             <span class="req_dt">{{location}}</span>
@@ -85,43 +79,40 @@
 <script type="module">
     import * as _cmm from "../resources/js/common.js";
 
-    $(function () {
-        drawMenu(getRandomMenu({"randomNumber": 5}))
-    });
+    const fn = {
+        getRandomMenu: function() {
+            const params = {
+                randomNumber : 5
+            }
+            $('.loading-container').show();
 
-    function getRandomMenu(params) {
-        return _cmm.callAjax('POST', 'getRandomMenu', params);
-    }
-
-    function drawMenu(callback) {
-        $('#loading_container').show();
-
-        if (callback.data != undefined) {
-
-            var obj = callback.data;
-            console.log(JSON.stringify(obj))
-            var source = $("#menuList").html();
-            var template = Handlebars.compile(source);
-            var res = {
+            axios.post('/menu/getRandomMenu', JSON.stringify(params),
+                {headers: {'Content-Type': `application/json`}}
+            ).then(response => {
+                fn.drawRandomList(response);
+            }).catch(error => {
+                if (error.response.status === 401) {
+                    alert('로그인이 필요한 서비스입니다.')
+                } else {
+                    alert('오류가 발생했습니다.');
+                }
+            })
+        },
+        drawRandomList: function(response) {
+            const obj = response.data;
+            const source = $("#menuList").html();
+            const template = Handlebars.compile(source);
+            const res = {
                 menuList: obj.data
             };
 
-            var html = template(res);
+            const html = template(res);
             console.log(html)
             $("#contents").empty();
             $("#contents").append(html);
             $('#loading_container').hide();
-        } else if (callback.error != undefined) {
-            alert(callback.errMsg);
         }
     }
-
-    $('#btnRandomMenu').on('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        drawMenu(getRandomMenu({"randomNumber": 5}))
-    });
 
     $(document).on('click', 'div[name="food_box"]', function (e) {
         e.preventDefault();
@@ -147,11 +138,21 @@
         }
     });
 
-    //좌측 상단 뒤로가기 버튼
-    $('.back_btn').on('click', function () {
-        window.history.back();
-    });
-
+    const init = {
+        event: function () {
+            $('.btn-back').on('click', function (e) {
+                e.preventDefault()
+                e.stopPropagation()
+                window.history.back()
+            })
+            $('#btnRandomMenu').on('click', fn.getRandomMenu)
+        },
+        created: function() {
+            fn.getRandomMenu();
+        }
+    }
+    init.event()
+    init.created()
 </script>
 </body>
 </html>
