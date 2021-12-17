@@ -8,9 +8,7 @@
 
     <link href="/resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="/resources/css/style.css" rel="stylesheet" type="text/css"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com"/>
 
-    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
 </head>
 <body>
 <header>
@@ -146,8 +144,11 @@
             $('.dimmed').show();
             
             axios.post('/menu/registerReview', JSON.stringify(params),
-                {headers: {'Content-Type': `application/json`}}
-            ).then(response => {
+                {headers: {
+                    'Content-Type': `application/json`,
+                    'Authorization': `Bearer ${sessionStorage.getItem('_accessToken')}`
+                }
+            }).then(response => {
                 console.log(response)
                 
                 //로딩바
