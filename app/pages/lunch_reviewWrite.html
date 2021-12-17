@@ -73,11 +73,6 @@
     import * as _cmm from "../../resources/js/common.js";
 
     let star_cnt;
-    let v = {
-        targetId: common.getId(),
-        memberId: localStorage.getItem('_memberId'),
-        fileList: []
-    }
 
     const common = {
         goMain: function () {
@@ -120,12 +115,17 @@
         }
     }
 
-    
+    let v = {
+        targetId: common.getId(),
+        memberId: sessionStorage.getItem('_memberId'),
+        fileList: []
+    }
+
     const fn = {
         saveReview: function (groupId) {
             const params = {
                 contents: $('#review_content').val(),
-                memberId: sessionStorage.getItem('_memberId'),
+                memberId: localStorage.getItem('_memberId'),
                 menuId: common.getId(),
                 star: star_cnt,
                 fileId: groupId
