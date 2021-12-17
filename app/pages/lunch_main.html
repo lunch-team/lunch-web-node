@@ -49,7 +49,6 @@
         </li>
     </ul>
 
-
 </div>
 
 <script src="../resources/js/jquery-3.5.1.min.js"></script>
@@ -78,6 +77,38 @@
             } else {
                 $('#btn_login').show();
             }
+        },
+
+        //화면이동 이벤트
+        goMenuList: function() {
+            location.href = 'lunch_allMenuList.html';
+        },
+        goRandomMenu: function() {
+            location.href = 'lunch_randomMenu.html';
+        },
+        goAddMenu: function() {
+            location.href = 'lunch_addMenu.html';
+        },
+        goVisitList: function() {
+            location.href = 'lunch_visitMenuList.html';
+        },
+        goRoomList: function() {
+            location.href = 'test/ws-room-list.html';
+        },
+        goReviewList: function() {
+            alert('준비 중');
+        },
+        goLogout: function() {
+            if(sessionStorage.getItem('_loginId') != null) {
+                const msg = '로그아웃 하시겠습니까?';
+
+                if(confirm(msg) != 0) {
+                    location.href = 'auth/sign-in.html';
+                }
+            }
+        },
+        goLogin: function() {
+            location.href = 'auth/sign-in.html';
         }
     }
 
@@ -106,53 +137,23 @@
 
     $('.main-title').on('click', connectionTest)
 
-    $('#btn-allFood').on('click', function () {
-        location.href = 'lunch_allMenuList.html';
-    })
-
-    $('#btn-random').on('click', function () {
-        location.href = 'lunch_randomMenu.html';
-    })
-
-    $('#btn-add').on('click', function () {
-        location.href = 'lunch_addMenu.html';
-    })
-
-    $('#btn-visit').on('click', function () {
-        location.href = 'lunch_visitMenuList.html';
-    })
-
-    $('#btn-test').on('click', function () {
-        location.href = 'test/ws-room-list.html';
-    })
-
-    $('#btn-review').on('click', function () {
-        alert('준비 중');
-    })
-
-    $('#btn_logout').on('click', function () {
-        if(sessionStorage.getItem('_loginId') != null) {
-            const msg = '로그아웃 하시겠습니까?';
-
-            if(confirm(msg) != 0) {
-                location.href = 'auth/sign-in.html';
-            }
-        }
-    })
-
-    $('#btn_login').on('click', function () {
-        location.href = 'auth/sign-in.html';
-    });
-
     const init = {
         created: function () {
             fn.setUserName()
         },
         event: function() {
-            
+            $('#btn-allFood').on('click', fn.goMenuList)
+            $('#btn-add').on('click', fn.goAddMenu)
+            $('#btn-visit').on('click', fn.goVisitList)
+            $('#btn-random').on('click', fn.goRandomMenu)
+            $('#btn-test').on('click', fn.goRoomList)
+            $('#btn-review').on('click', fn.goReviewList)
+            $('#btn_logout').on('click', fn.goLogout)
+            $('#btn_login').on('click', fn.goLogin)
         }
     }
     init.created()
+    init.event()
 </script>
 </body>
 </html>

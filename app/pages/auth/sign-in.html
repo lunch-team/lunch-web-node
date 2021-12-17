@@ -103,7 +103,9 @@
                     common.goMain()
                 }).catch(error => {
                     if (error.response.status === 401) {
-                        alert('로그인 정보가 없습니다.')
+                        alert('로그인이 필요한 서비스입니다.')
+                    } else {
+                        alert('오류가 발생했습니다.')
                     }
                 })
             }
@@ -113,19 +115,21 @@
         },
         findPw: function () {
             location.href = './find-idpw.html'
+        },
+        onEnter: function(e) {
+            if(e.keyCode == '13') {
+                $('#btnSignIn').trigger('click')
+            }
         }
     }
-    $('#pw').on('keypress',function(e){
-        if(e.keyCode == '13') {
-            $('#btnSignIn').trigger('click')
-        }
-    });
+    
     const init = {
         event: function () {
             $('.btn-back').on('click', common.goMain)
             $('#btnSignIn').on('click', fn.signIn)
             $('#btnSignUp').on('click', fn.signUp)
             $('#btnFindIdPw').on('click', fn.findPw)
+            $('#pw').on('keypress', fn.onEnter)
         }
     }
     init.event()

@@ -155,7 +155,9 @@
                     location.href = 'find-id-list.html';
                 }).catch(error => {
                     if (error.response.status === 401) {
-                        alert('일치하는 회원 정보가 없습니다.')
+                        alert('로그인이 필요한 서비스입니다.')
+                    } else {
+                        alert('오류가 발생했습니다.');
                     }
                 })
             }
@@ -186,7 +188,9 @@
 
                 }).catch(error => {
                     if (error.response.status === 401) {
-                        alert('일치하는 회원 정보가 없습니다.')
+                        alert('로그인이 필요한 서비스입니다.')
+                    } else {
+                        alert('오류가 발생했습니다.');
                     }
                 })
             }
@@ -207,20 +211,14 @@
                     location.href = 'find-id-list.html?id=' + find_id;
                 }).catch(error => {
                     if (error.response.status === 401) {
-                        alert('일치하는 회원 정보가 없습니다.')
+                        alert('로그인이 필요한 서비스입니다.')
+                    } else {
+                        alert('오류가 발생했습니다.');
                     }
                 })
             }
         }
     }
-
-    $('#btn_findId').on('click', function () {
-        fn.findId();
-    });
-
-    $('#btn_resetPw').on('click', function () {
-        fn.findPw();
-    });
 
     //좌측 상단 뒤로가기 버튼
     $('.back_btn').on('click', function () {
@@ -230,6 +228,7 @@
     const init = {
         event: function(){
             $('#btn_findId').on('click', fn.findId)
+            $('#btn_resetPw').on('click', fn.findPw)
         },
         created: function () {
             fn.tabClick();
