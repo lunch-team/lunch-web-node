@@ -62,10 +62,13 @@
         //로그인 여부에 따른 아이콘 표시
         setUserName: () => {
             if (localStorage.getItem('_name')) {
-                // $('#loginText').text('로그아웃')
+                $('#btn_login').hide()
                 $('#btn_logout').show();
                 $('#welcome').text(localStorage.getItem('_name') + '님')
+                $('#welcome').show()
             } else {
+                $('#welcome').hide()
+                $('#btn_logout').hide()
                 $('#btn_login').show();
             }
         },
@@ -114,7 +117,8 @@
                 }).catch(error => {
                     console.log(error.response)
                     alert('토큰이 만료되었습니다. 로그아웃됩니다.')
-                    location.href = 'auth/sign-in.html';
+                    _cmm.clearToken()
+                    fn.setUserName()
                 })
             }
         }
