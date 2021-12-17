@@ -114,7 +114,7 @@
                 }).catch(error => {
                     console.log(error.response)
                     alert('토큰이 만료되었습니다. 로그아웃됩니다.')
-                    _cmm.clearToken()
+                    location.href = 'auth/sign-in.html';
                 })
             }
         }
