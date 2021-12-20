@@ -61,20 +61,20 @@
 
     const init = {
         event: function() {
-            $('.findid_list > li').text(localStorage.getItem('findLoginId'))
+             //좌측 상단 뒤로가기 버튼
+            $('.btn-back').on('click', function () {
+                window.history.back();
+            });
             $('#btn_login').on('click',common.goLogin)
+            $('#btn_findId').on('click', fn.findId)
             $('#btn_findPw').on('click', fn.findPw)
+        },
+        created : function() {
+            $('.findid_list > li').text(localStorage.getItem('findLoginId'));
         }
     }
     init.event();
-    $('#btn_findId').on('click', function () {
-        fn.findId();
-    });
-
-    //좌측 상단 뒤로가기 버튼
-    $('.btn-back').on('click', function () {
-        window.history.back();
-    });
+    init.created();
 
 </script>
 </body>

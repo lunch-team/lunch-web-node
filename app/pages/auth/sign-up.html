@@ -57,7 +57,16 @@
 <script type="module">
     import * as _cmm from "../../resources/js/common.js";
 
+    let options = {
+        id : '',
+        title : '',
+        content : '',
+        type : ''
+    }
     const common = {
+        goLogin: function() {
+            location.href = './sign-in.html'
+        },
         verify: function (data) {
             console.log(data)
             const email = data.email
@@ -73,18 +82,22 @@
                 result = '이름을 입력해주세요.'
             } else if (!email && email != undefined) {
                 result = '이메일을 입력해주세요.'
+            } else if (!common.emailCheck(email) && email != undefined) {
+                result = '올바른 이메일을 입력해주세요.'
             } else if (!password && password != undefined) {
                 result = '비밀번호를 입력해주세요.'
             } else if (!password2 && password2 != undefined) {
                 result = '비밀번호 확인란을 입력해주세요.'
-            }  else if (password !== password2) {
+            } else if (password !== password2) {
                 result = '비밀번호가 다릅니다.'
-            } else if (!common.emailCheck(email) && email != undefined) {
-                result = '올바른 이메일을 입력해주세요.'
-            }
+            } 
 
             if (result) {
-                alert(result)
+                options.id = 'sign_in_verify';
+                options.title = '알림';
+                options.content = result;
+               // alert(result);
+                _cmm.popup(options);
                 return false
             } else {
                 return true
@@ -107,17 +120,21 @@
                     ).then(response => {
                         console.log(response)
                         if(response.status == 200) {
-                            alert('사용할 수 있는 아이디입니다.');
+                            options.id = 'id_check_success';
+                            options.title = '알림';
+                            options.content = '사용 가능한 아이디입니다.';
+                            _cmm.popup(options);
                         } 
                        
                     }).catch(error => {
+                        options.id = 'id_check_fail';
+                        options.title = '알림';
                         if(error.response.status == 409) {
-                            alert('사용할 수 없는 아이디입니다.');
-                        } else if (error.response.status === 401) {
-                            alert('로그인이 필요한 서비스입니다.')
+                            options.content = '사용할 수 없는 아이디입니다.';
                         } else if(error.response.data.errorMessage) {
-                            alert(error.response.data.errorMessage); 
+                            options.content = error.response.data.errorMessage;
                         }
+                        _cmm.popup(options);
                     })
             }
         },
@@ -139,28 +156,35 @@
                         
                         localStorage.clear()
                         sessionStorage.clear()
-                        alert('회원가입이 완료되었습니다.')
-                        location.href = './sign-in.html'
+
+                        options.id = 'sign_in_success';
+                        options.title = '알림';
+                        options.content = '회원가입이 완료되었습니다.';
+                        options.callback = common.goLogin;
+                        _cmm.popup(options);
                     }
                 }).catch(error => {
                     console.log(error.response)
+                    options.id = 'sign_in_fail';
+                    options.title = '알림';
                     if (error.response.data.errorMessage) {
-                        alert(error.response.data.errorMessage)
+                        options.content = error.response.data.errorMessage;
                     } else if (error.response.data) {
                         if (error.response.data.loginId) {
-                            alert('로그인 아이디를 확인해주세요.')
+                            options.content = '로그인 아이디를 확인해주세요.';
                         } else if (error.response.data.password) {
-                            alert('비밀번호를 확인해주세요.')
+                            options.content = '비밀번호를 확인해주세요.';
                         } else if (error.response.data.email) {
-                            alert('이메일을 확인해주세요.')
+                            options.content = '이메일을 확인해주세요.';
                         } else if (error.response.data.name) {
-                            alert('이름을 확인해주세요.')
+                            options.content = '이름을 확인해주세요.';
                         } else {
-                            alert(JSON.stringify(error.response.data))
+                            options.content = JSON.stringify(error.response.data);
                         }
                     } else {
-                        alert('에러가 발생했습니다.')
+                        options.content = '에러가 발생했습니다.';
                     }
+                    _cmm.popup(options);
                 })
             }
         }

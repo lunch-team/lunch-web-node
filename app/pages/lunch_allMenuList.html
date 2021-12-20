@@ -159,9 +159,11 @@
             axios.post('/menu/getAllMenu', JSON.stringify(params),
                 {headers: {'Content-Type': `application/json`}}
             ).then(response => {
-                $('#loading_container').hide();
-                $('.list-wrap').show();
-                fn.drawMenuList(response);
+                if(response.status === 200) {
+                    $('#loading_container').hide();
+                    $('.list-wrap').show();
+                    fn.drawMenuList(response);
+                }
             }).catch(error => {
                 if (error.response.status === 401) {
                     alert('로그인이 필요한 서비스입니다.');
@@ -201,11 +203,6 @@
         else if(starCnt == 0) {
             return '-';
         }
-    });
- 
-    //좌측 상단 뒤로가기 버튼
-    $('.back_btn').on('click', function () {
-        location.href = 'lunch_main.html';
     });
     
     const init = {

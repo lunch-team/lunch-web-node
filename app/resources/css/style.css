@@ -86,6 +86,7 @@ input[type="checkbox"]:checked + label {
 }
 
 .popup .popup-txt {
+    text-align: center;
     color: #08213f;
 }
 

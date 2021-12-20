@@ -87,46 +87,6 @@ function callAxios(type, url, param) {
     }
 }
 
-//parameter : type, url, data
-function callAjax(type, url, param) {
-
-    var connectUrl = _CONFIG._BASE_URL + "/menu/";
-    var returnData = {};
-    var header = localStorage.getItem('_accessToken')
-    header = header ? {'Authorization': `Bearer ` + header} : ''
-    console.log(header)
-    $.ajax({
-        type: type,
-        url: connectUrl + url,
-        dataType: 'json',
-        header: header,
-        async: false,
-        contentType: 'application/json',
-        data: JSON.stringify(param),
-        success: function (data, textStatus, xhr) { //통신 성공
-            //console.log(data);
-            //  $('#loading_container').hide();
-            if (data !== undefined) {
-                returnData = {"data": data};
-            } else if (xhr !== undefined) {
-                returnData = {"xhr": xhr.status};
-            } else if (textStatus) {
-                returnData = {"textStatus": textStatus};
-            }
-            console.log(param)
-            if (typeof param.callback === 'function') {
-                console.log('callback is running.')
-                param.callback()
-            }
-        },
-        error: function (e) { //실패
-
-            console.error(e);
-            returnData = {"error": e.status, "errMsg": '오류가 발생하였습니다.'};
-        }
-    });
-    return returnData;
-}
 
 function popupHide() {
     $('.popup').remove()
@@ -171,7 +131,7 @@ function popup(options) {
             + 'type="button" '
             + 'class="popup-y-btn popup-btn popup-btn-primary" '
             + 'id="popupBtnDoneY" '
-            + '>OK</button>'
+            + '>확인</button>'
         )
 
         if (typeof options.callback === 'function') {
@@ -190,7 +150,7 @@ function popup(options) {
                 + 'type="button" '
                 + 'class="popup-cls popup-btn" '
                 + 'data-cls="popup-common-popup"'
-                + '>Cancel</button>'
+                + '>취소</button>'
             )
 
             $('.popup-cls').on('click', popupHide)
@@ -215,127 +175,6 @@ $(".tab_btn").click(function () {
     $("#" + tab_target).show();
 });
 
-var showModal = function (btn_cnt, content) {
-    var temp = '';
-    temp += '<div class="popup">';
-    temp += '<div class="wrapper"><span class="txt">' + content
-        + '</span></div>';
-    if (btn_cnt === 1) {  //알림
-        temp += '<div class="popup_btn_wrap">';
-        temp += '<button type="button" class="popup_cls" >확인</button>';
-    } else if (btn_cnt === 2) {  //컨펌
-        temp += '<div class="popup_btn2_wrap">';
-        temp += '<button type="button" class="popup_cls" >아니오</button>';
-        temp += '<button type="submit" class="popup_cls" >예</button>';
-    }
-    temp += '</div></div>';
-    temp += '<div class="dimmed"></div>';
-    $("body").append(temp);
-    $(".popup").show();
-    $(".dimmed").show();
-    /* 팝업 닫기 */
-    $(".popup_cls").click(function () {
-        $(".popup").remove();
-        $(".dimmed").remove();
-    });
-};
-
-// text to base64  p.s) 브라우저가 제공하는 btoa는 jsonstring을 base64로 변환하지 못해서 따로 사용함.
-function toBase64(str) {
-    var Base64 = {
-        _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
-        encode: function (e) {
-            var t = "";
-            var n, r, i, s, o, u, a;
-            var f = 0;
-            e = Base64._utf8_encode(e);
-            while (f < e.length) {
-                n = e.charCodeAt(f++);
-                r = e.charCodeAt(f++);
-                i = e.charCodeAt(f++);
-                s = n >> 2;
-                o = (n & 3) << 4 | r >> 4;
-                u = (r & 15) << 2 | i >> 6;
-                a = i & 63;
-                if (isNaN(r)) {
-                    u = a = 64
-                } else if (isNaN(i)) {
-                    a = 64
-                }
-                t = t + this._keyStr.charAt(s) + this._keyStr.charAt(o)
-                    + this._keyStr.charAt(u) + this._keyStr.charAt(a)
-            }
-            return t
-        },
-        decode: function (e) {
-            var t = "";
-            var n, r, i;
-            var s, o, u, a;
-            var f = 0;
-            e = e.replace(/[^A-Za-z0-9+/=]/g, "");
-            while (f < e.length) {
-                s = this._keyStr.indexOf(e.charAt(f++));
-                o = this._keyStr.indexOf(e.charAt(f++));
-                u = this._keyStr.indexOf(e.charAt(f++));
-                a = this._keyStr.indexOf(e.charAt(f++));
-                n = s << 2 | o >> 4;
-                r = (o & 15) << 4 | u >> 2;
-                i = (u & 3) << 6 | a;
-                t = t + String.fromCharCode(n);
-                if (u != 64) {
-                    t = t + String.fromCharCode(r)
-                }
-                if (a != 64) {
-                    t = t + String.fromCharCode(i)
-                }
-            }
-            t = Base64._utf8_decode(t);
-            return t
-        },
-        _utf8_encode: function (e) {
-            e = e.replace(/rn/g, "n");
-            var t = "";
-            for (var n = 0; n < e.length; n++) {
-                var r = e.charCodeAt(n);
-                if (r < 128) {
-                    t += String.fromCharCode(r)
-                } else if (r > 127 && r < 2048) {
-                    t += String.fromCharCode(r >> 6 | 192);
-                    t += String.fromCharCode(r & 63 | 128)
-                } else {
-                    t += String.fromCharCode(r >> 12 | 224);
-                    t += String.fromCharCode(r >> 6 & 63 | 128);
-                    t += String.fromCharCode(r & 63 | 128)
-                }
-            }
-            return t
-        },
-        _utf8_decode: function (e) {
-            var t = "";
-            var n = 0;
-            var r = c1 = c2 = 0;
-            while (n < e.length) {
-                r = e.charCodeAt(n);
-                if (r < 128) {
-                    t += String.fromCharCode(r);
-                    n++
-                } else if (r > 191 && r < 224) {
-                    c2 = e.charCodeAt(n + 1);
-                    t += String.fromCharCode((r & 31) << 6 | c2 & 63);
-                    n += 2
-                } else {
-                    c2 = e.charCodeAt(n + 1);
-                    c3 = e.charCodeAt(n + 2);
-                    t += String.fromCharCode(
-                        (r & 15) << 12 | (c2 & 63) << 6 | c3 & 63);
-                    n += 3
-                }
-            }
-            return t
-        }
-    };
-    return Base64.encode(str);
-}
 
 Date.prototype.format = function (f) {
     if (!this.valueOf()) {
@@ -406,7 +245,6 @@ export {
     deleteCookie,
     clearToken,
     callAxios,
-    callAjax,
     popup,
     popupHide,
     // toBase64,

@@ -31,12 +31,6 @@
           <div class="detail"> </div>
         </div>
     </div> -->
-    <div class="loadingbar_wrapper">
-        <div id="wrapper">
-            <div id="spinner"></div>
-        </div>
-    </div>
-    <div class="dimmed" style="opacity:0.5; display: block;"></div>
    
 
 
@@ -107,6 +101,13 @@
             // $('#loginText').text('로그아웃')
             $('#welcome').text(localStorage.getItem('_name') + '님')
         }
+        var options = {
+            id : '테스트',
+            title : '아아아',
+            content : '삭제하시겠습니까?',
+            type : 2
+        }
+        _cmm.popup(options);
     })
 </script>
 </body>

@@ -86,17 +86,43 @@
 <script type="module">
     import * as _cmm from "../resources/js/common.js";
 
-    function drawList(callback) {
-        if (callback.data !== undefined) {
-            $('#loading_container').hide();
-            var obj = callback.data;
-            // console.log(JSON.stringify(obj));
-            var source = $("#menuList").html();
-            var template = Handlebars.compile(source);
-            var res = {
+    const fn = {
+        getVisitMenuList : function () {
+            $('#contents_list').hide();
+            $('#loading_container').show();
+
+            const params = {
+                order : 'DESC'
+            }
+            axios.post('/menu/getVisitMenuList', JSON.stringify(params),
+                {headers: {
+                    'Content-Type': `application/json`
+                }
+            }).then(response => {
+                if(response.status === 200) {
+                    $('#loading_container').hide();
+                    $('#contents_list').show();
+                    console.log(response);
+                    fn.drawList(response);
+                }
+               
+            }).catch(error => {
+                if (error.response.status === 401) {
+                    alert('로그인이 필요한 서비스입니다.')
+                } else {
+                    alert('오류가 발생했습니다.')
+                }
+            })
+        },
+        drawList : function(response) { 
+            const source = $("#menuList").html();
+            const obj = response.data;
+            const template = Handlebars.compile(source);
+            const res = {
                 menuList: obj.data
             };
             console.log(obj.data)
+
             //날짜 포맷 yy-mm-dd
             Handlebars.registerHelper('dateFormat', function (insertDateTime) {
                 return insertDateTime.substring(0, 10);
@@ -108,42 +134,38 @@
                 return '(' + dayOfWeek + ')';
             });
 
-            var html = template(res);
+            const html = template(res);
             // console.log(html)
             $("#contents_list").html(html);
-        } else if (callback.error !== undefined) {
-            console.log(callback.error);
-            alert(callback.errMsg);
+
+        },
+        visitMenuDelete : function() {
+            const id = $(this).data('food_id');
+            const msg = '삭제하시겠습니까?';
+            const params = {"id": id};
+
+            if (confirm(msg)) {
+                axios.post(
+                    '/menu/deleteMenuLog',
+                    JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    if(response.status === 200) {
+                        alert('삭제되었습니다.');
+                        window.location.reload();
+                    }
+                    
+                }).catch(error  => {
+                    if(error.response.status === 401) {
+                        alert('로그인이 필요한 서비스입니다.');
+                    } else {
+                        alert('오류가 발생하였습니다.');
+                    }
+                  
+                })
+            }
         }
     }
-
-    $(function () {
-        // $('#loading_container').hide(); //로딩바 숨기기
-        var callback = _cmm.callAjax('POST', 'getVisitMenuList', {"order": "DESC"});
-        drawList(callback);
-    });
-
-    $(document).on('click', 'span[class="delete"]', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        var id = $(this).data('food_id');
-        var msg = '삭제하시겠습니까?';
-        var deleteParam = {"id": id};
-
-        if (confirm(msg)) {
-            axios.post(
-                '/menu/deleteMenuLog',
-                JSON.stringify(deleteParam),
-                {headers: {'Content-Type': `application/json`}}
-            ).then(() => {
-                alert('삭제되었습니다.')
-                window.location.reload()
-            }).catch(() => {
-                alert('오류가 발생하였습니다.')
-            })
-        }
-    });
 
     $(document).on('click', 'span[class="visit_date_detail"]', function (e) {
         e.preventDefault()
@@ -167,12 +189,20 @@
             html: html,
             type: 2,
             callback: function () {
-                _cmm.callAjax('POST', 'updateMenuLog', {
+                axios.post('/menu/updateMenuLog', {
                     id: id,
-                    insertDateTime: $('#insertDateTime').val() + 'T' + idt[1],
-                    callback: function () {
-                        var callback = _cmm.callAjax('POST', 'getVisitMenuList', {"order": "DESC"})
-                        drawList(callback)
+                    insertDateTime: $('#insertDateTime').val() + 'T' + idt[1]},
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    if(response.status === 200) {
+                        alert('방문시간이 변경되었습니다.');
+                        fn.getVisitMenuList();
+                    }
+                }).catch(error => {
+                    if(error.response.status === 401) {
+                        alert('로그인이 필요한 서비스입니다.');
+                    } else {
+                        alert('오류가 발생했습니다.');
                     }
                 })
             }
@@ -180,11 +210,22 @@
 
         _cmm.popup(options)
     })
+    
+    const init = {
+        event : function () {
+             //좌측 상단 뒤로가기 버튼
+            $('.btn-back').on('click', function () {
+                location.href = 'lunch_main.html';
+            });
+            $(document).on('click', 'span[class="delete"]', fn.visitMenuDelete);
+        },
+        created : function () {
+            fn.getVisitMenuList();
+        }
+    }
+    init.event();
+    init.created();
 
-    //좌측 상단 뒤로가기 버튼
-    $('.btn-back').on('click', function () {
-        location.href = 'lunch_main.html';
-    });
 </script>
 </body>
 </html>
