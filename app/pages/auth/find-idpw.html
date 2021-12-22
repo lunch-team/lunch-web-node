@@ -8,7 +8,6 @@
 
     <link href="../../resources/css/common.css" rel="stylesheet" type="text/css"/>
     <link href="../../resources/css/style.css" rel="stylesheet" type="text/css"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com"/>
 </head>
 <body>
 <header>
@@ -80,7 +79,6 @@
 
     let options = {
         id : '',
-        title : '',
         content : '',
         type : ''
     }
@@ -108,7 +106,6 @@
 
             if(result) {
                 options.id = 'find_id';
-                options.title = '알림';
                 options.content = result;
                // alert(result);
                 _cmm.popup(options);
@@ -162,7 +159,6 @@
                     
                 }).catch(error => {
                     options.id = 'find_id_error';
-                    options.title = '알림';
                     if(error.response.status === 401) {
                         options.content = '입력한 정보와 일치하는 아이디가 없습니다.'; 
                     } else {
@@ -201,7 +197,6 @@
                    
                 }).catch(error => {
                     options.id = 'find_pw_error';
-                    options.title = '알림';
                     if(error.response.status === 401) {
                         options.content = '입력한 정보와 일치하는 계정이 없습니다.'; 
                     } else {
@@ -231,7 +226,6 @@
                    
                 }).catch(error => {
                     options.id = 'reset_pw_error';
-                    options.title = '알림';
                     if(error.response.status === 401) {
                         options.content = '입력한 정보와 일치하는 계정이 없습니다.'; 
                     } else {

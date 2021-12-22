@@ -106,12 +106,12 @@ function popup(options) {
 
         var $popup = $('.popup')
 
-        if (options.title) {
-            $popup.append(
-                '<div class="popup-title">' + options.title + '</div>')
-        }
+        // if (options.title) {
+        //     $popup.append(
+        //         '<div class="popup-title">' + options.title + '</div>')
+        // }
 
-        $popup.append('<div class="popup-content">')
+        // $popup.append('<div class="popup-content">')
         if (options.html) {
             $popup.append(
                 options.html
@@ -133,7 +133,7 @@ function popup(options) {
             + 'id="popupBtnDoneY" '
             + '>확인</button>'
         )
-
+        
         if (typeof options.callback === 'function') {
             $('#popupBtnDoneY').on('click', function () {
                 options.callback()

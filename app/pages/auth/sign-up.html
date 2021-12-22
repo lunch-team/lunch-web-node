@@ -59,7 +59,6 @@
 
     let options = {
         id : '',
-        title : '',
         content : '',
         type : ''
     }
@@ -94,7 +93,6 @@
 
             if (result) {
                 options.id = 'sign_in_verify';
-                options.title = '알림';
                 options.content = result;
                // alert(result);
                 _cmm.popup(options);
@@ -121,14 +119,13 @@
                         console.log(response)
                         if(response.status == 200) {
                             options.id = 'id_check_success';
-                            options.title = '알림';
                             options.content = '사용 가능한 아이디입니다.';
                             _cmm.popup(options);
                         } 
                        
                     }).catch(error => {
                         options.id = 'id_check_fail';
-                        options.title = '알림';
+                      
                         if(error.response.status == 409) {
                             options.content = '사용할 수 없는 아이디입니다.';
                         } else if(error.response.data.errorMessage) {
@@ -158,7 +155,6 @@
                         sessionStorage.clear()
 
                         options.id = 'sign_in_success';
-                        options.title = '알림';
                         options.content = '회원가입이 완료되었습니다.';
                         options.callback = common.goLogin;
                         _cmm.popup(options);
@@ -166,7 +162,6 @@
                 }).catch(error => {
                     console.log(error.response)
                     options.id = 'sign_in_fail';
-                    options.title = '알림';
                     if (error.response.data.errorMessage) {
                         options.content = error.response.data.errorMessage;
                     } else if (error.response.data) {

@@ -51,7 +51,6 @@
 
     let options = {
         id : '',
-        title : '',
         content : '',
         type : ''
     }
@@ -72,7 +71,6 @@
             }
             if (result) {
                 options.id = 'login_verify';
-                options.title = '알림';
                 options.content = result;
                // alert(result);
                 _cmm.popup(options);
@@ -102,7 +100,6 @@
                     localStorage.setItem('_name', response.data.memberInfo.name)
                     // axios.defaults.headers.common['Authorization'] = `Bearer ${_accessToken}`
                     options.id = 'login_success';
-                    options.title = '알림';
                     options.content = localStorage.getItem('_name') + '님 안녕하세요.';
                     options.callback = common.goMain
                     //alert(typeof options.callback)
@@ -110,7 +107,6 @@
                     _cmm.popup(options);
                 }).catch(error => {
                     options.id = 'login_fail';
-                    options.title = '알림';
                     if (error.response.status === 401) {
                         options.content = '존재하지 않는 계정입니다.';
                     } else {

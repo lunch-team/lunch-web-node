@@ -60,9 +60,9 @@
 
     let options = {
         id : '',
-        title : '',
         content : '',
-        type : ''
+        type : '',
+        callback : ''
     }
     const common = {
         verify: function (data) {
@@ -79,7 +79,6 @@
 
             if(result) {
                 options.id = 'food_add_verify';
-                options.title = '알림';
                 options.content = result;
                 _cmm.popup(options);
                 return false;
@@ -111,13 +110,32 @@
                 }
             }).catch(error => {
                 options.id = 'food_add_fail';
-                options.title = '알림';
+
                 if(error.response.status === 401) {
                     options.content = '로그인이 필요한 서비스입니다.';
                 } else {
                     options.content = '오류가 발생했습니다.';
                 }
                 _cmm.popup(options);
+            })
+        },
+        conAddMenu : function(params) {
+            //alert(JSON.stringify(params))
+            //alert(params)
+            axios.post('/menu/addMenu', JSON.stringify(params),
+                    {headers: {'Content-Type': `application/json`}}
+                ).then(response => {
+                    if(response.status === 200) {
+                        console.log(response);
+                        alert('메뉴가 추가되었습니다.');
+                        location.href = 'lunch_main.html';
+                    }
+                }).catch(error => {
+                    if (error.response.status === 401) {
+                        alert('로그인이 필요한 서비스입니다.')
+                    } else {
+                        alert('오류가 발생했습니다.');
+                    }
             })
         },
         addMenu : function() {
@@ -129,27 +147,18 @@
             
             if(common.verify(params)) {
                 const msg = "메뉴를 추가하시겠습니까?";
-
-                if(confirm(msg) != 0) {
-                    axios.post('/menu/addMenu', JSON.stringify(params),
-                        {headers: {'Content-Type': `application/json`}}
-                    ).then(response => {
-                        if(response.status === 200) {
-                            console.log(response);
-                            alert('메뉴가 추가되었습니다.');
-                            location.href = 'lunch_main.html';
-                        }
-                    }).catch(error => {
-                        if (error.response.status === 401) {
-                            alert('로그인이 필요한 서비스입니다.')
-                        } else {
-                            alert('오류가 발생했습니다.');
-                        }
-                    })
-                }
+                options.id = 'add_menu';
+                options.content = msg;
+                options.callback = fn.conAddMenu;
+                // alert(options.id)
+                options.callback(params)
+                alert(typeof options.callback);
+                _cmm.popup(options);
             }
 
+            
         }
+        
     }
 
 
